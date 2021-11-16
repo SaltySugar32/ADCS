@@ -4,9 +4,8 @@ import com.company.Simulation.SimulationWorkspace.SimulationDisabled;
 import com.company.Simulation.SimulationWorkspace.SimulationInterProcess;
 import com.company.Simulation.SimulationWorkspace.SimulationPaused;
 import com.company.Simulation.SimulationWorkspace.SimulationReady;
-import com.company.WaveClasses.WaveFront;
+import com.company.Simulation.WaveClasses.WaveFront;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SimulationServer extends Thread {

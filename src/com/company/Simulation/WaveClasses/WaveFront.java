@@ -1,4 +1,4 @@
-package com.company.WaveClasses;
+package com.company.Simulation.WaveClasses;
 
 public interface WaveFront {
     double A = 0;

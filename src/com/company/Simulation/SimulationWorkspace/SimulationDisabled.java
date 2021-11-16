@@ -1,6 +1,6 @@
 package com.company.Simulation.SimulationWorkspace;
 
-import com.company.WaveClasses.WaveFront;
+import com.company.Simulation.WaveClasses.WaveFront;
 
 import java.util.ArrayList;
 
