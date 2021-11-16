@@ -29,6 +29,8 @@ public class Main {
     public static void main(String[] args) {
 	SimulationServer ServerThread = new SimulationServer();
     SimulationClient ClientThread = selectClientVersion(ServerThread);
-    ClientThread.run();
+    ThreadGroup threadGroup = new ThreadGroup("Thread Group");
+    ClientThread.start();
+    ServerThread.start();
     }
 }
