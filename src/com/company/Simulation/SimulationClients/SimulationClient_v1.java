@@ -3,9 +3,7 @@ package com.company.Simulation.SimulationClients;
 import com.company.Simulation.SimulationClient;
 import com.company.Simulation.SimulationServer;
 
-import java.io.Console;
 import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
 
 public class SimulationClient_v1 extends Thread implements SimulationClient {
     SimulationServer serverThread;

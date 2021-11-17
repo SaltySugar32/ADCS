@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 public class SimulationPaused {
     public static ArrayList<WaveFront> getResult(ArrayList<WaveFront> prevWavePicture){
-        ArrayList<WaveFront> wavePicture = new ArrayList();
-        prevWavePicture.forEach((item) -> {wavePicture.add(item);});
+        ArrayList<WaveFront> wavePicture = new ArrayList<>(prevWavePicture);
         return wavePicture;
     }
 }

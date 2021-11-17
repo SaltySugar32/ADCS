@@ -5,5 +5,5 @@ public interface WaveFront {
     double B = 0;
     double C = 0;
 
-    public void setABC(double A, double B, double C);
+    void setABC(double A, double B, double C);
 }

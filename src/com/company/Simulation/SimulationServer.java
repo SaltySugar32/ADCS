@@ -60,10 +60,10 @@ public class SimulationServer extends Thread {
     }
     SimStatus simStatus;
 
-    ArrayList<WaveFront> currentWavePicture = new ArrayList();
+    ArrayList<WaveFront> currentWavePicture = new ArrayList<>();
 
     public SimulationServer() {
-        this.simStatus = SimStatus.DISABLED;
+        this.simStatus = SimStatus.READY;
     }
 
     public void setSimStatus(int simStatus) {
@@ -81,7 +81,7 @@ public class SimulationServer extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        while(simStatus != SimStatus.DISABLED) {
             currentWavePicture = simStatus.simInstance(currentWavePicture);
             System.out.print(".");
             try {
