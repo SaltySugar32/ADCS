@@ -1,22 +1,19 @@
-package com.company.Simulation.SimulationClients;
+package com.company.UserClients;
 
-import com.company.Simulation.SimulationClient;
 import com.company.Simulation.SimulationServer;
 
-import java.io.Console;
 import java.util.Scanner;
-import java.util.logging.ConsoleHandler;
 
-public class SimulationClient_v1 extends Thread implements SimulationClient {
+public class UserClient_v1 extends Thread implements UserClient {
     SimulationServer serverThread;
 
-    public SimulationClient_v1(SimulationServer ServerThread) {
+    public UserClient_v1(SimulationServer ServerThread) {
         this.serverThread = ServerThread;
     }
 
     public void testInterface1() {
         System.out.println("Состояние процесса: " + serverThread.getSimStatus());
-        System.out.println("Выберете состояние процесса: ");
+        System.out.println("Выберите состояние процесса: ");
         Scanner input = new Scanner(System.in);
         serverThread.setSimStatus(input.nextInt());
     }
