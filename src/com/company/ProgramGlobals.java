@@ -9,7 +9,7 @@ import com.company.UserClients.UserClient_v2;
 public record ProgramGlobals() {
     //------------------ВЕРСИЯ ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА--------------------
 
-    static ClientVersion clientVersion = ClientVersion.v1;
+    static ClientVersion clientVersion = ClientVersion.v2;
 
      enum ClientVersion {
         v1 { //Клиент для отладки работоспособности программного средства

@@ -1,5 +1,6 @@
 package com.company.UserClients;
 
+import com.company.GraphicalData.GUI.MainFrame;
 import com.company.Simulation.SimulationServer;
 
 public class UserClient_v2 extends Thread implements UserClient {
@@ -12,6 +13,6 @@ public class UserClient_v2 extends Thread implements UserClient {
 
     @Override
     public void run() {
-
+        MainFrame mainFrame = new MainFrame("ADCS");
     }
 }
