@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 //Сервер НЕ ДОЛЖЕН содержать переменные, отличные от статуса работы самого сервера
 public class SimulationServer extends Thread {
-    
     //Установка изначального состояния сервера
     SimulationServer.SimStatus simStatus;
     {

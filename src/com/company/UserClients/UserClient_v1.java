@@ -5,7 +5,6 @@ import com.company.Simulation.SimulationServer;
 import java.util.Scanner;
 
 public class UserClient_v1 extends Thread implements UserClient {
-
     SimulationServer serverThread;
 
     public UserClient_v1(SimulationServer ServerThread) {

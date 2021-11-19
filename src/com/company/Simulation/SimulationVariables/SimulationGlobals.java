@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 //Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
 public class SimulationGlobals {
-
     //Статус инициализации переменных среды
     static boolean isInitialized;
     //Параметр Ламе Mu (Мю)

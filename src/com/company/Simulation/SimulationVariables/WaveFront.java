@@ -3,7 +3,6 @@ package com.company.Simulation.SimulationVariables;
 //Описание волнового фронта
 //Пока далеко от истины
 public class WaveFront {
-
     double A1;
     double A2;
     double A0;

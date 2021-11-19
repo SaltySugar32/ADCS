@@ -11,7 +11,7 @@ public record ProgramGlobals() {
 
     static ClientVersion clientVersion = ClientVersion.v1;
 
-     enum ClientVersion {
+    enum ClientVersion {
         v1 { //Клиент для отладки работоспособности программного средства
             public UserClient client(SimulationServer ServerThread){
                 return new UserClient_v1(ServerThread);}
@@ -22,6 +22,10 @@ public record ProgramGlobals() {
         };
 
         public abstract UserClient client(SimulationServer ServerThread);
+    }
+
+    public static UserClient getClient(SimulationServer ServerThread) {
+        return clientVersion.client(ServerThread);
     }
 
     //-------------------------------------------------------------------------
