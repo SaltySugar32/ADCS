@@ -5,6 +5,8 @@ import java.util.ArrayList;
 //Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
 public class SimulationGlobals {
 
+    //---------------------------ПАРАМЕТРЫ СИМУЛЯЦИИ-----------------------------
+
     //Статус инициализации переменных среды
     static boolean isInitialized;
     //Параметр Ламе Mu (Мю)
@@ -29,6 +31,8 @@ public class SimulationGlobals {
         currentWavePicture = new ArrayList<>();
     }
 
+    //-------------------------------SETTERS--------------------------------
+
     public static void setSimulationGlobals(double lameMu, double lameLambda, double materialDensity, double coefficientNu) {
         SimulationGlobals.isInitialized = true;
         SimulationGlobals.lameMu = lameMu;
@@ -40,6 +44,8 @@ public class SimulationGlobals {
     public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
+
+    //-------------------------------GETTERS--------------------------------
 
     public static boolean isInitialized() {
         return isInitialized;

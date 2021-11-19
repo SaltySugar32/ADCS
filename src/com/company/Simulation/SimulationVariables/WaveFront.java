@@ -1,41 +1,48 @@
 package com.company.Simulation.SimulationVariables;
 
+import com.company.Simulation.SimulationFunctions.WaveFrontComputations;
+
 //Описание волнового фронта
 //Пока далеко от истины
-public class WaveFront {
+public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
+    //---------------------------ПАРАМЕТРЫ ВОЛНЫ-----------------------------
+
+    //Деформация материала в точке x - тензор малых деформаций e ?? !!!!!!!!!!!!!!!!!!!!!!!
     double A1;
+    //Изменение перемещения во времени
     double A2;
+    //Смещение по координате / задержка во времени
     double A0;
+
+    //Следующий волновой фронт по правую сторону
     WaveFront nextWaveFront;
+
+    //Тензор напряжений Эйлера-Коши по оси Ox - \sigma в формулах
+    double tension;
+
+    //Характеристическая скорость волнового фронта
+    double charSpeed;
 
     {
         nextWaveFront = null;
+        tension = 0;
+        charSpeed = 0;
     }
 
-    public WaveFront(double A1, double A2, double A0, WaveFront nextWaveFront) {
+    //-------------------------------SETTERS--------------------------------
+
+    public void setWaveFront(double A1, double A2, double A0) {
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
+    }
+
+    public void setNextWaveFront(WaveFront nextWaveFront) {
         this.nextWaveFront = nextWaveFront;
     }
 
-    public WaveFront(double A1) {
-
-    }
-
-
-    public void setA1(double a1) {
-        A1 = a1;
-    }
-
-    public void setA2(double a2) {
-        A2 = a2;
-    }
-
-    public void setA0(double a0) {
-        A0 = a0;
-    }
+    //-------------------------------GETTERS--------------------------------
 
     public double getA1() {
         return A1;
@@ -47,5 +54,36 @@ public class WaveFront {
 
     public double getA0() {
         return A0;
+    }
+
+    public WaveFront getNextWaveFront() {
+        return nextWaveFront;
+    }
+
+    public double getTension() {
+        return tension;
+    }
+
+    public double getCharSpeed() {
+        return charSpeed;
+    }
+
+    //-------------------------------ФУНКЦИИ--------------------------------
+
+    public void computeTension() {
+        tension = WaveFrontComputations.computeTension(A1/*Пусто, а так не должно быть*/);
+    }
+
+    public void computeCharSpeed() {
+        charSpeed = WaveFrontComputations.computeCharSpeed(A1);
+    }
+
+    //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
+
+    public WaveFront(double A1, double A2, double A0, WaveFront nextWaveFront) {
+        this.A1 = A1;
+        this.A2 = A2;
+        this.A0 = A0;
+        this.nextWaveFront = nextWaveFront;
     }
 }
