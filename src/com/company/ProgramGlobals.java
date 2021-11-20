@@ -9,7 +9,7 @@ import com.company.UserClients.UserClient_v2;
 public record ProgramGlobals() {
     //------------------ВЕРСИЯ ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА--------------------
 
-    static ClientVersion clientVersion = ClientVersion.v2;
+    static final ClientVersion clientVersion = ClientVersion.v2;
 
      enum ClientVersion {
         v1 { //Клиент для отладки работоспособности программного средства
@@ -25,4 +25,12 @@ public record ProgramGlobals() {
     }
 
     //-------------------------------------------------------------------------
+
+    //---------------------------КАДРОВАЯ ЧАСТОТА------------------------------
+
+    static final int framesPerSecond = 15;
+    static final int operationsPerSecond = 100;
+
+    //-------------------------------------------------------------------------
+
 }
