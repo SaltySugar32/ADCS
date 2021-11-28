@@ -2,13 +2,14 @@ package com.company.UserClients;
 
 import com.company.GraphicalData.GUI.MainFrame;
 import com.company.Simulation.SimulationServerThread;
+import com.company.Simulation.SimulationSynchronizerThread;
 
 public class UserClient_v2 extends Thread implements UserClient {
 
-    SimulationServerThread ServerThread;
+    SimulationSynchronizerThread ServerThread;
 
-    public UserClient_v2(SimulationServerThread ServerThread) {
-        this.ServerThread = ServerThread;
+    public UserClient_v2(SimulationSynchronizerThread SynchroThread) {
+        this.ServerThread = SynchroThread;
     }
 
     @Override

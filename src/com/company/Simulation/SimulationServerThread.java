@@ -1,7 +1,7 @@
 package com.company.Simulation;
 
-import com.company.ProgramGlobals;
 import com.company.Simulation.SimulationFunctions.InterProcessComputations;
+import com.company.Simulation.SimulationVariables.SimulationStatuses;
 import com.company.Simulation.SimulationVariables.SimulationGlobals;
 
 import java.util.Stack;
@@ -9,97 +9,57 @@ import java.util.Stack;
 //Сервер НЕ ДОЛЖЕН содержать переменные, отличные от статуса работы самого сервера
 public class SimulationServerThread extends Thread {
 
-    //Установка изначального состояния сервера
-    SimStatuses simStatus;
-    Stack<SimStatuses> simStatusesStack;
-
+    //Инициализация стекса статусов симуляции
+    //Если попытаться привести его потенциальный внешний вид,
+    // образуемый в результате выполнения функций ниже, то выглядеть он будет так:
+    //
+    //<поле_стека> -> <статус_симуляции>
+    //0 -> <empty_field> / PAUSED / DISABLED - поле приостановки выполнения операций
+    //1 -> INTERPROCESS - если выполняются не операции выше, то выполняется данная операция
+    //Больше двух операций существовать не может
+    //
+    //Такое представление весьма условно, но для понимания вполне сойдет
+    Stack<SimulationStatuses> simulationStatusesStack;
     {
-        simStatus = SimStatuses.PAUSED;
-        simStatusesStack = new Stack<>();
-    }
-
-    //Список все возможных состояний сервера с классами, в которых они реализованы
-    //На данный момент DISABLED, READY, INTERPROCESS, PAUSED
-    private enum SimStatuses{
-        DISABLED {
-            @Override
-            public void doSomeShit() {
-
-            }
-        },
-        INTERPROCESS {
-            @Override
-            public void doSomeShit() {
-                SimulationGlobals.setCurrentWavePicture(InterProcessComputations.getResult(SimulationGlobals.getCurrentWavePicture()));
-            }
-        },
-        PAUSED {
-            @Override
-            public void doSomeShit() {
-                while (isPaused) {
-                    onSpinWait();
-                }
-            }
-        };
-
-        //Абстрактные функции для обращения извне ко вложенным классам
-        protected abstract void doSomeShit();
-
-        //Переменная, позволяющая выходить из цикла паузы потока
-        protected boolean isPaused = true;
-    }
-
-    public SimStatuses getSimStatus() {
-        return simStatus;
+        simulationStatusesStack = new Stack<>();
+        addInSimStatusesStack(SimulationStatuses.INTERPROCESS);
     }
 
     //-----------------------РАБОТА СО СТЕКОМ ОПЕРАЦИЙ ПОТОКА--------------------------
 
-    public void addInStack(int simStatus) {
-        switch (simStatus) {
-            case 1 -> simResume();
-            case 2 -> simPause();
-            default -> simDisable();
-        }
+    //SETTER для стека статусов симуляции
+    public void addInSimStatusesStack(SimulationStatuses simStatus) {
+        simulationStatusesStack.push(simStatus);
+    }
+
+    //GETTER для стека статусов симуляции
+    public SimulationStatuses getFromSimStatusesStack() {
+        return simulationStatusesStack.peek();
     }
 
     //Выход из приостановки потока симуляции
-    private void simResume() {
-        simStatus.isPaused = false;
+    public void simResume() {
+        if (SimulationStatuses.PAUSED == simulationStatusesStack.peek())
+            simulationStatusesStack.pop();
     }
 
     //Вход в приостановку потока симуляции
-    private void simPause() {
-        simStatus.isPaused = true;
-        simStatusesStack.push(SimStatuses.PAUSED);
+    public void simPause() {
+        if (SimulationStatuses.INTERPROCESS == simulationStatusesStack.peek())
+            simulationStatusesStack.push(SimulationStatuses.PAUSED);
     }
 
     //Отключение потока симуляции
-    private void simDisable() {
-        simStatusesStack.push(SimStatuses.DISABLED);
+    public void simDisable() {
+        simulationStatusesStack.push(SimulationStatuses.DISABLED);
     }
 
-    //Заполнение потока симуляции некоторым количеством операций, которые должны быть выполнены за секунду
-    public void fillSimStatusesStack() {
-        for (int i = 0; i < ProgramGlobals.getOperationsPerSecond(); i++) {
-            simStatusesStack.push(SimStatuses.INTERPROCESS);
-        }
-    }
-
-    public void checkSimStatusesStack() {
-        if (!simStatusesStack.isEmpty()) {
-            simStatusesStack.clear();
-        }
-        fillSimStatusesStack();
-    }
-
-    public void clearSimStatusesStack() {
-        simStatusesStack.clear();
-    }
-
-    public void doNextOperation() {
-        simStatus = simStatusesStack.pop();
-        simStatus.doSomeShit();
+    //Выполнение следующей операции сервером
+    public void doNextComputation() {
+        //Так как есть потребность в том, чтобы симуляция выполнялась синхронно с таймером,
+        // то добавление паузы до или после выполнения операции обязательно
+        simPause();
+        SimulationGlobals.setCurrentWavePicture(InterProcessComputations.getResult(SimulationGlobals.getCurrentWavePicture()));
     }
 
     //---------------------------------------------------------------------------------
@@ -107,17 +67,17 @@ public class SimulationServerThread extends Thread {
     //Основной поток, в котором крутится сервер
     @Override
     public void run() {
-        fillSimStatusesStack();
-        addInStack(2);
+        addInSimStatusesStack(SimulationStatuses.PAUSED);
 
-        while(SimStatuses.DISABLED != simStatus) {
-            doNextOperation();
-            checkSimStatusesStack();
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        //Если симуляция не деактивирована, то ...
+        while(SimulationStatuses.DISABLED != simulationStatusesStack.peek()) {
+            //Если симуляция на паузе, то ждем ...
+            while(SimulationStatuses.PAUSED == simulationStatusesStack.peek()) {
+                onSpinWait();
             }
+            //Иначе выполняем следующую операцию ...
+            doNextComputation();
+            //И снова попадаем на паузу
         }
     }
 }
