@@ -1,7 +1,6 @@
 package com.company.GraphicalData.GUI;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class InputPanel extends JPanel {
     private JLabel label1;

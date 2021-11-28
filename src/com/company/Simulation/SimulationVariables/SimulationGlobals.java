@@ -5,10 +5,39 @@ import java.util.ArrayList;
 //Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
 public class SimulationGlobals {
 
-    //---------------------------ПАРАМЕТРЫ СИМУЛЯЦИИ-----------------------------
+    //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
+
+    static double simulationTime = 0.5;
+
+    public static double getSimulationTime() {
+        return simulationTime;
+    }
+
+    public static void setSimulationTime(double simulationTime) {
+        SimulationGlobals.simulationTime = simulationTime;
+    }
+
+    //-------------------------------------------------------------------------
+
+    //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ОПЕРАЦИЮ-----------------------
+
+    static double timeDelta = 0.5;
+
+    public static double getTimeDelta() {
+        return timeDelta;
+    }
+
+    public static void setTimeDelta(double timeDelta) {
+        SimulationGlobals.timeDelta = timeDelta;
+    }
+
+    //-------------------------------------------------------------------------
+
+    //---------------------ХАРАКТЕРИСТИКИ СРЕДЫ СИМУЛЯЦИИ----------------------
 
     //Статус инициализации переменных среды
     static boolean isInitialized;
+
     //Параметр Ламе Mu (Мю)
     static double lameMu;
     //Параметр Ламе Lambda (Лямбда)
@@ -32,7 +61,9 @@ public class SimulationGlobals {
         currentWavePicture = new ArrayList<>();
     }
 
-    //-------------------------------SETTERS--------------------------------
+    //-------------------------------------------------------------------------
+
+    //--------------------------------SETTERS----------------------------------
 
     public static void setSimulationGlobals(double lameMu, double lameLambda, double materialDensity, double coefficientNu) {
         SimulationGlobals.isInitialized = true;
@@ -46,7 +77,9 @@ public class SimulationGlobals {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
-    //-------------------------------GETTERS--------------------------------
+    //-------------------------------------------------------------------------
+
+    //--------------------------------GETTERS----------------------------------
 
     public static boolean isInitialized() {
         return isInitialized;
@@ -71,4 +104,8 @@ public class SimulationGlobals {
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
     }
+
+    //-------------------------------------------------------------------------
+
 }
+

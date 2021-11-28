@@ -20,4 +20,9 @@ public class WaveFrontComputations {
             //return \sigma / \rho === (\lambda + 2 * \mu +- 2 * \nu) / \rho
             return computeTension(lilDeformations) / SimulationGlobals.getMaterialDensity();
     }
+
+    //Формула для вычисления скорости новообразованной ударной волны
+    public static double computeNewWaveFrontSpeed(double speedLeft, double speedRight, double deltaMovLeft, double deltaMovRight, double deltaMovCurr) {
+        return speedLeft * speedLeft - (speedLeft * speedLeft - speedRight * speedRight ) * (deltaMovLeft) / (deltaMovCurr - deltaMovRight);
+    }
 }

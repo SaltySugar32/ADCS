@@ -1,8 +1,8 @@
 package com.company;
 
+import com.company.Simulation.SimulationServerThread;
 import com.company.Simulation.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
-import com.company.Simulation.SimulationServerThread;
 
 public class Main {
 
