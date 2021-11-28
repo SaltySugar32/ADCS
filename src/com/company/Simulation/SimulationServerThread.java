@@ -8,7 +8,7 @@ import java.util.Stack;
 
 //Сервер НЕ ДОЛЖЕН содержать переменные, отличные от статуса работы самого сервера
 public class SimulationServerThread extends Thread {
-    
+
     //Установка изначального состояния сервера
     SimStatuses simStatus;
     Stack<SimStatuses> simStatusesStack;
@@ -46,7 +46,7 @@ public class SimulationServerThread extends Thread {
         protected abstract void doSomeShit();
 
         //Переменная, позволяющая выходить из цикла паузы потока
-        protected volatile boolean isPaused = true;
+        protected boolean isPaused = true;
     }
 
     public SimStatuses getSimStatus() {
@@ -90,6 +90,7 @@ public class SimulationServerThread extends Thread {
         if (!simStatusesStack.isEmpty()) {
             simStatusesStack.clear();
         }
+        fillSimStatusesStack();
     }
 
     public void clearSimStatusesStack() {
