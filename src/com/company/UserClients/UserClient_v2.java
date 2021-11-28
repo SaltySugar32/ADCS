@@ -1,7 +1,6 @@
 package com.company.UserClients;
 
-import com.company.GraphicalData.GUI.MainFrame;
-import com.company.Simulation.SimulationServerThread;
+import com.company.GraphicalData.InputGUI.MainFrame;
 import com.company.Simulation.SimulationSynchronizerThread;
 
 public class UserClient_v2 extends Thread implements UserClient {

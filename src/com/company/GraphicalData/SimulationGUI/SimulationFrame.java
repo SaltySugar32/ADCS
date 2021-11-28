@@ -1,16 +1,16 @@
-package com.company.GraphicalData.GUI;
+package com.company.GraphicalData.SimulationGUI;
 
 import javax.swing.*;
 
-public class MainFrame extends JFrame {
+public class SimulationFrame extends JFrame {
     private MainPanel mainPanel;
 
     //Главное окно
-    public MainFrame(String title){
+    public SimulationFrame(String title){
         mainPanel = new MainPanel();
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(500,500);
+        this.setSize(1000,800);
         this.setLocationRelativeTo(null);
         this.add(mainPanel);
         this.setVisible(true);
