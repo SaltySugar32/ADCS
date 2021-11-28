@@ -22,12 +22,15 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
     double tension;
 
     //Характеристическая скорость волнового фронта
-    double charSpeed;
+    double characteristicSpeed;
+
+    double speed;
 
     {
         nextWaveFront = null;
         tension = 0;
-        charSpeed = 0;
+        characteristicSpeed = 0;
+        speed = 0;
     }
 
     //-------------------------------SETTERS--------------------------------
@@ -64,18 +67,18 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         return tension;
     }
 
-    public double getCharSpeed() {
-        return charSpeed;
+    public double getCharacteristicSpeed() {
+        return characteristicSpeed;
     }
 
     //-------------------------------ФУНКЦИИ--------------------------------
 
     public void computeTension() {
-        tension = WaveFrontComputations.computeTension(A1/*Пусто, а так не должно быть*/);
+        tension = WaveFrontComputations.computeTension(A1);
     }
 
     public void computeCharSpeed() {
-        charSpeed = WaveFrontComputations.computeCharSpeed(A1);
+        characteristicSpeed = WaveFrontComputations.computeCharSpeed(A1);
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------

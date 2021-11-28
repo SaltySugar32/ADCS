@@ -1,8 +1,8 @@
 package com.company.Simulation;
 
 import com.company.Simulation.SimulationFunctions.InterProcessComputations;
-import com.company.Simulation.SimulationVariables.SimulationStatuses;
 import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.Simulation.SimulationVariables.SimulationStatuses;
 
 import java.util.Stack;
 

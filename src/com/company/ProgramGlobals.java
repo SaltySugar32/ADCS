@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.Simulation.SimulationServerThread;
 import com.company.Simulation.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
 import com.company.UserClients.UserClient_v1;
@@ -8,8 +7,10 @@ import com.company.UserClients.UserClient_v2;
 
 //Файл с глобальными переменными сборки
 public record ProgramGlobals() {
+
     //------------------ВЕРСИЯ ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА--------------------
 
+    //Выбор версии клиента
     static final ClientVersion clientVersion = ClientVersion.v2;
 
      enum ClientVersion {
@@ -24,11 +25,6 @@ public record ProgramGlobals() {
 
         public abstract UserClient client(SimulationSynchronizerThread SynchroThread);
     }
-
-    //-------------------------------------------------------------------------
-
-    //-------------------------------------------------------------------------
-
 
     //-------------------------------------------------------------------------
 

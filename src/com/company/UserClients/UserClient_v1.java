@@ -1,6 +1,5 @@
 package com.company.UserClients;
 
-import com.company.Simulation.SimulationServerThread;
 import com.company.Simulation.SimulationSynchronizerThread;
 
 import java.util.Scanner;
