@@ -9,7 +9,7 @@ import com.company.UserClients.UserClient_v2;
 public record ProgramGlobals() {
     //------------------ВЕРСИЯ ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА--------------------
 
-    static final ClientVersion clientVersion = ClientVersion.v1;
+    static final ClientVersion clientVersion = ClientVersion.v2;
 
      enum ClientVersion {
         v1 { //Клиент для отладки работоспособности программного средства
@@ -30,6 +30,14 @@ public record ProgramGlobals() {
 
     static int framesPerSecond = 5;
 
+    public static int getFramesPerSecond() {
+        return framesPerSecond;
+    }
+
+    public static void setFramesPerSecond(int framesPerSecond) {
+        ProgramGlobals.framesPerSecond = framesPerSecond;
+    }
+
     //-------------------------------------------------------------------------
 
 
@@ -39,6 +47,10 @@ public record ProgramGlobals() {
 
     public static int getOperationsPerSecond() {
         return operationsPerSecond;
+    }
+
+    public static void setOperationsPerSecond(int operationsPerSecond) {
+        ProgramGlobals.operationsPerSecond = operationsPerSecond;
     }
 
     //-------------------------------------------------------------------------
