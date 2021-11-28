@@ -1,24 +1,26 @@
 package com.company.UserClients;
 
 import com.company.Simulation.SimulationServerThread;
+import com.company.Simulation.SimulationSynchronizerThread;
 
 import java.util.Scanner;
 
 public class UserClient_v1 extends Thread implements UserClient {
 
-    SimulationServerThread serverThread;
+    SimulationSynchronizerThread serverThread;
 
-    public UserClient_v1(SimulationServerThread ServerThread) {
-        this.serverThread = ServerThread;
+    public UserClient_v1(SimulationSynchronizerThread SynchroThread) {
+        this.serverThread = SynchroThread;
     }
 
     public void testInterface1() {
-        System.out.println("Состояние процесса: " + serverThread.getSimStatus());
+        System.out.println("Состояние процесса: " + serverThread.getWhatNextToDo());
         System.out.println("Выберите состояние процесса: ");
         Scanner input = new Scanner(System.in);
-        serverThread.addInStack(input.nextInt());
+        serverThread.setWhatNextToDo(input.nextInt());
+
         for (int i = 0; i < 10; i++) {
-            System.out.println("Состояние процесса: " + serverThread.getSimStatus());
+            System.out.println("Состояние процесса: " + serverThread.getWhatNextToDo());
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

@@ -1,13 +1,14 @@
 package com.company;
 
+import com.company.Simulation.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
 import com.company.Simulation.SimulationServerThread;
 
 public class Main {
 
     //Получение версии пользовательского интерфейса
-    public static UserClient getClient(SimulationServerThread ServerThread) {
-        return ProgramGlobals.clientVersion.client(ServerThread);
+    public static UserClient getClient(SimulationSynchronizerThread SynchroThread) {
+        return ProgramGlobals.clientVersion.client(SynchroThread);
     }
 
     //Инициализация потоков приложения
@@ -15,11 +16,16 @@ public class Main {
         //Сервер крутится в отдельном потоке, чтобы не затормаживать работу пользовательского интерфейса
         SimulationServerThread ServerThread = new SimulationServerThread();
 
+        //Инициализация потока синхронизации вычислений сервера со временем
+        SimulationSynchronizerThread SynchroThread = new SimulationSynchronizerThread(ServerThread);
+
         //Выбор пользовательского интерфейса
-        UserClient ClientThread = getClient(ServerThread);
+        UserClient ClientThread = getClient(SynchroThread);
+
 
         //Старт рабочих потоков
-        ClientThread.start();
         ServerThread.start();
+        SynchroThread.start();
+        ClientThread.start();
     }
 }

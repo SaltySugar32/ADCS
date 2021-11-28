@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.Simulation.SimulationServerThread;
+import com.company.Simulation.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
 import com.company.UserClients.UserClient_v1;
 import com.company.UserClients.UserClient_v2;
@@ -13,16 +14,21 @@ public record ProgramGlobals() {
 
      enum ClientVersion {
         v1 { //Клиент для отладки работоспособности программного средства
-            public UserClient client(SimulationServerThread ServerThread){
-                return new UserClient_v1(ServerThread);}
+            public UserClient client(SimulationSynchronizerThread SynchroThread){
+                return new UserClient_v1(SynchroThread);}
         },
         v2 { //Клиент визуального интерфейса клиента
-            public UserClient client(SimulationServerThread ServerThread){
-                return new UserClient_v2(ServerThread);}
+            public UserClient client(SimulationSynchronizerThread SynchroThread){
+                return new UserClient_v2(SynchroThread);}
         };
 
-        public abstract UserClient client(SimulationServerThread ServerThread);
+        public abstract UserClient client(SimulationSynchronizerThread SynchroThread);
     }
+
+    //-------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------
+
 
     //-------------------------------------------------------------------------
 

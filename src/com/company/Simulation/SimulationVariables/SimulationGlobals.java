@@ -19,6 +19,7 @@ public class SimulationGlobals {
     static double coefficientNu;
     //Все переменные выше - константы материала
 
+    //Текущая волновая картина, содержащая в себе каждый из волновых фронтов
     static ArrayList<WaveFront> currentWavePicture;
 
     static {
