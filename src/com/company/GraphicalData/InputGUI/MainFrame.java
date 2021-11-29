@@ -2,6 +2,7 @@ package com.company.GraphicalData.InputGUI;
 
 import com.company.GraphicalData.DataHandler;
 import com.company.GraphicalData.SimulationGUI.SimulationFrame;
+import com.company.Simulation.SimulationSynchronizerThread;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +14,7 @@ public class MainFrame extends JFrame {
     private JButton startButton = new JButton("ПЕРЕЙТИ К СИМУЛЯЦИИ");
 
     //Главное окно
-    public MainFrame(String title){
+    public MainFrame(String title, SimulationSynchronizerThread ServerThread){
         mainPanel = new MainPanel(startButton);
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +28,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent ae){
                 if(DataHandler.getParamInputStatus()) {
                     dispose();
-                    SimulationFrame simulationFrame = new SimulationFrame("ADCS - Симуляция");
+                    SimulationFrame simulationFrame = new SimulationFrame("ADCS - Симуляция", ServerThread);
                 }
                 else{
                     JDialog dialog = new JDialog(new JFrame(), "ADCS - error");

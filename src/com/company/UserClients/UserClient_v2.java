@@ -13,6 +13,6 @@ public class UserClient_v2 extends Thread implements UserClient {
 
     @Override
     public void run() {
-        MainFrame mainFrame = new MainFrame("ADCS");
+        MainFrame mainFrame = new MainFrame("ADCS", ServerThread);
     }
 }
