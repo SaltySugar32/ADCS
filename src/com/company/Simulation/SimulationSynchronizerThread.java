@@ -32,6 +32,18 @@ public class SimulationSynchronizerThread extends Thread {
         this.whatNextToDo = whatNextToDo;
     }
 
+    public void setNextJobPAUSE() {
+        whatNextToDo = WhatNextToDo.PAUSE;
+    }
+
+    public void setNextJobRESUME() {
+        whatNextToDo = WhatNextToDo.RESUME;
+    }
+
+    public void setNextJobDISABLE() {
+        whatNextToDo = WhatNextToDo.DISABLE;
+    }
+
     //GETTER, что должно выполняться следующим
     public WhatNextToDo getWhatNextToDo() {
         return whatNextToDo;
