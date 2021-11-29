@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
                 else{
                     JDialog dialog = new JDialog(new JFrame(), "ADCS - error");
                     dialog.setLocationRelativeTo(null);
-                    JLabel lab = new JLabel("Сначала введите исходные параметры");
+                    JLabel lab = new JLabel("Сначала введите исходные параметры", SwingConstants.CENTER);
                     dialog.setLayout(new BorderLayout());
                     dialog.add(lab, BorderLayout.NORTH);
                     dialog.setSize(300, 100);

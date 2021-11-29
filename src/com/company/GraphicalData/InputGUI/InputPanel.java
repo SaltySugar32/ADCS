@@ -19,7 +19,7 @@ public class InputPanel extends JPanel {
     private JTextField textField_coefficientNu = new JTextField(15);
 
     private JButton button_input= new JButton("Ввести параметры среды");
-    private JLabel label_input = new JLabel("success/error");
+    private JLabel label_input = new JLabel("");
 
     //Панель ввода исходных параметров
     public InputPanel(){
