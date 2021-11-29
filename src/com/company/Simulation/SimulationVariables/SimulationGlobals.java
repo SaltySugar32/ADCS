@@ -7,7 +7,7 @@ public class SimulationGlobals {
 
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
 
-    static double simulationTime = 0.5;
+    static double simulationTime = 0.0;
 
     public static double getSimulationTime() {
         return simulationTime;
@@ -16,6 +16,8 @@ public class SimulationGlobals {
     public static void setSimulationTime(double simulationTime) {
         SimulationGlobals.simulationTime = simulationTime;
     }
+
+    public static void nextSimulationTime() { simulationTime += timeDelta; }
 
     //-------------------------------------------------------------------------
 
