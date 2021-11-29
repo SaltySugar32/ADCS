@@ -44,6 +44,5 @@ https://1drv.ms/u/s!Al4u43F0FsT5lzHt-JWtc20CBwkD?e=IxNprL
 
 #### SimulationFunctions
 <li>Набор функций, используемых симуляцией</li>
-<li>InitSimulationGlobals - набор функций для инициализации значений глобальных переменных симуляции</li>
 <li>InterProcessComputations - корневая функция исполнения всех операций внутри симуляции</li>
 <li>WaveFrontComputations - набор функций, используемых для вычисления изменений в волновой картине</li>
