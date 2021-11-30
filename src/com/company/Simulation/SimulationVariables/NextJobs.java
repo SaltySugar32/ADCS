@@ -3,7 +3,7 @@ package com.company.Simulation.SimulationVariables;
 import com.company.Simulation.SimulationServerThread;
 
 //Перечисление всех указаний для сервера, что нужно выполнить следующим
-public enum WhatNextToDo {
+public enum NextJobs {
     RESUME {
         @Override
         public void nextJob(SimulationServerThread simulationServerThread) {
