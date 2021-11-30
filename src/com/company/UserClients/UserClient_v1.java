@@ -13,13 +13,13 @@ public class UserClient_v1 extends Thread implements UserClient {
     }
 
     public void testInterface1() {
-        System.out.println("Состояние процесса: " + serverThread.getWhatNextToDo());
+        System.out.println("Состояние процесса: " + serverThread.getNextJob());
         System.out.println("Выберите состояние процесса: ");
         Scanner input = new Scanner(System.in);
-        serverThread.setWhatNextToDo(input.nextInt());
+        serverThread.setNextJob(input.nextInt());
 
         for (int i = 0; i < 10; i++) {
-            System.out.println("Состояние процесса: " + serverThread.getWhatNextToDo());
+            System.out.println("Состояние процесса: " + serverThread.getNextJob());
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

@@ -1,7 +1,7 @@
 package com.company.Simulation;
 
 import com.company.ProgramGlobals;
-import com.company.Simulation.SimulationVariables.WhatNextToDo;
+import com.company.Simulation.SimulationVariables.NextJobs;
 
 public class SimulationSynchronizerThread extends Thread {
     //ссылка на поток сервера
@@ -13,40 +13,40 @@ public class SimulationSynchronizerThread extends Thread {
     }
 
     //переменная, указывающая, что делать следующим
-    private volatile WhatNextToDo whatNextToDo;
+    private volatile NextJobs nextJob;
     {
-        whatNextToDo = WhatNextToDo.RESUME;
+        nextJob = NextJobs.RESUME;
     }
 
     //SETTER через int переменную, что делать дальше
-    public void setWhatNextToDo(int nextJob) {
+    public void setNextJob(int nextJob) {
         switch (nextJob) {
-            case 1 -> setWhatNextToDo(WhatNextToDo.PAUSE);
-            case 2 -> setWhatNextToDo(WhatNextToDo.RESUME);
-            default -> setWhatNextToDo(WhatNextToDo.DISABLE);
+            case 1 -> setNextJob(NextJobs.PAUSE);
+            case 2 -> setNextJob(NextJobs.RESUME);
+            default -> setNextJob(NextJobs.DISABLE);
         }
     }
 
     //SETTER, непосредственно указывающий, что делать дальше
-    public void setWhatNextToDo(WhatNextToDo whatNextToDo) {
-        this.whatNextToDo = whatNextToDo;
+    public void setNextJob(NextJobs nextJob) {
+        this.nextJob = nextJob;
     }
 
     public void setNextJobPAUSE() {
-        whatNextToDo = WhatNextToDo.PAUSE;
+        nextJob = NextJobs.PAUSE;
     }
 
     public void setNextJobRESUME() {
-        whatNextToDo = WhatNextToDo.RESUME;
+        nextJob = NextJobs.RESUME;
     }
 
     public void setNextJobDISABLE() {
-        whatNextToDo = WhatNextToDo.DISABLE;
+        nextJob = NextJobs.DISABLE;
     }
 
     //GETTER, что должно выполняться следующим
-    public WhatNextToDo getWhatNextToDo() {
-        return whatNextToDo;
+    public NextJobs getNextJob() {
+        return nextJob;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class SimulationSynchronizerThread extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            whatNextToDo.nextJob(simulationServerThread);
+            nextJob.nextJob(simulationServerThread);
         }
     }
 }
