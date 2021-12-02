@@ -85,9 +85,12 @@ public class SimulationServerThread extends Thread {
     @Override
     public void run() {
         addInSimStatusesStack(SimulationStatuses.PAUSED);
+        //int debug_numOfOperations = 0;
 
         //Если симуляция не деактивирована, то ...
         while (SimulationStatuses.DISABLED != simulationStatusesStack.peek()) {
+            //System.out.println(debug_numOfOperations++ + " " + SimulationGlobals.getSimulationTime());
+
             //Если симуляция на паузе, то ждем ...
             while (SimulationStatuses.PAUSED == simulationStatusesStack.peek()) {
                 onSpinWait();
