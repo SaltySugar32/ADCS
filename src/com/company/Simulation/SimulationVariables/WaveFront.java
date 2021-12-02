@@ -8,26 +8,32 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
     //---------------------------ПАРАМЕТРЫ ВОЛНЫ-----------------------------
 
-    //Деформация материала в точке x - тензор малых деформаций e ?? !!!!!!!!!!!!!!!!!!!!!!!
+    /**
+     * Зависимость смещения на границе волнового фронта от координаты x - тензор малых деформаций e
+     */
     double A1;
-    //Изменение перемещения во времени
+    /**
+     * Зависимость смещения от времени
+     */
     double A2;
-    //Смещение по координате / задержка во времени
+    /**
+     * Смещение по координате / задержка во времени
+     */
     double A0;
 
-    //Следующий волновой фронт по правую сторону
-    WaveFront nextWaveFront;
-
-    //Тензор напряжений Эйлера-Коши по оси Ox - \sigma в формулах
+    /**
+     * Тензор напряжений Эйлера-Коши по оси Ox - \sigma в формулах
+     */
     double tension;
 
-    //Характеристическая скорость волнового фронта
+    /**
+     * Характеристическая скорость волнового фронта
+     */
     double characteristicSpeed;
 
     double speed;
 
     {
-        nextWaveFront = null;
         tension = 0;
         characteristicSpeed = 0;
         speed = 0;
@@ -39,10 +45,6 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
-    }
-
-    public void setNextWaveFront(WaveFront nextWaveFront) {
-        this.nextWaveFront = nextWaveFront;
     }
 
     //-------------------------------GETTERS--------------------------------
@@ -59,10 +61,6 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         return A0;
     }
 
-    public WaveFront getNextWaveFront() {
-        return nextWaveFront;
-    }
-
     public double getTension() {
         return tension;
     }
@@ -77,8 +75,18 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         tension = WaveFrontComputations.computeTension(A1);
     }
 
+    public double getNewTension() {
+        computeTension();
+        return getTension();
+    }
+
     public void computeCharSpeed() {
         characteristicSpeed = WaveFrontComputations.computeCharSpeed(A1);
+    }
+
+    public double getNewCharSpeed() {
+        computeCharSpeed();
+        return getCharacteristicSpeed();
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
@@ -87,6 +95,5 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
-        this.nextWaveFront = nextWaveFront;
     }
 }

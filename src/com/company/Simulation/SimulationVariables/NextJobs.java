@@ -2,7 +2,9 @@ package com.company.Simulation.SimulationVariables;
 
 import com.company.Simulation.SimulationServerThread;
 
-//Перечисление всех указаний для сервера, что нужно выполнить следующим
+/**
+ * Перечисление всех указаний для сервера, что нужно выполнить следующим
+ */
 public enum NextJobs {
     RESUME {
         @Override

@@ -92,7 +92,7 @@ public class ParamsPanel extends JPanel {
             public void stateChanged(ChangeEvent e) {
                 ServerThread.setNextJobPAUSE();
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
-                SimulationGlobals.setTimeDelta(value);
+                SimulationGlobals.setSimulationTimeDelta(value);
                 timeDelta_label.setText("Дельта времени ("+value+")");
                 ServerThread.setNextJobRESUME();
             }
