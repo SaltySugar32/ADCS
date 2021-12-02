@@ -2,56 +2,60 @@ package com.company.Simulation.SimulationVariables;
 
 import java.util.ArrayList;
 
-//Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
+/**
+ * Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
+ */
 public class SimulationGlobals {
 
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
 
     static double simulationTime = 0.0;
-
-    public static double getSimulationTime() {
-        return simulationTime;
-    }
-
-    public static void setSimulationTime(double simulationTime) {
-        SimulationGlobals.simulationTime = simulationTime;
-    }
-
-    public static void nextSimulationTime() { simulationTime += timeDelta; }
+    /**
+     * В районе от 0.1 * 10^-6 до 1 * 10^-6 по текущей задумке
+     */
+    static double simulationTimeDelta;
+    static double simulationTimePow;
+    /**
+     * Статус инициализации переменных среды
+     */
+    static boolean isInitialized;
 
     //-------------------------------------------------------------------------
 
     //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ОПЕРАЦИЮ-----------------------
-
-    static double timeDelta = 0.5;
-
-    public static double getTimeDelta() {
-        return timeDelta;
-    }
-
-    public static void setTimeDelta(double timeDelta) {
-        SimulationGlobals.timeDelta = timeDelta;
-    }
+    /**
+     * Параметр Ламе Mu (Мю)
+     */
+    static double lameMu;
+    /**
+     * Параметр Ламе Lambda (Лямбда)
+     */
+    static double lameLambda;
+    /**
+     * Параметр плотность материала
+     */
+    static double materialDensity;
+    /**
+     * Параметр - коэффициент, связывающий деформации материала только с изменениями объёма
+     */
+    static double coefficientNu;
+    /**
+     * Множитель на ГИГАПаскали (ГПа) для каждого из параметров выше
+     */
+    static double powPA = 9;
 
     //-------------------------------------------------------------------------
 
     //---------------------ХАРАКТЕРИСТИКИ СРЕДЫ СИМУЛЯЦИИ----------------------
-
-    //Статус инициализации переменных среды
-    static boolean isInitialized;
-
-    //Параметр Ламе Mu (Мю)
-    static double lameMu;
-    //Параметр Ламе Lambda (Лямбда)
-    static double lameLambda;
-    //Параметр плотность материала
-    static double materialDensity;
-    //Параметр - коэффициент, связывающий деформации материала только с изменениями объёма
-    static double coefficientNu;
-    //Все переменные выше - константы материала
-
-    //Текущая волновая картина, содержащая в себе каждый из волновых фронтов
+    /**
+     * Текущая волновая картина, содержащая в себе каждый из волновых фронтов
+     */
     static ArrayList<WaveFront> currentWavePicture;
+
+    static {
+        simulationTimePow = -6;
+        simulationTimeDelta = 0.5 * Math.pow(10, SimulationGlobals.simulationTimePow);
+    }
 
     static {
         isInitialized = false;
@@ -63,29 +67,61 @@ public class SimulationGlobals {
         currentWavePicture = new ArrayList<>();
     }
 
+    public static double getSimulationTime() {
+        return simulationTime;
+    }
+
+    public static void setSimulationTime(double simulationTime) {
+        SimulationGlobals.simulationTime = simulationTime;
+    }
+    //Все переменные выше - константы материала
+
+    public static void nextSimulationTime() {
+        simulationTime += simulationTimeDelta;
+    }
+
+    public static double getSimulationTimeDelta() {
+        return simulationTimeDelta;
+    }
+
+    /**
+     * Ввод длительности по времени каждого шага симуляции
+     *
+     * @param simulationTimeDelta В районе от 0.1 до 1
+     */
+    public static void setSimulationTimeDelta(double simulationTimeDelta) {
+        SimulationGlobals.simulationTimeDelta = simulationTimeDelta * Math.pow(10, simulationTimePow);
+    }
+
     //-------------------------------------------------------------------------
 
     //--------------------------------SETTERS----------------------------------
 
+    /**
+     * Функция, устанавливающая четыре параметра материала в кратной единице powPA
+     *
+     * @param lameMu          Коэффициент Ламе Мю
+     * @param lameLambda      Коэффициент Ламе Лямбда
+     * @param materialDensity Плотность материала
+     * @param coefficientNu   Коэффициент разномодульности материала
+     */
     public static void setSimulationGlobals(double lameMu, double lameLambda, double materialDensity, double coefficientNu) {
         SimulationGlobals.isInitialized = true;
-        SimulationGlobals.lameMu = lameMu;
-        SimulationGlobals.lameLambda = lameLambda;
-        SimulationGlobals.materialDensity = materialDensity;
-        SimulationGlobals.coefficientNu = coefficientNu;
+        SimulationGlobals.lameMu = lameMu * Math.pow(10, powPA);
+        SimulationGlobals.lameLambda = lameLambda * Math.pow(10, powPA);
+        SimulationGlobals.materialDensity = materialDensity * Math.pow(10, powPA);
+        SimulationGlobals.coefficientNu = coefficientNu * Math.pow(10, powPA);
+
+
     } //Отсутствует проверка введенных параметров
 
-    public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
-        SimulationGlobals.currentWavePicture = currentWavePicture;
+    public static boolean isInitialized() {
+        return isInitialized;
     }
 
     //-------------------------------------------------------------------------
 
     //--------------------------------GETTERS----------------------------------
-
-    public static boolean isInitialized() {
-        return isInitialized;
-    }
 
     public static double getLameMu() {
         return lameMu;
@@ -105,6 +141,10 @@ public class SimulationGlobals {
 
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
+    }
+
+    public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
+        SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
     //-------------------------------------------------------------------------

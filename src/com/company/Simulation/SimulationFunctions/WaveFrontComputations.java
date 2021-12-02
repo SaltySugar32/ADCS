@@ -4,7 +4,9 @@ import com.company.Simulation.SimulationVariables.SimulationGlobals;
 
 public class WaveFrontComputations {
 
-    //Вычисление напряжения Эйлера-Коши на стыке волн деформации
+    /**
+     * Вычисление напряжения Эйлера-Коши на стыке волн деформации
+     */
     public static double computeTension(double lilDeformations) {
         if (0 > lilDeformations) {
             //return \lambda + 2 * \mu + 2 * \nu
@@ -15,14 +17,22 @@ public class WaveFrontComputations {
         } else return 0;
     }
 
-    //Вычисление характеристической скорости
+    /**
+     * Вычисление характеристической скорости
+     */
     public static double computeCharSpeed(double lilDeformations) {
-            //return \sigma / \rho === (\lambda + 2 * \mu +- 2 * \nu) / \rho
-            return computeTension(lilDeformations) / SimulationGlobals.getMaterialDensity();
+        //return \sigma / \rho === (\lambda + 2 * \mu +- 2 * \nu) / \rho
+        return computeTension(lilDeformations) / SimulationGlobals.getMaterialDensity();
     }
 
-    //Формула для вычисления скорости новообразованной ударной волны
+    /**
+     * Формула для вычисления скорости новообразованной ударной волны
+     */
     public static double computeNewWaveFrontSpeed(double speedLeft, double speedRight, double deltaMovLeft, double deltaMovRight, double deltaMovCurr) {
-        return speedLeft * speedLeft - (speedLeft * speedLeft - speedRight * speedRight ) * (deltaMovLeft) / (deltaMovCurr - deltaMovRight);
+        return speedLeft * speedLeft - (speedLeft * speedLeft - speedRight * speedRight) * (deltaMovLeft) / (deltaMovCurr - deltaMovRight);
+    }
+
+    public static void computeCollisions() {
+
     }
 }

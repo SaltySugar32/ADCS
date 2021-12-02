@@ -6,12 +6,16 @@ import com.company.UserClients.UserClient;
 
 public class Main {
 
-    //Получение версии пользовательского интерфейса
+    /**
+     * Получение версии пользовательского интерфейса
+     */
     public static UserClient getClient(SimulationSynchronizerThread SynchroThread) {
         return ProgramGlobals.clientVersion.client(SynchroThread);
     }
 
-    //Инициализация потоков приложения
+    /**
+     * Инициализация потоков приложения
+     */
     public static void main(String[] args) {
         //Сервер крутится в отдельном потоке, чтобы не затормаживать работу пользовательского интерфейса
         SimulationServerThread ServerThread = new SimulationServerThread();
@@ -21,7 +25,6 @@ public class Main {
 
         //Выбор пользовательского интерфейса
         UserClient ClientThread = getClient(SynchroThread);
-
 
         //Старт рабочих потоков
         ServerThread.start();
