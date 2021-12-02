@@ -43,9 +43,9 @@ public class ParamsPanel extends JPanel {
         timeDelta_slider.setPaintLabels(true);
 
         Hashtable labelTable = new Hashtable();
-        labelTable.put( new Integer( 0 ), new JLabel("0.0") );
-        labelTable.put( new Integer( 5 ), new JLabel("0.5") );
-        labelTable.put( new Integer( 10 ), new JLabel("1.0") );
+        labelTable.put(0, new JLabel("0.0") );
+        labelTable.put(5, new JLabel("0.5") );
+        labelTable.put(10, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
 
         JPanel slider_panel = new JPanel();
