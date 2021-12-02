@@ -61,6 +61,10 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         return A0;
     }
 
+    public double getSpeed() {
+        return speed;
+    }
+
     public double getTension() {
         return tension;
     }

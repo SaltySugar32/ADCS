@@ -1,11 +1,18 @@
 package com.company.Simulation.SimulationVariables;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
  */
 public class SimulationGlobals {
+
+    //----------------------НЕОТСОРТИРОВАННЫЕ ПЕРЕМЕННЫЕ-----------------------
+
+    static Comparator<WaveFront> comparator = Comparator.comparingDouble(o -> o.getSpeed() * SimulationGlobals.getSimulationTime());
+
+    //-------------------------------------------------------------------------
 
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
 
@@ -119,6 +126,14 @@ public class SimulationGlobals {
         return isInitialized;
     }
 
+    public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
+        SimulationGlobals.currentWavePicture = currentWavePicture;
+    }
+
+    public static void sortCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
+        currentWavePicture.sort(comparator);
+    }
+
     //-------------------------------------------------------------------------
 
     //--------------------------------GETTERS----------------------------------
@@ -141,10 +156,6 @@ public class SimulationGlobals {
 
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
-    }
-
-    public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
-        SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
     //-------------------------------------------------------------------------
