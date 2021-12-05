@@ -31,8 +31,4 @@ public class WaveFrontComputations {
     public static double computeNewWaveFrontSpeed(double speedLeft, double speedRight, double deltaMovLeft, double deltaMovRight, double deltaMovCurr) {
         return speedLeft * speedLeft - (speedLeft * speedLeft - speedRight * speedRight) * (deltaMovLeft) / (deltaMovCurr - deltaMovRight);
     }
-
-    public static void computeCollisions() {
-
-    }
 }

@@ -5,6 +5,8 @@ import java.util.Comparator;
 
 /**
  * Глобальные переменные процесса симуляции, созданы для манипуляции переменными среды симуляции деформации
+ * <br>
+ * Здесь не должно быть ни одной функции, кроме get/set
  */
 public class SimulationGlobals {
 
@@ -16,20 +18,61 @@ public class SimulationGlobals {
 
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
 
-    static double simulationTime = 0.0;
+    static double simulationTime;
+
+    static {
+        simulationTime = 0.0;
+    }
+
+    public static double getSimulationTime() {
+        return simulationTime;
+    }
+
+    public static void setSimulationTime(double simulationTime) {
+        SimulationGlobals.simulationTime = simulationTime;
+    }
+    //Все переменные выше - константы материала
+
+    public static void nextSimulationTime() {
+        simulationTime += simulationTimeDelta;
+    }
+
+    //-------------------------------------------------------------------------
+
+    //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ОПЕРАЦИЮ-----------------------
+
     /**
      * В районе от 0.1 * 10^-6 до 1 * 10^-6 по текущей задумке
      */
     static double simulationTimeDelta;
     static double simulationTimePow;
+
+    static {
+        simulationTimePow = -6;
+        simulationTimeDelta = 0.5 * Math.pow(10, SimulationGlobals.simulationTimePow);
+    }
+
+    public static double getSimulationTimeDelta() {
+        return simulationTimeDelta;
+    }
+
+    /**
+     * Ввод длительности по времени каждого шага симуляции
+     *
+     * @param simulationTimeDelta В районе от 0.1 до 1
+     */
+    public static void setSimulationTimeDelta(double simulationTimeDelta) {
+        SimulationGlobals.simulationTimeDelta = simulationTimeDelta * Math.pow(10, simulationTimePow);
+    }
+
+    //-------------------------------------------------------------------------
+
+    //---------------------ХАРАКТЕРИСТИКИ СРЕДЫ СИМУЛЯЦИИ----------------------
+
     /**
      * Статус инициализации переменных среды
      */
     static boolean isInitialized;
-
-    //-------------------------------------------------------------------------
-
-    //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ОПЕРАЦИЮ-----------------------
     /**
      * Параметр Ламе Mu (Мю)
      */
@@ -49,20 +92,7 @@ public class SimulationGlobals {
     /**
      * Множитель на ГИГАПаскали (ГПа) для каждого из параметров выше
      */
-    static double powPA = 9;
-
-    //-------------------------------------------------------------------------
-
-    //---------------------ХАРАКТЕРИСТИКИ СРЕДЫ СИМУЛЯЦИИ----------------------
-    /**
-     * Текущая волновая картина, содержащая в себе каждый из волновых фронтов
-     */
-    static ArrayList<WaveFront> currentWavePicture;
-
-    static {
-        simulationTimePow = -6;
-        simulationTimeDelta = 0.5 * Math.pow(10, SimulationGlobals.simulationTimePow);
-    }
+    static double powPA;
 
     static {
         isInitialized = false;
@@ -70,34 +100,16 @@ public class SimulationGlobals {
         lameLambda = 0;
         materialDensity = 0;
         coefficientNu = 0;
-
-        currentWavePicture = new ArrayList<>();
-    }
-
-    public static double getSimulationTime() {
-        return simulationTime;
-    }
-
-    public static void setSimulationTime(double simulationTime) {
-        SimulationGlobals.simulationTime = simulationTime;
-    }
-    //Все переменные выше - константы материала
-
-    public static void nextSimulationTime() {
-        simulationTime += simulationTimeDelta;
-    }
-
-    public static double getSimulationTimeDelta() {
-        return simulationTimeDelta;
+        powPA = 9;
     }
 
     /**
-     * Ввод длительности по времени каждого шага симуляции
-     *
-     * @param simulationTimeDelta В районе от 0.1 до 1
+     * Текущая волновая картина, содержащая в себе каждый из волновых фронтов
      */
-    public static void setSimulationTimeDelta(double simulationTimeDelta) {
-        SimulationGlobals.simulationTimeDelta = simulationTimeDelta * Math.pow(10, simulationTimePow);
+    static ArrayList<WaveFront> currentWavePicture;
+
+    static {
+        currentWavePicture = new ArrayList<>();
     }
 
     //-------------------------------------------------------------------------
@@ -130,10 +142,6 @@ public class SimulationGlobals {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
-    public static void sortCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
-        currentWavePicture.sort(comparator);
-    }
-
     //-------------------------------------------------------------------------
 
     //--------------------------------GETTERS----------------------------------
@@ -156,6 +164,10 @@ public class SimulationGlobals {
 
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
+    }
+
+    public static Comparator<WaveFront> getComparator() {
+        return comparator;
     }
 
     //-------------------------------------------------------------------------

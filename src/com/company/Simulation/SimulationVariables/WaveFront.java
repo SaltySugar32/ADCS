@@ -2,8 +2,10 @@ package com.company.Simulation.SimulationVariables;
 
 import com.company.Simulation.SimulationFunctions.WaveFrontComputations;
 
-//Описание волнового фронта
-//Пока далеко от истины
+/**Описание волнового фронта
+ * Пока далеко от истины
+ * Здесь не должно быть ничего, кроме базовых get/set методов
+ */
 public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
     //---------------------------ПАРАМЕТРЫ ВОЛНЫ-----------------------------
@@ -75,22 +77,16 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
     //-------------------------------ФУНКЦИИ--------------------------------
 
-    public void computeTension() {
-        tension = WaveFrontComputations.computeTension(A1);
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
-    public double getNewTension() {
-        computeTension();
-        return getTension();
+    public void setTension(double tension) {
+        this.tension = tension;
     }
 
-    public void computeCharSpeed() {
-        characteristicSpeed = WaveFrontComputations.computeCharSpeed(A1);
-    }
-
-    public double getNewCharSpeed() {
-        computeCharSpeed();
-        return getCharacteristicSpeed();
+    public void setCharacteristicSpeed(double characteristicSpeed) {
+        this.characteristicSpeed = characteristicSpeed;
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
