@@ -6,20 +6,20 @@ import java.util.Scanner;
 
 public class UserClient_v1 extends Thread implements UserClient {
 
-    SimulationSynchronizerThread serverThread;
+    SimulationSynchronizerThread synchroThread;
 
     public UserClient_v1(SimulationSynchronizerThread SynchroThread) {
-        this.serverThread = SynchroThread;
+        this.synchroThread = SynchroThread;
     }
 
     public void testInterface1() {
-        System.out.println("Состояние процесса: " + serverThread.getNextJob());
+        System.out.println("Состояние процесса: " + synchroThread.getNextJob());
         System.out.println("Выберите состояние процесса: ");
         Scanner input = new Scanner(System.in);
-        serverThread.setNextJob(input.nextInt());
+        synchroThread.setNextJob(input.nextInt());
 
         for (int i = 0; i < 10; i++) {
-            System.out.println("Состояние процесса: " + serverThread.getNextJob());
+            System.out.println("Состояние процесса: " + synchroThread.getNextJob());
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {

@@ -91,7 +91,7 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
 
-    public WaveFront(double A1, double A2, double A0, WaveFront nextWaveFront) {
+    public WaveFront(double A1, double A2, double A0) {
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
