@@ -14,6 +14,7 @@ public class InterProcessComputations {
         ArrayList<WaveFront> wavePicture = new ArrayList<>(prevWavePicture);
         //System.out.print("A");
         SimulationGlobals.nextSimulationTime();
+        WavePictureComputations.updateCurrentWavePicture(wavePicture);
         return wavePicture;
     }
 }
