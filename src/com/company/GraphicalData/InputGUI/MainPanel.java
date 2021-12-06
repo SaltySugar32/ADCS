@@ -1,5 +1,7 @@
 package com.company.GraphicalData.InputGUI;
 
+import com.company.GraphicalData.GUIGlobals;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +14,7 @@ public class MainPanel extends JPanel {
     public MainPanel(JButton startButton){
         startButton.setPreferredSize(new Dimension(50, 50));
         splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        splitPane.setDividerLocation(170);
+        splitPane.setDividerLocation(GUIGlobals.splitPane_position);
         splitPane.setTopComponent(inputPanel);
         splitPane.setBottomComponent(graphPanel);
 

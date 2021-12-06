@@ -1,6 +1,7 @@
 package com.company.GraphicalData.InputGUI;
 
 import com.company.GraphicalData.DataHandler;
+import com.company.GraphicalData.GUIGlobals;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class InputPanel extends JPanel {
-    private JLabel label_lameMu = new JLabel("Параметр Mu (Мю)");
-    private JLabel label_lameLambda = new JLabel("Параметр Ламе Lambda (Лямбда)");
-    private JLabel label_materialDensity = new JLabel("Параметр плотность материала");
-    private JLabel label_coefficientNu = new JLabel("Параметр Nu (Ню)");
+    private JLabel label_lameMu = new JLabel("Параметр Ламе μ, ГПа");
+    private JLabel label_lameLambda = new JLabel("Параметр Ламе λ, ГПа");
+    private JLabel label_materialDensity = new JLabel("Параметр плотность материала ρ, ГПа");
+    private JLabel label_coefficientNu = new JLabel("Коффициент разномодульности ν, ГПа");
 
     private JTextField textField_lameMu = new JTextField(15);
     private JTextField textField_lameLambda = new JTextField(15);
@@ -26,6 +27,7 @@ public class InputPanel extends JPanel {
         JPanel inputParamPanel = new JPanel();
         SpringLayout layout = new SpringLayout();
         inputParamPanel.setLayout(layout);
+        inputParamPanel.setBackground(GUIGlobals.background_color);
 
         inputParamPanel.add(label_lameMu);
         inputParamPanel.add(label_lameLambda);
@@ -48,22 +50,22 @@ public class InputPanel extends JPanel {
         layout.putConstraint(SpringLayout.WEST , label_lameMu, 30, SpringLayout.WEST , inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, label_lameMu, 10, SpringLayout.NORTH, inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, textField_lameMu, 10, SpringLayout.NORTH, inputParamPanel);
-        layout.putConstraint(SpringLayout.WEST , textField_lameMu, 20, SpringLayout.EAST , label_materialDensity);
+        layout.putConstraint(SpringLayout.WEST , textField_lameMu, 20, SpringLayout.EAST , label_coefficientNu);
 
         layout.putConstraint(SpringLayout.WEST , label_lameLambda, 30, SpringLayout.WEST , inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, label_lameLambda, 15, SpringLayout.SOUTH, label_lameMu);
         layout.putConstraint(SpringLayout.NORTH, textField_lameLambda, 10, SpringLayout.SOUTH, textField_lameMu);
-        layout.putConstraint(SpringLayout.WEST , textField_lameLambda, 20, SpringLayout.EAST , label_materialDensity);
+        layout.putConstraint(SpringLayout.WEST , textField_lameLambda, 20, SpringLayout.EAST , label_coefficientNu);
 
         layout.putConstraint(SpringLayout.WEST , label_materialDensity, 30, SpringLayout.WEST , inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, label_materialDensity, 15, SpringLayout.SOUTH, label_lameLambda);
         layout.putConstraint(SpringLayout.NORTH, textField_materialDensity, 10, SpringLayout.SOUTH, textField_lameLambda);
-        layout.putConstraint(SpringLayout.WEST , textField_materialDensity, 20, SpringLayout.EAST , label_materialDensity);
+        layout.putConstraint(SpringLayout.WEST , textField_materialDensity, 20, SpringLayout.EAST , label_coefficientNu);
 
         layout.putConstraint(SpringLayout.WEST , label_coefficientNu, 30, SpringLayout.WEST , inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, label_coefficientNu, 15, SpringLayout.SOUTH, label_materialDensity);
         layout.putConstraint(SpringLayout.NORTH, textField_coefficientNu, 10, SpringLayout.SOUTH, textField_materialDensity);
-        layout.putConstraint(SpringLayout.WEST , textField_coefficientNu, 20, SpringLayout.EAST , label_materialDensity);
+        layout.putConstraint(SpringLayout.WEST , textField_coefficientNu, 20, SpringLayout.EAST , label_coefficientNu);
 
         layout.putConstraint(SpringLayout.WEST , label_input, 50, SpringLayout.EAST , textField_lameMu);
         layout.putConstraint(SpringLayout.NORTH, label_input, 50, SpringLayout.NORTH, inputParamPanel);

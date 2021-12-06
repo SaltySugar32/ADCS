@@ -51,7 +51,7 @@ public class ParamsPanel extends JPanel {
         JPanel slider_panel = new JPanel();
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
-        JLabel timeDelta_label = new JLabel("Дельта времени ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
+        JLabel timeDelta_label = new JLabel("Дельта времени, мкс ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
         GridLayout layout = new GridLayout(2,0, 50, 5);
         slider_panel.setLayout(layout);
 

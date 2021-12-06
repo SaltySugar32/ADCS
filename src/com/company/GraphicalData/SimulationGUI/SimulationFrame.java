@@ -1,5 +1,6 @@
 package com.company.GraphicalData.SimulationGUI;
 
+import com.company.GraphicalData.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
 
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class SimulationFrame extends JFrame {
         mainPanel = new MainPanel(ServerThread);
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000,800);
+        this.setSize(GUIGlobals.window_width,GUIGlobals.window_height);
         this.setLocationRelativeTo(null);
         this.add(mainPanel);
         this.setVisible(true);
