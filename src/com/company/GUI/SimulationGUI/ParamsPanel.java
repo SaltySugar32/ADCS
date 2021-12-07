@@ -1,4 +1,4 @@
-package com.company.GraphicalData.SimulationGUI;
+package com.company.GUI.SimulationGUI;
 
 import com.company.ProgramGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
@@ -10,23 +10,37 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.Hashtable;
 
+/**
+ * Панель изменения парамеров отображения
+ */
 public class ParamsPanel extends JPanel {
+
+    // Ползунок FPS
     static final int FPS_MIN = 0;
     static final int FPS_MAX =15;
     static final int FPS_INIT =5;
     JSlider FPS_slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
+    // Ползунок OPS
     static final int OPS_MIN = 0;
     static final int OPS_MAX = 500;
     static final int OPS_INIT = 100;
     JSlider OPS_slider = new JSlider(JSlider.HORIZONTAL, OPS_MIN, OPS_MAX, OPS_INIT);
 
+    // Ползунок дельты времени
     static final int timeDelta_MIN = 0;
     static final int timeDelta_MAX = 10;
     static final int timeDelta_INIT = 5;
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
+    /**
+     * Панель изменения парамеров отображения
+     *
+     * @param ServerThread Поток
+     */
     ParamsPanel(SimulationSynchronizerThread ServerThread){
+
+        //Отрисовка панели
         FPS_slider.setMajorTickSpacing(5);
         FPS_slider.setMinorTickSpacing(1);
         FPS_slider.setPaintTicks(true);
@@ -65,35 +79,62 @@ public class ParamsPanel extends JPanel {
 
         this.add(slider_panel, BorderLayout.SOUTH);
 
+        /**
+         * Обработчики событий изменения ползунка FPS
+         */
         FPS_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+
+                // Остановка решателя
                 ServerThread.setNextJobPAUSE();
+
+                // Изменение FPS
                 int value = (FPS_slider.getValue()==0)? 1:FPS_slider.getValue();
                 ProgramGlobals.setFramesPerSecond(value);
                 FPS_label.setText("Кадры в секунду ("+value+")");
+
+                // Возобновление решателя
                 ServerThread.setNextJobRESUME();
             }
         });
 
+        /**
+         * Обработчики событий изменения ползунка OPS
+         */
         OPS_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+
+                // Остановка решателя
                 ServerThread.setNextJobPAUSE();
+
+                // Изменение OPS
                 int value = (OPS_slider.getValue()==0)? 1:OPS_slider.getValue();
                 ProgramGlobals.setOperationsPerSecond(value);
                 OPS_label.setText("Операции в секунду ("+value+")");
+
+                // Возобновление решателя
                 ServerThread.setNextJobRESUME();
             }
         });
 
+        /**
+         * Обработчики событий изменения ползунка дельты времени
+         */
         timeDelta_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+
+                // Остановка решателя
                 ServerThread.setNextJobPAUSE();
+
+                // Изменение дельты времени
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
                 SimulationGlobals.setSimulationTimeDelta(value);
                 timeDelta_label.setText("Дельта времени ("+value+")");
+
+                // Возобновление решателя
                 ServerThread.setNextJobRESUME();
             }
         });

@@ -1,29 +1,40 @@
-package com.company.GraphicalData.InputGUI;
+package com.company.GUI.InputGUI;
 
-import com.company.GraphicalData.DataHandler;
-import com.company.GraphicalData.GUIGlobals;
+import com.company.GUI.GUIDataHandler;
+import com.company.GUI.GUIGlobals;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Панель ввода параметров среды
+ */
 public class InputPanel extends JPanel {
+    // Метки к текстовым полям
     private JLabel label_lameMu = new JLabel("Параметр Ламе μ, ГПа");
     private JLabel label_lameLambda = new JLabel("Параметр Ламе λ, ГПа");
     private JLabel label_materialDensity = new JLabel("Параметр плотность материала ρ, ГПа");
     private JLabel label_coefficientNu = new JLabel("Коффициент разномодульности ν, ГПа");
 
+    // Текстовые поля ввода
     private JTextField textField_lameMu = new JTextField(15);
     private JTextField textField_lameLambda = new JTextField(15);
     private JTextField textField_materialDensity = new JTextField(15);
     private JTextField textField_coefficientNu = new JTextField(15);
 
+    // Кнопка ввода данных
     private JButton button_input= new JButton("Ввести параметры среды");
+
+    // Метка - сообщение об ошибке/успехе
     private JLabel label_input = new JLabel("");
 
-    //Панель ввода исходных параметров
+    /**
+     * Панель ввода исходных параметров среды
+     */
     public InputPanel(){
+
         JPanel inputParamPanel = new JPanel();
         SpringLayout layout = new SpringLayout();
         inputParamPanel.setLayout(layout);
@@ -46,7 +57,7 @@ public class InputPanel extends JPanel {
         this.add(inputParamPanel);
         this.add(button_input, BorderLayout.SOUTH);
 
-
+        // Размещение элементов на панели
         layout.putConstraint(SpringLayout.WEST , label_lameMu, 30, SpringLayout.WEST , inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, label_lameMu, 10, SpringLayout.NORTH, inputParamPanel);
         layout.putConstraint(SpringLayout.NORTH, textField_lameMu, 10, SpringLayout.NORTH, inputParamPanel);
@@ -70,11 +81,15 @@ public class InputPanel extends JPanel {
         layout.putConstraint(SpringLayout.WEST , label_input, 50, SpringLayout.EAST , textField_lameMu);
         layout.putConstraint(SpringLayout.NORTH, label_input, 50, SpringLayout.NORTH, inputParamPanel);
 
-
+        /**
+         * Обработчик событий кнопки
+         */
         button_input.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){
-                label_input.setText(DataHandler.setInputParams(
+
+                // вывод сообщения об успехе/ошибке
+                label_input.setText(GUIDataHandler.setInputParams(
                         textField_lameMu.getText(),
                         textField_lameLambda.getText(),
                         textField_materialDensity.getText(),
