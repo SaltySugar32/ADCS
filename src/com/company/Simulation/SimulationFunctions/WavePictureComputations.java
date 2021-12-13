@@ -20,10 +20,11 @@ public class WavePictureComputations {
     public static boolean updateCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
         if (!checkCurrentWavePicture(currentWavePicture))
             return false;
-        //The cake is a lie
-        double cake1 = WaveFrontComputations.computeCharSpeed(1);
-        double cake2 = WaveFrontComputations.computeTension(1);
-        double cake3 = WaveFrontComputations.computeNewWaveFrontSpeed(1,1,1,1,1);
+        /*The cake is a lie
+        * double cake1 = WaveFrontComputations.computeCharSpeed(1);
+        * double cake2 = WaveFrontComputations.computeTension(1);
+        * double cake3 = WaveFrontComputations.computeNewWaveFrontSpeed(1,1,1,1,1);
+        */
         return true;
     }
 }
