@@ -19,7 +19,16 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
 
     // Метки - плейсхолдеры
     JLabel label_placeholder = new JLabel("ЗДЕСЬ БУДЕТ ГРАФИЧЕСКИЙ ВВОД. (ПРОТОТИП: LMB для задания точки, RMB для удаления)");
-    JLabel label_coord_placeholder = new JLabel("-,-");
+
+    // Текущая позиция мыши
+    Point currMousePosition = new Point(0,-100);
+
+    JButton resetButton = new JButton("Сбросить точки");
+    JLabel addPointLabel = new JLabel("Введите точку: '(x,y)'");
+    JTextField textField = new JTextField(10);
+    JButton addPointButton = new JButton("Добавить точку");
+    JButton inputButton = new JButton("Ввести текущие точки");
+    JLabel statusLabel = new JLabel("");
 
     /**
      * Панель графического ввода
@@ -27,8 +36,37 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     public GraphPanel(){
 
         this.setBackground(GUIGlobals.background_color);
+        SpringLayout layout = new SpringLayout();
+        this.setLayout(layout);
+
         this.add(label_placeholder);
-        this.add(label_coord_placeholder);
+        this.add(addPointLabel);
+        this.add(textField);
+        this.add(addPointButton);
+        this.add(resetButton);
+        this.add(inputButton);
+
+        int offset = (GUIGlobals.window_width-label_placeholder.getText().length() * 6)/2;
+
+        layout.putConstraint(SpringLayout.WEST , label_placeholder, offset, SpringLayout.WEST , this);
+
+        layout.putConstraint(SpringLayout.WEST , addPointLabel, 10, SpringLayout.WEST , this);
+        layout.putConstraint(SpringLayout.NORTH, addPointLabel, 22, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , textField, 10, SpringLayout.EAST , addPointLabel);
+        layout.putConstraint(SpringLayout.NORTH, textField, 22, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , addPointButton, 10, SpringLayout.EAST , textField);
+        layout.putConstraint(SpringLayout.NORTH, addPointButton, 20, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , resetButton, 100, SpringLayout.EAST, addPointButton);
+        layout.putConstraint(SpringLayout.NORTH, resetButton, 20, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , inputButton, 10, SpringLayout.EAST , resetButton);
+        layout.putConstraint(SpringLayout.NORTH, inputButton, 20, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , statusLabel, 10, SpringLayout.EAST , inputButton);
+        layout.putConstraint(SpringLayout.NORTH, statusLabel, 20, SpringLayout.NORTH, label_placeholder);
     }
 
     /**
@@ -39,6 +77,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     public void paint(Graphics g) {
         super.paint(g);
         drawField(g);
+        drawMouseCoord(g);
     }
 
     /**
@@ -56,37 +95,46 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         // Отрисовка осей координат
             // Отрисовка оси Oy
             g2D.setPaint(Color.BLACK);
+
             Polygon arrow = new Polygon();
-            arrow.addPoint(GUIGlobals.drawField_xoffset+15,GUIGlobals.drawField_yoffset +10);
-            arrow.addPoint(GUIGlobals.drawField_xoffset+10, GUIGlobals.drawField_yoffset+20);
-            arrow.addPoint(GUIGlobals.drawField_xoffset+20, GUIGlobals.drawField_yoffset+20);
+            arrow.addPoint(GUIGlobals.drawField_xoffset,GUIGlobals.drawField_yoffset -10);
+            arrow.addPoint(GUIGlobals.drawField_xoffset-5, GUIGlobals.drawField_yoffset);
+            arrow.addPoint(GUIGlobals.drawField_xoffset+5, GUIGlobals.drawField_yoffset);
             g2D.fill(arrow);
+            g2D.setFont(new Font("TimesRoman", Font.BOLD, 15));
+            g2D.drawString("u(0,t)", GUIGlobals.drawField_xoffset+10, GUIGlobals.drawField_yoffset-5);
+
+            g2D.setStroke(new BasicStroke(2));
             g2D.drawLine(
-                    GUIGlobals.drawField_xoffset+15,
-                    GUIGlobals.drawField_yoffset +10,
-                    GUIGlobals.drawField_xoffset+15,
-                    GUIGlobals.drawField_height+GUIGlobals.drawField_yoffset-10
+                    GUIGlobals.drawField_xoffset,
+                    GUIGlobals.drawField_yoffset,
+                    GUIGlobals.drawField_xoffset,
+                    GUIGlobals.drawField_height+GUIGlobals.drawField_yoffset
             );
 
             //Отрисовка оси Ox
-            int middlePoint = GUIGlobals.drawField_yoffset + (GUIGlobals.drawField_height)/2;
             arrow.reset();
-            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width-10, middlePoint);
-            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width-20, middlePoint-5);
-            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width-20, middlePoint+5);
+            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width+10, GUIGlobals.middlePoint);
+            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width, GUIGlobals.middlePoint-5);
+            arrow.addPoint(GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width, GUIGlobals.middlePoint+5);
             g2D.fill(arrow);
+
+            g2D.drawString("t", GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width+2, GUIGlobals.middlePoint-10);
+
+            g2D.setStroke(new BasicStroke(3));
             g2D.drawLine(
-                    GUIGlobals.drawField_xoffset+15,
-                    middlePoint,
-                    GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width-10,
-                    middlePoint
+                    GUIGlobals.drawField_xoffset,
+                    GUIGlobals.middlePoint,
+                    GUIGlobals.drawField_xoffset+GUIGlobals.drawField_width,
+                    GUIGlobals.middlePoint
             );
 
         //Отрисовка заданных точек
         g2D.setPaint(Color.BLUE);
-        g2D.fillOval(GUIGlobals.drawField_xoffset+15-4, middlePoint-4, 8, 8);
-        Point previous = new Point(GUIGlobals.drawField_xoffset+15, middlePoint);
+        Point previous = new Point(GUIGlobals.drawField_xoffset, GUIGlobals.middlePoint);
+        g2D.fillOval(previous.x - 4, previous.y - 4, 8, 8);
 
+        g2D.setFont(new Font("TimesRoman", Font.PLAIN, 12));
         for (Point point:points){
 
             //отрисовка новой точки и соединение с предыдущей
@@ -97,8 +145,8 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
 
             //Отрисовка сообщения о кооринатах добавленной точки
             g2D.setPaint(Color.GRAY);
-            Point normPoint = getNormalCoordinates(point);
-            String coordinates = new String("(" + normPoint.x + "," + normPoint.y + ")");
+            DecCoord decCoord = new DecCoord(point);
+            String coordinates = new String("(" + decCoord.x + "," + decCoord.y + ")");
             g2D.drawString(coordinates, point.x-20, point.y+20);
 
         }
@@ -109,15 +157,35 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     }
 
     /**
-     * Преобразование координат точки на поле
+     * Отрисовка оординат мыши
      *
-     * @param p Точка
-     * @return координаты точки
+     * @param g Графика
      */
-    Point getNormalCoordinates(Point p){
-        int x = (p.x - GUIGlobals.drawField_xoffset - 15) / GUIGlobals.drawField_xScale;
-        int y =(GUIGlobals.drawField_yoffset + (GUIGlobals.drawField_height)/2 - p.y) / GUIGlobals.drawField_yScale;
-        return new Point(x, y);
+    public void drawMouseCoord(Graphics g){
+        Graphics2D g2D = (Graphics2D) g;
+        g2D.setPaint(Color.GRAY);
+        DecCoord decCoord = new DecCoord(new Point(currMousePosition.x, currMousePosition.y));
+        String coordinates = "(" + decCoord.x + "," + decCoord.y + ")";
+        g2D.drawString(coordinates, currMousePosition.x-10, currMousePosition.y-5);
+    }
+
+    /**
+     *  Класс - координаты точки
+     */
+    class DecCoord{
+        public float x;
+        public float y;
+
+        DecCoord(Point p){
+            // преобразование точки на поле в координаты
+
+//            OldRange = (OldMax - OldMin)
+//            NewRange = (NewMax - NewMin)
+//            NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+
+            this.x = (float)((p.x - GUIGlobals.drawField_xoffset)*GUIGlobals.drawField_xScale) / GUIGlobals.drawField_width;
+            this.y = - ((float)((p.y - GUIGlobals.drawField_yoffset)*GUIGlobals.drawField_yScale) / GUIGlobals.drawField_height - (float)GUIGlobals.drawField_yScale/2);
+        }
     }
 
     /**
@@ -134,7 +202,9 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             int y = e.getY();
 
             // Добавление точки
-            if ((x > 10 && x < GUIGlobals.drawField_width + 10) && (y > 40 && y < GUIGlobals.drawField_height + 40))
+            if ((x > GUIGlobals.drawField_xoffset && x < GUIGlobals.drawField_width + GUIGlobals.drawField_xoffset)
+                    &&
+                    (y > GUIGlobals.drawField_yoffset && y < GUIGlobals.drawField_height + GUIGlobals.drawField_yoffset))
                 points.add(new Point(x, y));
             repaint();
         }
@@ -143,7 +213,8 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         else{
 
             // Удаление предыдущей точки
-            points.remove(points.size()-1);
+            if (points.size() > 0)
+                points.remove(points.size()-1);
             repaint();
         }
 
@@ -175,8 +246,14 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         int y = e.getY();
 
         // Отображение координат для тестирования
-        Point normP = getNormalCoordinates(new Point(x,y));
-        label_coord_placeholder.setText("(" + normP.x + "," + normP.y + ")");
+        if ((x > GUIGlobals.drawField_xoffset && x < GUIGlobals.drawField_width + GUIGlobals.drawField_xoffset)
+                &&
+                (y > GUIGlobals.drawField_yoffset && y < GUIGlobals.drawField_height + GUIGlobals.drawField_yoffset))
+            currMousePosition = new Point(x,y);
+        else
+            currMousePosition = new Point(0, -100);
+        repaint();
+
     }
     @Override
     public void mouseEntered(MouseEvent e) {
