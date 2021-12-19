@@ -1,12 +1,11 @@
 package com.company.GUI.InputGUI;
 
+import com.company.GUI.GUIDataHandler;
 import com.company.GUI.GUIGlobals;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -24,8 +23,9 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     Point currMousePosition = new Point(0,-100);
 
     JButton resetButton = new JButton("Сбросить точки");
-    JLabel addPointLabel = new JLabel("Введите точку: '(x,y)'");
-    JTextField textField = new JTextField(10);
+    JLabel addPointLabel = new JLabel("Введите координаты точки: ");
+    JTextField textFieldX = new JTextField(5);
+    JTextField textFieldY = new JTextField(5);
     JButton addPointButton = new JButton("Добавить точку");
     JButton inputButton = new JButton("Ввести текущие точки");
     JLabel statusLabel = new JLabel("");
@@ -41,10 +41,12 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
 
         this.add(label_placeholder);
         this.add(addPointLabel);
-        this.add(textField);
+        this.add(textFieldX);
+        this.add(textFieldY);
         this.add(addPointButton);
         this.add(resetButton);
         this.add(inputButton);
+        this.add(statusLabel);
 
         int offset = (GUIGlobals.window_width-label_placeholder.getText().length() * 6)/2;
 
@@ -53,10 +55,13 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         layout.putConstraint(SpringLayout.WEST , addPointLabel, 10, SpringLayout.WEST , this);
         layout.putConstraint(SpringLayout.NORTH, addPointLabel, 22, SpringLayout.NORTH, label_placeholder);
 
-        layout.putConstraint(SpringLayout.WEST , textField, 10, SpringLayout.EAST , addPointLabel);
-        layout.putConstraint(SpringLayout.NORTH, textField, 22, SpringLayout.NORTH, label_placeholder);
+        layout.putConstraint(SpringLayout.WEST , textFieldX, 10, SpringLayout.EAST , addPointLabel);
+        layout.putConstraint(SpringLayout.NORTH, textFieldX, 22, SpringLayout.NORTH, label_placeholder);
 
-        layout.putConstraint(SpringLayout.WEST , addPointButton, 10, SpringLayout.EAST , textField);
+        layout.putConstraint(SpringLayout.WEST , textFieldY, 10, SpringLayout.EAST , textFieldX);
+        layout.putConstraint(SpringLayout.NORTH, textFieldY, 22, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , addPointButton, 10, SpringLayout.EAST , textFieldY);
         layout.putConstraint(SpringLayout.NORTH, addPointButton, 20, SpringLayout.NORTH, label_placeholder);
 
         layout.putConstraint(SpringLayout.WEST , resetButton, 100, SpringLayout.EAST, addPointButton);
@@ -154,6 +159,39 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         // Добавление обработчиков событий мыши
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        /**
+         * Обработчики нажатия конопок
+         */
+        addPointButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boolean status = true;
+                try {
+                    if (Float.parseFloat(textFieldX.getText())<=0) throw new Exception();
+                }
+                catch (Exception exc){status = false;}
+                try {
+                    if (Float.parseFloat(textFieldY.getText())<=0) throw new Exception();
+                }
+                catch (Exception exc){status = false;}
+
+                if (status){
+                    DecCoord decCoord = new DecCoord();
+                    points.add(decCoord.getPoint(Float.parseFloat(textFieldX.getText()), Float.parseFloat(textFieldY.getText())));
+                    repaint();
+                }
+                else statusLabel.setText("Координаты введены неверно");
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                points.clear();
+                repaint();
+            }
+        });
     }
 
     /**
@@ -170,11 +208,13 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     }
 
     /**
-     *  Класс - координаты точки
+     *  Класс - обработчик координаты точки
      */
     class DecCoord{
         public float x;
         public float y;
+
+        DecCoord(){}
 
         DecCoord(Point p){
             // преобразование точки на поле в координаты
@@ -183,9 +223,17 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
 //            NewRange = (NewMax - NewMin)
 //            NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
 
-            this.x = (float)((p.x - GUIGlobals.drawField_xoffset)*GUIGlobals.drawField_xScale) / GUIGlobals.drawField_width;
-            this.y = - ((float)((p.y - GUIGlobals.drawField_yoffset)*GUIGlobals.drawField_yScale) / GUIGlobals.drawField_height - (float)GUIGlobals.drawField_yScale/2);
+            this.x = (float) ((p.x - GUIGlobals.drawField_xoffset)*GUIGlobals.drawField_xScale) / GUIGlobals.drawField_width;
+            this.y = - ((float) ((p.y - GUIGlobals.drawField_yoffset)*GUIGlobals.drawField_yScale) / GUIGlobals.drawField_height - (float)GUIGlobals.drawField_yScale/2);
         }
+
+        public Point getPoint(float x, float y){
+            int newx =(int)( x * GUIGlobals.drawField_width / GUIGlobals.drawField_xScale + GUIGlobals.drawField_xoffset);
+            int newy =(int)( (-y + GUIGlobals.drawField_yScale/2)  * GUIGlobals.drawField_height / GUIGlobals.drawField_yScale + GUIGlobals.drawField_yoffset);
+            return new Point(newx, newy);
+        }
+
+
     }
 
     /**

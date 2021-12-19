@@ -21,7 +21,7 @@ public class GUIGlobals {
     // Параметры поля графического ввода
         // Сдвиги от края окна
         public static int drawField_xoffset = 10;
-        public static int drawField_yoffset = 80;
+        public static int drawField_yoffset = 60;
 
         // необходимый сдвиг из-за стандартных параметров окна
         static int drawField_yoffset2 = 110;
