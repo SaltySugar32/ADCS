@@ -23,12 +23,15 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
     Point currMousePosition = new Point(0,-100);
 
     JButton resetButton = new JButton("Сбросить точки");
+    JButton removeLastButton = new JButton("Удалить последнюю точку");
     JLabel addPointLabel = new JLabel("Введите координаты точки: ");
     JTextField textFieldX = new JTextField(5);
     JTextField textFieldY = new JTextField(5);
     JButton addPointButton = new JButton("Добавить точку");
     JButton inputButton = new JButton("Ввести текущие точки");
     JLabel statusLabel = new JLabel("");
+
+    int previousX=0;
 
     /**
      * Панель графического ввода
@@ -47,6 +50,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         this.add(resetButton);
         this.add(inputButton);
         this.add(statusLabel);
+        this.add(removeLastButton);
 
         int offset = (GUIGlobals.window_width-label_placeholder.getText().length() * 6)/2;
 
@@ -64,7 +68,10 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         layout.putConstraint(SpringLayout.WEST , addPointButton, 10, SpringLayout.EAST , textFieldY);
         layout.putConstraint(SpringLayout.NORTH, addPointButton, 20, SpringLayout.NORTH, label_placeholder);
 
-        layout.putConstraint(SpringLayout.WEST , resetButton, 100, SpringLayout.EAST, addPointButton);
+        layout.putConstraint(SpringLayout.WEST , removeLastButton, 10, SpringLayout.EAST , addPointButton);
+        layout.putConstraint(SpringLayout.NORTH, removeLastButton, 20, SpringLayout.NORTH, label_placeholder);
+
+        layout.putConstraint(SpringLayout.WEST , resetButton, 10, SpringLayout.EAST, removeLastButton);
         layout.putConstraint(SpringLayout.NORTH, resetButton, 20, SpringLayout.NORTH, label_placeholder);
 
         layout.putConstraint(SpringLayout.WEST , inputButton, 10, SpringLayout.EAST , resetButton);
@@ -140,6 +147,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
         g2D.fillOval(previous.x - 4, previous.y - 4, 8, 8);
 
         g2D.setFont(new Font("TimesRoman", Font.PLAIN, 12));
+        previousX=0;
         for (Point point:points){
 
             //отрисовка новой точки и соединение с предыдущей
@@ -147,6 +155,7 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             g2D.fillOval(point.x-4, point.y-4, 8, 8);
             g2D.drawLine(previous.x, previous.y, point.x, point.y);
             previous = point;
+            previousX = point.x;
 
             //Отрисовка сообщения о кооринатах добавленной точки
             g2D.setPaint(Color.GRAY);
@@ -167,13 +176,11 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean status = true;
-                try {
-                    if (Float.parseFloat(textFieldX.getText())<=0) throw new Exception();
-                }
+
+                try { Float.parseFloat(textFieldX.getText());}
                 catch (Exception exc){status = false;}
-                try {
-                    if (Float.parseFloat(textFieldY.getText())<=0) throw new Exception();
-                }
+
+                try {Float.parseFloat(textFieldY.getText());}
                 catch (Exception exc){status = false;}
 
                 if (status){
@@ -189,6 +196,15 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
             @Override
             public void actionPerformed(ActionEvent e) {
                 points.clear();
+                repaint();
+            }
+        });
+
+        removeLastButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (points.size() > 0)
+                    points.remove(points.size()-1);
                 repaint();
             }
         });
@@ -244,15 +260,16 @@ public class GraphPanel extends JPanel implements MouseListener, MouseMotionList
 
         // клик ЛКМ
         if (SwingUtilities.isLeftMouseButton(e)) {
-
             // Получение позиции мыши
             int x = e.getX();
             int y = e.getY();
 
             // Добавление точки
+            // Проверка, что координата x не уменьшилась
+            // Проверка принадлежности точки полю ввода
             if ((x > GUIGlobals.drawField_xoffset && x < GUIGlobals.drawField_width + GUIGlobals.drawField_xoffset)
-                    &&
-                    (y > GUIGlobals.drawField_yoffset && y < GUIGlobals.drawField_height + GUIGlobals.drawField_yoffset))
+                    && (y > GUIGlobals.drawField_yoffset && y < GUIGlobals.drawField_height + GUIGlobals.drawField_yoffset)
+                    && (x > previousX))
                 points.add(new Point(x, y));
             repaint();
         }
