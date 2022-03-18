@@ -1,6 +1,6 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.legacy;
 
-import com.company.GUI.GUIDataHandler;
+import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.GUI.SimulationGUI.SimulationFrame;
 import com.company.Simulation.SimulationSynchronizerThread;
@@ -32,7 +32,7 @@ public class MainFrame extends JFrame {
         // Создание окна ввода
         mainPanel = new MainPanel(startButton);
         this.setTitle(title);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(GUIGlobals.window_width,GUIGlobals.window_height);
         this.setLocationRelativeTo(null);
         this.add(mainPanel);
@@ -44,7 +44,7 @@ public class MainFrame extends JFrame {
         startButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae){
-                if(GUIDataHandler.getParamInputStatus()) {
+                if(DataHandler.env_param_input_status) {
 
                     // Удаление окна ввода
                     dispose();

@@ -7,6 +7,15 @@ import java.awt.*;
  */
 public class GUIGlobals {
 
+    // Размер главного фрейма
+    public static int main_frame_width = 600;
+    public static int main_frame_height = 500;
+
+    // Размер окна ввода параметров среды
+    public static int env_param_frame_width = 450;
+    public static int env_param_frame_height = 500;
+
+    /////////////////////////////////////////////////////////////////////////////////////////// legacy (потом почистится)
     // Размер окна
     public static int window_width = 1050;
     public static int window_height = 950;
