@@ -14,28 +14,33 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChartInputForm extends JFrame{
-    private JButton button1;
-    private JPanel ChartPanel;
     private JPanel mainPanel;
+    private JPanel testPanel;
+    private JButton setEnvParamsButton;
 
     public ChartInputForm(String title, SimulationSynchronizerThread ServerThread) {
         this.setTitle(title);
-        this.setSize(GUIGlobals.window_width,GUIGlobals.window_height);
+        this.setSize(1500,1000);
         this.setLocationRelativeTo(null);
         this.add(mainPanel);
 
-
         JFreeChart pieChart = ChartFactory.createXYLineChart("title", "x", "y", createDataset(), PlotOrientation.VERTICAL, true, true, false);
-        org.jfree.chart.ChartPanel panel = new ChartPanel(pieChart);
-        setContentPane(panel);
+        testPanel = new ChartPanel(pieChart);
 
+        add(testPanel, BorderLayout.CENTER);
+        setEnvParamsButton.setPreferredSize(new Dimension(1500, 50));
+        add(setEnvParamsButton, BorderLayout.SOUTH);
+
+        //mainPanel.add(jPanel);
         this.setVisible(true);
 
-        button1.addActionListener(new ActionListener() {
+        setEnvParamsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 

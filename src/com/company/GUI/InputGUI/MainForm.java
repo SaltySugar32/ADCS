@@ -1,6 +1,7 @@
 package com.company.GUI.InputGUI;
 
 import com.company.GUI.GUIGlobals;
+import com.company.GUI.legacy.ChartInputForm;
 import com.company.Simulation.SimulationSynchronizerThread;
 
 import javax.swing.*;
@@ -37,6 +38,15 @@ public class MainForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 EnvParamForm envParamForm = new EnvParamForm(envParamLabel, ServerThread);
+            }
+        });
+
+        graphButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                //ChartInputForm test = new ChartInputForm("1", ServerThread);
+                GraphForm graphForm = new GraphForm(graphLabel, ServerThread);
             }
         });
     }
