@@ -1,5 +1,6 @@
 package com.company.GUI.InputGUI;
 
+import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
 import org.jfree.chart.*;
@@ -16,6 +17,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.ShapeUtilities;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ import java.awt.event.ActionListener;
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
     private ChartPanel chartPanel;
+    private JFreeChart xyLineChart;
     private JButton setGraphButton;
     private JMenuBar menuBar;
     private JMenu viewMenu;
@@ -55,7 +58,7 @@ public class GraphForm extends JFrame {
      * @return
      */
     private ChartPanel createChartPanel(){
-        JFreeChart xyLineChart = ChartFactory.createXYLineChart(
+        xyLineChart = ChartFactory.createXYLineChart(
                 "Введите график",
                 "x",
                 "y",
@@ -68,18 +71,9 @@ public class GraphForm extends JFrame {
         ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setBackground(GUIGlobals.background_color);
 
-        XYPlot plot = (XYPlot) xyLineChart.getPlot();
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        renderer.setBaseShapesVisible(true);
-        //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
+        DataHandler.setDefault();
+        setGraphSettings(xyLineChart);
 
-        NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
-        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
-        xAxis.setRange(0, 10);
-        xAxis.setTickUnit(new NumberTickUnit(1));
-        yAxis.setRange(-5, 5);
-        yAxis.setTickUnit(new NumberTickUnit(1));
-        
         chartPanel.addChartMouseListener(new ChartMouseListener() {
             @Override
             public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
@@ -106,6 +100,24 @@ public class GraphForm extends JFrame {
 
         });
         return chartPanel;
+    }
+
+    /**
+     * Функция, задающая стандартные диапазоны осей
+     * @param chart
+     */
+    public static void setGraphSettings(JFreeChart chart){
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        renderer.setBaseShapesVisible(true);
+        //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
+
+        NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        xAxis.setRange(DataHandler.xmin, DataHandler.xmax);
+        xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
+        yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
+        yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
     }
 
     /**
@@ -139,7 +151,7 @@ public class GraphForm extends JFrame {
         changeGraphSettings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print("Нажато");
+                GraphSettingsDialog dialog = new GraphSettingsDialog(xyLineChart);
             }
         });
         return viewSettings;

@@ -18,6 +18,68 @@ public class DataHandler {
     public static double materialDensity = 0;
     public static double coefficientNu = 0;
 
+    // Параметры графика
+    public static double xmin;
+    public static double xmax;
+    public static double xtick;
+    public static double ymin;
+    public static double ymax;
+    public static double ytick;
+
+    public static void setDefault(){
+        xmin = 0;
+        xmax = 10;
+        xtick = 1;
+        ymin = -5;
+        ymax = 5;
+        ytick = 1;
+    }
+
+    /**
+     * Функция обработки параметров графика
+     * @param p1 xmin
+     * @param p2 xmax
+     * @param p3 xtick
+     * @param p4 ymin
+     * @param p5 ymax
+     * @param p6 ytick
+     * @return сообщение
+     */
+    public static String setGraphSettings(String p1, String p2, String p3, String p4, String p5, String p6){
+        double d1, d2, d3, d4, d5, d6;
+        try{
+            d1 = Double.parseDouble(p1);
+        }
+        catch (Exception e){return "мин(x) введен неверно";}
+        try {
+            d2 = Double.parseDouble(p2);
+        }
+        catch (Exception e){return "макс(x) введен неверно";}
+        try{
+            d3 = Double.parseDouble(p3);
+        }
+        catch (Exception e){return "шаг(x) введен неверно";}
+        try{
+            d4 = Double.parseDouble(p4);
+        }
+        catch (Exception e){return "мин(y) введен неверно";}
+        try{
+            d5 = Double.parseDouble(p5);
+        }
+        catch (Exception e){return "макс(y) введен неверно";}
+        try{
+            d6 = Double.parseDouble(p6);
+        }
+        catch (Exception e){return "шаг(y) введен неверно";}
+        xmin = d1;
+        xmax = d2;
+        xtick = d3;
+        ymin = d4;
+        ymax = d5;
+        ytick = d6;
+        return "";
+    }
+
     /**
      * Обработка входных параметров среды
      *
