@@ -45,7 +45,7 @@ public class MainForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //ChartInputForm test = new ChartInputForm("1", ServerThread);
+                //ChartInputForm testfornm = new ChartInputForm("1", ServerThread);
                 GraphForm graphForm = new GraphForm(graphLabel, ServerThread);
             }
         });
