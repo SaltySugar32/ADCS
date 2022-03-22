@@ -1,6 +1,5 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.legacy;
 
-import com.company.GUI.GUIDataHandler;
 import com.company.GUI.GUIGlobals;
 
 import javax.swing.*;
