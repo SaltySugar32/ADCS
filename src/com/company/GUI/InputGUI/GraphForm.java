@@ -14,6 +14,7 @@ import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -174,7 +175,11 @@ public class GraphForm extends JFrame {
      */
     public static void setGraphSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+
+        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        XYSplineRenderer renderer = new XYSplineRenderer();
+        plot.setRenderer(renderer);
+
         renderer.setSeriesShapesVisible(0, true);
         //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
 

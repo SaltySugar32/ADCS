@@ -23,7 +23,7 @@ public class SimulationFrame extends JFrame {
         mainPanel = new MainPanel(ServerThread);
         this.setTitle(title);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(GUIGlobals.window_width,GUIGlobals.window_height);
+        this.setSize(GUIGlobals.graph_frame_width,GUIGlobals.graph_frame_height);
         this.setLocationRelativeTo(null);
         this.add(mainPanel);
         this.setVisible(true);

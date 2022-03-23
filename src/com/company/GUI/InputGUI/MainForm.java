@@ -2,7 +2,6 @@ package com.company.GUI.InputGUI;
 
 import com.company.GUI.GUIGlobals;
 import com.company.GUI.SimulationGUI.SimulationFrame;
-import com.company.GUI.legacy.ChartInputForm;
 import com.company.Simulation.SimulationSynchronizerThread;
 
 import javax.swing.*;
