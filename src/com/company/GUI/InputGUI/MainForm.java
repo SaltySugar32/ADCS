@@ -1,6 +1,7 @@
 package com.company.GUI.InputGUI;
 
 import com.company.GUI.GUIGlobals;
+import com.company.GUI.SimulationGUI.SimulationFrame;
 import com.company.GUI.legacy.ChartInputForm;
 import com.company.Simulation.SimulationSynchronizerThread;
 
@@ -41,12 +42,20 @@ public class MainForm extends JFrame {
             }
         });
 
+
         graphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 //ChartInputForm testfornm = new ChartInputForm("1", ServerThread);
                 GraphForm graphForm = new GraphForm(graphLabel, ServerThread);
+            }
+        });
+
+        simulationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SimulationFrame simulationFrame = new SimulationFrame("ADCS - Симуляция", ServerThread);
             }
         });
     }

@@ -8,27 +8,40 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
+import org.jfree.chart.panel.CrosshairOverlay;
+import org.jfree.chart.plot.Crosshair;
+import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.util.ShapeUtilities;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
     private ChartPanel chartPanel;
     private JFreeChart xyLineChart;
+    private XYDataset dataset;
+    private XYSeries series;
+
+    private CrosshairOverlay crosshairOverlay;
+    private Crosshair crosshairx;
+    private Crosshair crosshairy;
+
     private JButton setGraphButton;
     private JMenuBar menuBar;
     private JMenu viewMenu;
+
 
     public GraphForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
         this.setTitle("ADCS - Ввод графика");
@@ -58,11 +71,12 @@ public class GraphForm extends JFrame {
      * @return
      */
     private ChartPanel createChartPanel(){
+        dataset = createDataset();
         xyLineChart = ChartFactory.createXYLineChart(
                 "Введите график",
                 "x",
                 "y",
-                createDataset(),
+                dataset,
                 PlotOrientation.VERTICAL,
                 false,
                 true,
@@ -70,34 +84,86 @@ public class GraphForm extends JFrame {
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
         ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setBackground(GUIGlobals.background_color);
+        chartPanel.setPopupMenu(null);
 
         DataHandler.setDefault();
         setGraphSettings(xyLineChart);
 
+        crosshairOverlay = new CrosshairOverlay();
+        crosshairx = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
+        crosshairy = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
+        crosshairx.setLabelVisible(true);
+        crosshairy.setLabelVisible(true);
+        crosshairOverlay.addDomainCrosshair(crosshairx);
+        crosshairOverlay.addRangeCrosshair(crosshairy);
+        chartPanel.addOverlay(crosshairOverlay);
+
         chartPanel.addChartMouseListener(new ChartMouseListener() {
             @Override
             public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
-                //System.out.println("click");
+                if (chartMouseEvent.getTrigger().getButton() == MouseEvent.BUTTON3)
+                    setGraphSettings(xyLineChart);
+                else {
+                    ChartEntity ce = chartMouseEvent.getEntity();
+                    // удаление существующей точки
+                    if (ce instanceof XYItemEntity) removePoint(ce);
+                        // добавление новой точки
+                    else addPoint(chartMouseEvent);
+                }
+            }
 
+            /**
+             * Функция удаления точки
+             * @param ce
+             */
+            private void removePoint(ChartEntity ce){
+                XYItemEntity e = (XYItemEntity) ce;
+                int i = e.getItem();
+                // Если не первая (нулевая) точка
+                if(i>0) series.remove(i);
+            }
+
+            /**
+             * Функция добавления новой точки
+             * @param cme
+             */
+            private void addPoint(ChartMouseEvent cme){
+                int mouseX = cme.getTrigger().getX();
+                int mouseY = cme.getTrigger().getY();
+
+                // StackOverflow, спасибо, что ты есть
+                Rectangle2D plotArea = chartPanel.getScreenDataArea();
+                XYPlot plot = (XYPlot) xyLineChart.getPlot(); // your plot
+                double chartX = plot.getDomainAxis().java2DToValue(mouseX, plotArea, plot.getDomainAxisEdge());
+                double chartY = plot.getRangeAxis().java2DToValue(mouseY, plotArea, plot.getRangeAxisEdge());
+
+                if(chartX < DataHandler.xmin || chartX > DataHandler.xmax) return;
+                if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
+                series.add(chartX, chartY);
             }
 
             @Override
             public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
-                report(chartMouseEvent);
+                showCrosshair(chartMouseEvent);
             }
 
-            // тестовая функция. при наведении на точку печатает ее координаты
-            private void report(ChartMouseEvent cme) {
-                ChartEntity ce = cme.getEntity();
-                if (ce instanceof XYItemEntity) {
-                    XYItemEntity e = (XYItemEntity) ce;
-                    XYDataset d = e.getDataset();
-                    int s = e.getSeriesIndex();
-                    int i = e.getItem();
-                    System.out.println("X:" + d.getX(s, i) + ", Y:" + d.getY(s, i));
-                }
-            }
+            /**
+             *
+             * @param cme
+             */
+            private void showCrosshair(ChartMouseEvent cme){
+                int mouseX = cme.getTrigger().getX();
+                int mouseY = cme.getTrigger().getY();
 
+                // StackOverflow, спасибо, что ты есть
+                Rectangle2D plotArea = chartPanel.getScreenDataArea();
+                XYPlot plot = (XYPlot) xyLineChart.getPlot(); // your plot
+                double chartX = plot.getDomainAxis().java2DToValue(mouseX, plotArea, plot.getDomainAxisEdge());
+                double chartY = plot.getRangeAxis().java2DToValue(mouseY, plotArea, plot.getRangeAxisEdge());
+
+                crosshairx.setValue(chartX);
+                crosshairy.setValue(chartY);
+            }
         });
         return chartPanel;
     }
@@ -109,7 +175,7 @@ public class GraphForm extends JFrame {
     public static void setGraphSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        renderer.setBaseShapesVisible(true);
+        renderer.setSeriesShapesVisible(0, true);
         //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
 
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
@@ -157,20 +223,14 @@ public class GraphForm extends JFrame {
         return viewSettings;
     }
 
-    // тестовая функция
+    /**
+     * Функция создания датасета
+     * @return
+     */
     private XYDataset createDataset(){
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("series");
-        series.add(1, 1);
-        series.add(-1, -5);
-        series.add(5, 2);
-        dataset.addSeries(series);
-        return dataset;
-    }
-    private XYDataset createDataset2() {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("");
-        series.add(0,0);
+        series = new XYSeries("series");
+        series.add(0, 0);
         dataset.addSeries(series);
         return dataset;
     }
