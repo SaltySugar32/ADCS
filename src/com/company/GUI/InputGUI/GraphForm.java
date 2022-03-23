@@ -84,11 +84,19 @@ public class GraphForm extends JFrame {
                 false);
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
         ChartPanel chartPanel  = new ChartPanel(xyLineChart);
-        chartPanel.setBackground(GUIGlobals.background_color);
         chartPanel.setPopupMenu(null);
 
         DataHandler.setDefault();
         setGraphSettings(xyLineChart);
+
+        XYPlot plot = (XYPlot) xyLineChart.getPlot();
+        plot.setBackgroundPaint(Color.LIGHT_GRAY);
+        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        XYSplineRenderer renderer = new XYSplineRenderer();
+        plot.setRenderer(renderer);
+
+        renderer.setSeriesShapesVisible(0, true);
+        //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
 
         crosshairOverlay = new CrosshairOverlay();
         crosshairx = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
@@ -175,14 +183,6 @@ public class GraphForm extends JFrame {
      */
     public static void setGraphSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
-
-        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        XYSplineRenderer renderer = new XYSplineRenderer();
-        plot.setRenderer(renderer);
-
-        renderer.setSeriesShapesVisible(0, true);
-        //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
-
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         xAxis.setRange(DataHandler.xmin, DataHandler.xmax);
