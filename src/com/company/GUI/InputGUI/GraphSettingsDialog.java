@@ -37,6 +37,7 @@ public class GraphSettingsDialog extends JDialog {
         //setModal(true);
         //setLocationRelativeTo(null);
         setVisible(true);
+        this.setAlwaysOnTop(true);
 
         fillTextFields();
 

@@ -90,9 +90,11 @@ public class GraphForm extends JFrame {
         setGraphSettings(xyLineChart);
 
         XYPlot plot = (XYPlot) xyLineChart.getPlot();
-        plot.setBackgroundPaint(Color.LIGHT_GRAY);
+        plot.setBackgroundPaint(Color.white);
+        plot.setRangeGridlinePaint(Color.GRAY);
+        plot.setDomainGridlinePaint(Color.GRAY);
         //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        XYSplineRenderer renderer = new XYSplineRenderer();
+        XYSplineRenderer renderer = new XYSplineRenderer(3);
         plot.setRenderer(renderer);
 
         renderer.setSeriesShapesVisible(0, true);
