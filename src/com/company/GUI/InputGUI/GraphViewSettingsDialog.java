@@ -17,6 +17,8 @@ public class GraphViewSettingsDialog extends JDialog {
     private JButton setButton;
     private JButton defaultButton;
     private JLabel statusLabel;
+    private JTextField markerField;
+    private JLabel markerLabel;
 
     public GraphViewSettingsDialog(JFreeChart chart) {
         add(contentPane);
@@ -32,9 +34,10 @@ public class GraphViewSettingsDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText(DataHandler.setGraphViewSettings(
                         precisionField.getText(),
-                        widthField.getText()
+                        widthField.getText(),
+                        markerField.getText()
                 ));
-                GraphForm.setSplineSettings(chart);
+                GraphForm.setGraphViewSettings(chart);
             }
         });
 
@@ -42,7 +45,7 @@ public class GraphViewSettingsDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DataHandler.setDefaultGraphViewSettings();
-                GraphForm.setSplineSettings(chart);
+                GraphForm.setGraphViewSettings(chart);
                 fillTextFields();
             }
         });
@@ -52,10 +55,11 @@ public class GraphViewSettingsDialog extends JDialog {
      * Функция записывает во все TextField текущие значения
      */
     private void fillTextFields(){
-        String precision = Double.toString(DataHandler.precision);
+        String precision = Double.toString(DataHandler.spline_precision);
         precision = precision.substring(0, precision.length()-1);
         precision = precision.substring(0, precision.length()-1);
         precisionField.setText(precision);
-        widthField.setText(Double.toString(DataHandler.width));
+        widthField.setText(Double.toString(DataHandler.spline_width));
+        markerField.setText(Double.toString(DataHandler.marker_width));
     }
 }

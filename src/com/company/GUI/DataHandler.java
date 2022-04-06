@@ -27,8 +27,9 @@ public class DataHandler {
     public static double ytick;
 
     // параметры сплайна
-    public static int precision;
-    public static float width;
+    public static int spline_precision;
+    public static float spline_width;
+    public static float marker_width;
 
     public static void setDefaultGraphAxisSettings(){
         xmin = 0;
@@ -40,8 +41,9 @@ public class DataHandler {
     }
 
     public static void setDefaultGraphViewSettings(){
-        precision = 100;
-        width = 1;
+        spline_precision = 100;
+        spline_width = 1;
+        marker_width = 1;
     }
 
     /**
@@ -89,19 +91,24 @@ public class DataHandler {
         return "";
     }
 
-    public static String setGraphViewSettings(String p1, String p2){
-        int newPrecision;
-        float newWidth;
+    public static String setGraphViewSettings(String p1, String p2, String p3){
+        int splinePrecision;
+        float splineWidth, markerWidth;
         try{
-            newPrecision = Integer.parseInt(p1);
+            splinePrecision = Integer.parseInt(p1);
         }
-        catch (Exception e){return "Точность введена неверно";}
+        catch (Exception e){return "Точность сплайна введена неверно";}
         try{
-            newWidth = Float.parseFloat(p2);
+            splineWidth = Float.parseFloat(p2);
         }
-        catch (Exception e){return "Ширина введена неверно";}
-        precision = newPrecision;
-        width = newWidth;
+        catch (Exception e){return "Ширина сплайна введена неверно";}
+        try{
+            markerWidth = Float.parseFloat(p3);
+        }
+        catch (Exception e){return "Ширина маркера введена неверно";}
+        spline_precision = splinePrecision;
+        spline_width = splineWidth;
+        marker_width = markerWidth;
         return "";
     }
 

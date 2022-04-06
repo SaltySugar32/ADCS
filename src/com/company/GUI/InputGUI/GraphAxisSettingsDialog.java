@@ -51,7 +51,7 @@ public class GraphAxisSettingsDialog extends JDialog {
                         ymaxField.getText(),
                         ytickField.getText()
                 ));
-                GraphForm.setGraphSettings(chart);
+                GraphForm.setGraphAxisSettings(chart);
             }
         });
 
@@ -59,7 +59,7 @@ public class GraphAxisSettingsDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 DataHandler.setDefaultGraphAxisSettings();
-                GraphForm.setGraphSettings(chart);
+                GraphForm.setGraphAxisSettings(chart);
                 fillTextFields();
             }
         });

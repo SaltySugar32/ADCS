@@ -82,7 +82,7 @@ public class GraphForm extends JFrame {
 
         DataHandler.setDefaultGraphAxisSettings();
         DataHandler.setDefaultGraphViewSettings();
-        setGraphSettings(xyLineChart);
+        setGraphAxisSettings(xyLineChart);
 
         XYPlot plot = (XYPlot) xyLineChart.getPlot();
         plot.setBackgroundPaint(Color.white);
@@ -114,7 +114,7 @@ public class GraphForm extends JFrame {
             @Override
             public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
                 if (chartMouseEvent.getTrigger().getButton() == MouseEvent.BUTTON3)
-                    setGraphSettings(xyLineChart);
+                    setGraphAxisSettings(xyLineChart);
                 else {
                     ChartEntity ce = chartMouseEvent.getEntity();
                     // удаление существующей точки
@@ -184,7 +184,7 @@ public class GraphForm extends JFrame {
      * Функция, задающая стандартные диапазоны осей
      * @param chart
      */
-    public static void setGraphSettings(JFreeChart chart){
+    public static void setGraphAxisSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
@@ -198,12 +198,19 @@ public class GraphForm extends JFrame {
      * Функция, задающая стандартные настройки сплайна
      * @param chart
      */
-    public static void setSplineSettings(JFreeChart chart){
+    public static void setGraphViewSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
         XYSplineRenderer renderer = (XYSplineRenderer)plot.getRenderer(0);
-        renderer.setPrecision(DataHandler.precision);
+        renderer.setPrecision(DataHandler.spline_precision);
         //renderer.setAutoPopulateSeriesStroke(false);
-        renderer.setSeriesStroke(0, new BasicStroke(DataHandler.width));
+        renderer.setSeriesStroke(0, new BasicStroke(DataHandler.spline_width));
+
+        plot.clearRangeMarkers();
+
+        final ValueMarker marker = new ValueMarker(0.0);
+        marker.setPaint(Color.black);
+        marker.setStroke(new BasicStroke(DataHandler.marker_width));
+        plot.addRangeMarker(marker);
     }
 
     /**
