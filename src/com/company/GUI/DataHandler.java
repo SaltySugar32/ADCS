@@ -26,13 +26,22 @@ public class DataHandler {
     public static double ymax;
     public static double ytick;
 
-    public static void setDefault(){
+    // параметры сплайна
+    public static int precision;
+    public static float width;
+
+    public static void setDefaultGraphAxisSettings(){
         xmin = 0;
         xmax = 10;
         xtick = 1;
         ymin = -5;
         ymax = 5;
         ytick = 1;
+    }
+
+    public static void setDefaultGraphViewSettings(){
+        precision = 100;
+        width = 1;
     }
 
     /**
@@ -45,7 +54,7 @@ public class DataHandler {
      * @param p6 ytick
      * @return сообщение
      */
-    public static String setGraphSettings(String p1, String p2, String p3, String p4, String p5, String p6){
+    public static String setGraphAxisSettings(String p1, String p2, String p3, String p4, String p5, String p6){
         double d1, d2, d3, d4, d5, d6;
         try{
             d1 = Double.parseDouble(p1);
@@ -77,6 +86,22 @@ public class DataHandler {
         ymin = d4;
         ymax = d5;
         ytick = d6;
+        return "";
+    }
+
+    public static String setGraphViewSettings(String p1, String p2){
+        int newPrecision;
+        float newWidth;
+        try{
+            newPrecision = Integer.parseInt(p1);
+        }
+        catch (Exception e){return "Точность введена неверно";}
+        try{
+            newWidth = Float.parseFloat(p2);
+        }
+        catch (Exception e){return "Ширина введена неверно";}
+        precision = newPrecision;
+        width = newWidth;
         return "";
     }
 

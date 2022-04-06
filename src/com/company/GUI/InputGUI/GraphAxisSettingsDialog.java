@@ -1,14 +1,13 @@
 package com.company.GUI.InputGUI;
 
 import com.company.GUI.DataHandler;
-import com.company.GUI.GUIGlobals;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GraphSettingsDialog extends JDialog {
+public class GraphAxisSettingsDialog extends JDialog {
     private JPanel mainPanel;
     private JButton setButton;
     private JPanel ButtonPanel;
@@ -30,7 +29,7 @@ public class GraphSettingsDialog extends JDialog {
     private JTextField ytickField;
     private JLabel statusLabel;
 
-    public GraphSettingsDialog(JFreeChart chart){
+    public GraphAxisSettingsDialog(JFreeChart chart){
         add(mainPanel);
         setTitle("Параметры");
         setSize(350, 350);
@@ -44,7 +43,7 @@ public class GraphSettingsDialog extends JDialog {
         setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText(DataHandler.setGraphSettings(
+                statusLabel.setText(DataHandler.setGraphAxisSettings(
                         xminField.getText(),
                         xmaxField.getText(),
                         xtickField.getText(),
@@ -59,7 +58,7 @@ public class GraphSettingsDialog extends JDialog {
         defaultButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DataHandler.setDefault();
+                DataHandler.setDefaultGraphAxisSettings();
                 GraphForm.setGraphSettings(chart);
                 fillTextFields();
             }

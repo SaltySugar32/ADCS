@@ -9,23 +9,17 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.panel.CrosshairOverlay;
-import org.jfree.chart.plot.Crosshair;
-import org.jfree.chart.plot.CrosshairState;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
@@ -75,8 +69,8 @@ public class GraphForm extends JFrame {
         dataset = createDataset();
         xyLineChart = ChartFactory.createXYLineChart(
                 "Введите график",
-                "x",
-                "y",
+                "t",
+                "φ(t)",
                 dataset,
                 PlotOrientation.VERTICAL,
                 false,
@@ -86,17 +80,24 @@ public class GraphForm extends JFrame {
         ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
-        DataHandler.setDefault();
+        DataHandler.setDefaultGraphAxisSettings();
+        DataHandler.setDefaultGraphViewSettings();
         setGraphSettings(xyLineChart);
 
         XYPlot plot = (XYPlot) xyLineChart.getPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setRangeGridlinePaint(Color.GRAY);
         plot.setDomainGridlinePaint(Color.GRAY);
-        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        XYSplineRenderer renderer = new XYSplineRenderer(3);
-        plot.setRenderer(renderer);
+        final ValueMarker marker = new ValueMarker(0.0);
+        marker.setPaint(Color.black);
+        marker.setStroke(new BasicStroke(1.0f));
+        plot.addRangeMarker(marker);
 
+        xyLineChart.getTitle().setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        XYSplineRenderer renderer = new XYSplineRenderer(100);
+        plot.setRenderer(0, renderer);
         renderer.setSeriesShapesVisible(0, true);
         //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
 
@@ -194,6 +195,18 @@ public class GraphForm extends JFrame {
     }
 
     /**
+     * Функция, задающая стандартные настройки сплайна
+     * @param chart
+     */
+    public static void setSplineSettings(JFreeChart chart){
+        XYPlot plot = (XYPlot) chart.getPlot();
+        XYSplineRenderer renderer = (XYSplineRenderer)plot.getRenderer(0);
+        renderer.setPrecision(DataHandler.precision);
+        //renderer.setAutoPopulateSeriesStroke(false);
+        renderer.setSeriesStroke(0, new BasicStroke(DataHandler.width));
+    }
+
+    /**
      * Функция создания кнопки "Задать"
      * @param mainFrameLabel
      * @return
@@ -218,13 +231,22 @@ public class GraphForm extends JFrame {
      */
     private JMenu createViewMenu(){
         JMenu viewSettings = new JMenu("Вид");
-        JMenuItem changeGraphSettings = new JMenuItem("Параметры графика");
+        JMenuItem changeGraphSettings = new JMenuItem("Параметры осей");
+        JMenuItem changeSplineSettings = new JMenuItem("Параметры отображения");
         viewSettings.add(changeGraphSettings);
+        viewSettings.add(changeSplineSettings);
 
         changeGraphSettings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GraphSettingsDialog dialog = new GraphSettingsDialog(xyLineChart);
+                GraphAxisSettingsDialog dialog = new GraphAxisSettingsDialog(xyLineChart);
+            }
+        });
+
+        changeSplineSettings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GraphViewSettingsDialog dialog = new GraphViewSettingsDialog(xyLineChart);
             }
         });
         return viewSettings;

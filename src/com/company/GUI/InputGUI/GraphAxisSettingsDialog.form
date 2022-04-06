@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.company.GUI.InputGUI.GraphSettingsDialog">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.company.GUI.InputGUI.GraphAxisSettingsDialog">
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="20" bottom="10" right="20"/>
     <constraints>
@@ -61,7 +61,7 @@
               <background color="-5649700"/>
               <name value=""/>
             </properties>
-            <border type="etched" title="Ось X" title-position="2">
+            <border type="etched" title="Ось t" title-position="2">
               <font size="14"/>
               <title-color color="-16777216"/>
             </border>
@@ -136,7 +136,7 @@
           <background color="-5649700"/>
           <name value=""/>
         </properties>
-        <border type="etched" title="Ось Y" title-position="2">
+        <border type="etched" title="Ось φ(t)" title-position="2">
           <font size="14"/>
           <title-color color="-16777216"/>
         </border>
