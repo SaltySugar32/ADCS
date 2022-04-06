@@ -26,6 +26,8 @@ public class DataHandler {
     public static double ymax;
     public static double ytick;
 
+    public static String unitOfTime;
+
     // параметры сплайна
     public static int spline_precision;
     public static float spline_width;
@@ -38,6 +40,7 @@ public class DataHandler {
         ymin = -5;
         ymax = 5;
         ytick = 1;
+        unitOfTime = "мс";
     }
 
     public static void setDefaultGraphViewSettings(){
@@ -56,7 +59,7 @@ public class DataHandler {
      * @param p6 ytick
      * @return сообщение
      */
-    public static String setGraphAxisSettings(String p1, String p2, String p3, String p4, String p5, String p6){
+    public static String setGraphAxisSettings(String p1, String p2, String p3, String p4, String p5, String p6, String p7){
         double d1, d2, d3, d4, d5, d6;
         try{
             d1 = Double.parseDouble(p1);
@@ -88,6 +91,7 @@ public class DataHandler {
         ymin = d4;
         ymax = d5;
         ytick = d6;
+        unitOfTime = p7;
         return "";
     }
 

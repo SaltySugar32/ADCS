@@ -69,7 +69,7 @@ public class GraphForm extends JFrame {
         dataset = createDataset();
         xyLineChart = ChartFactory.createXYLineChart(
                 "Введите график",
-                "t",
+                "t (" + DataHandler.unitOfTime + ")",
                 "φ(t)",
                 dataset,
                 PlotOrientation.VERTICAL,
@@ -192,6 +192,7 @@ public class GraphForm extends JFrame {
         xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
         yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
         yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
+        plot.getDomainAxis().setLabel("t (" + DataHandler.unitOfTime + ")");
     }
 
     /**

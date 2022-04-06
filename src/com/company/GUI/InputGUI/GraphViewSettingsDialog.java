@@ -23,7 +23,7 @@ public class GraphViewSettingsDialog extends JDialog {
     public GraphViewSettingsDialog(JFreeChart chart) {
         add(contentPane);
         setTitle("Параметры");
-        setSize(350, 350);
+        setSize(400, 350);
 
         setVisible(true);
         this.setAlwaysOnTop(true);

@@ -4,6 +4,7 @@ import com.company.GUI.DataHandler;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -28,17 +29,20 @@ public class GraphAxisSettingsDialog extends JDialog {
     private JTextField ymaxField;
     private JTextField ytickField;
     private JLabel statusLabel;
+    private JComboBox comboBox1;
 
     public GraphAxisSettingsDialog(JFreeChart chart){
         add(mainPanel);
         setTitle("Параметры");
-        setSize(350, 350);
+        setSize(350, 400);
         //setModal(true);
         //setLocationRelativeTo(null);
         setVisible(true);
         this.setAlwaysOnTop(true);
 
         fillTextFields();
+        initComboBox();
+
 
         setButton.addActionListener(new ActionListener() {
             @Override
@@ -49,7 +53,8 @@ public class GraphAxisSettingsDialog extends JDialog {
                         xtickField.getText(),
                         yminField.getText(),
                         ymaxField.getText(),
-                        ytickField.getText()
+                        ytickField.getText(),
+                        comboBox1.getSelectedItem().toString()
                 ));
                 GraphForm.setGraphAxisSettings(chart);
             }
@@ -76,5 +81,15 @@ public class GraphAxisSettingsDialog extends JDialog {
         yminField.setText(Double.toString(DataHandler.ymin));
         ymaxField.setText(Double.toString(DataHandler.ymax));
         ytickField.setText(Double.toString(DataHandler.ytick));
+        
+        comboBox1.setSelectedItem(DataHandler.unitOfTime);
+    }
+
+    private void initComboBox(){
+        comboBox1.addItem("c");
+        comboBox1.addItem("мс");
+        comboBox1.addItem("мкс");
+
+        comboBox1.setSelectedItem("мс");
     }
 }
