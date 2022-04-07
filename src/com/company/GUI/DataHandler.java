@@ -35,6 +35,12 @@ public class DataHandler {
     public static float marker_width;
     public static int point_width;
 
+    // Точки лин. аппроксимации
+    // array[p1][p2]
+    // p1 - 0(x)/1(y)
+    // p2 - point num
+    public static double[][] lin_appr_array;
+
     public static void setDefaultGraphAxisSettings(){
         xmin = 0;
         xmax = 10;

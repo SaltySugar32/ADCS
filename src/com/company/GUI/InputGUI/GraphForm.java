@@ -189,7 +189,7 @@ public class GraphForm extends JFrame {
 
                 if(chartX < DataHandler.xmin || chartX > DataHandler.xmax) return;
                 if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
-                System.out.println(isLinApproxGraph);
+
                 if(isLinApproxGraph)
                     series2.add(chartX, chartY);
                 else
@@ -276,6 +276,7 @@ public class GraphForm extends JFrame {
         setGraphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DataHandler.lin_appr_array = series2.toArray();
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
             }
         });
