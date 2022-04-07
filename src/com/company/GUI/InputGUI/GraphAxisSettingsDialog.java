@@ -1,14 +1,14 @@
 package com.company.GUI.InputGUI;
 
 import com.company.GUI.DataHandler;
-import com.company.GUI.GUIGlobals;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GraphSettingsDialog extends JDialog {
+public class GraphAxisSettingsDialog extends JDialog {
     private JPanel mainPanel;
     private JButton setButton;
     private JPanel ButtonPanel;
@@ -29,37 +29,42 @@ public class GraphSettingsDialog extends JDialog {
     private JTextField ymaxField;
     private JTextField ytickField;
     private JLabel statusLabel;
+    private JComboBox comboBox1;
 
-    public GraphSettingsDialog(JFreeChart chart){
+    public GraphAxisSettingsDialog(JFreeChart chart){
         add(mainPanel);
         setTitle("Параметры");
-        setSize(350, 350);
+        setSize(350, 400);
         //setModal(true);
         //setLocationRelativeTo(null);
         setVisible(true);
+        this.setAlwaysOnTop(true);
 
         fillTextFields();
+        initComboBox();
+
 
         setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText(DataHandler.setGraphSettings(
+                statusLabel.setText(DataHandler.setGraphAxisSettings(
                         xminField.getText(),
                         xmaxField.getText(),
                         xtickField.getText(),
                         yminField.getText(),
                         ymaxField.getText(),
-                        ytickField.getText()
+                        ytickField.getText(),
+                        comboBox1.getSelectedItem().toString()
                 ));
-                GraphForm.setGraphSettings(chart);
+                GraphForm.setGraphAxisSettings(chart);
             }
         });
 
         defaultButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DataHandler.setDefault();
-                GraphForm.setGraphSettings(chart);
+                DataHandler.setDefaultGraphAxisSettings();
+                GraphForm.setGraphAxisSettings(chart);
                 fillTextFields();
             }
         });
@@ -76,5 +81,15 @@ public class GraphSettingsDialog extends JDialog {
         yminField.setText(Double.toString(DataHandler.ymin));
         ymaxField.setText(Double.toString(DataHandler.ymax));
         ytickField.setText(Double.toString(DataHandler.ytick));
+
+        comboBox1.setSelectedItem(DataHandler.unitOfTime);
+    }
+
+    private void initComboBox(){
+        comboBox1.addItem("мс");
+        comboBox1.addItem("мкс");
+        comboBox1.addItem("нс");
+
+        comboBox1.setSelectedItem("нс");
     }
 }
