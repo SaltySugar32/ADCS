@@ -12,58 +12,7 @@ public class SimulationGlobals {
 
     //----------------------НЕОТСОРТИРОВАННЫЕ ПЕРЕМЕННЫЕ-----------------------
 
-    static Comparator<WaveFront> comparator = Comparator.comparingDouble(o -> o.getA2() * SimulationGlobals.getSimulationTime());
-
-    //-------------------------------------------------------------------------
-
-    //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
-
-    static double simulationTime;
-
-    static {
-        simulationTime = 0.0;
-    }
-
-    public static double getSimulationTime() {
-        return simulationTime;
-    }
-
-    public static void setSimulationTime(double simulationTime) {
-        SimulationGlobals.simulationTime = simulationTime;
-    }
-    //Все переменные выше - константы материала
-
-    public static void nextSimulationTime() {
-        simulationTime += simulationTimeDelta;
-    }
-
-    //-------------------------------------------------------------------------
-
-    //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ОПЕРАЦИЮ-----------------------
-
-    /**
-     * В районе от 0.1 * 10^-6 до 1 * 10^-6 по текущей задумке
-     */
-    static double simulationTimeDelta;
-    static double simulationTimePow;
-
-    static {
-        simulationTimePow = -6;
-        simulationTimeDelta = 0.5 * Math.pow(10, SimulationGlobals.simulationTimePow);
-    }
-
-    public static double getSimulationTimeDelta() {
-        return simulationTimeDelta;
-    }
-
-    /**
-     * Ввод длительности по времени каждого шага симуляции
-     *
-     * @param simulationTimeDelta В районе от 0.1 до 1
-     */
-    public static void setSimulationTimeDelta(double simulationTimeDelta) {
-        SimulationGlobals.simulationTimeDelta = simulationTimeDelta * Math.pow(10, simulationTimePow);
-    }
+    static Comparator<WaveFront> comparator = Comparator.comparingDouble(o -> o.getA2() * SimulationTime.getSimulationTime());
 
     //-------------------------------------------------------------------------
 
@@ -173,4 +122,3 @@ public class SimulationGlobals {
     //-------------------------------------------------------------------------
 
 }
-

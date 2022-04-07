@@ -2,6 +2,7 @@ package com.company;
 
 import com.company.Simulation.SimulationServerThread;
 import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.Simulation.SimulationVariables.SimulationGlobals;
 import com.company.UserClients.UserClient;
 
 public class Main {
