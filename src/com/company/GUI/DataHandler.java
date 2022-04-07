@@ -40,7 +40,7 @@ public class DataHandler {
         ymin = -5;
         ymax = 5;
         ytick = 1;
-        unitOfTime = "мс";
+        unitOfTime = "нс";
     }
 
     public static void setDefaultGraphViewSettings(){

@@ -81,15 +81,15 @@ public class GraphAxisSettingsDialog extends JDialog {
         yminField.setText(Double.toString(DataHandler.ymin));
         ymaxField.setText(Double.toString(DataHandler.ymax));
         ytickField.setText(Double.toString(DataHandler.ytick));
-        
+
         comboBox1.setSelectedItem(DataHandler.unitOfTime);
     }
 
     private void initComboBox(){
-        comboBox1.addItem("c");
         comboBox1.addItem("мс");
         comboBox1.addItem("мкс");
+        comboBox1.addItem("нс");
 
-        comboBox1.setSelectedItem("мс");
+        comboBox1.setSelectedItem("нс");
     }
 }
