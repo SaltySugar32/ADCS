@@ -10,20 +10,22 @@ import java.awt.event.ActionListener;
 public class GraphViewSettingsDialog extends JDialog {
     private JPanel contentPane;
     private JPanel xPanel;
-    private JTextField precisionField;
+    private JTextField splinePrecisionField;
     private JLabel precisionLabel;
-    private JTextField widthField;
+    private JTextField splineWidthField;
     private JLabel widthLabel;
     private JButton setButton;
     private JButton defaultButton;
     private JLabel statusLabel;
     private JTextField markerField;
     private JLabel markerLabel;
+    private JTextField linApproxWidthField;
+    private JTextField pointWidthField;
 
     public GraphViewSettingsDialog(JFreeChart chart) {
         add(contentPane);
         setTitle("Параметры");
-        setSize(400, 350);
+        setSize(400, 400);
 
         setVisible(true);
         this.setAlwaysOnTop(true);
@@ -33,9 +35,11 @@ public class GraphViewSettingsDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 statusLabel.setText(DataHandler.setGraphViewSettings(
-                        precisionField.getText(),
-                        widthField.getText(),
-                        markerField.getText()
+                        splinePrecisionField.getText(),
+                        splineWidthField.getText(),
+                        linApproxWidthField.getText(),
+                        markerField.getText(),
+                        pointWidthField.getText()
                 ));
                 GraphForm.setGraphViewSettings(chart);
             }
@@ -55,11 +59,13 @@ public class GraphViewSettingsDialog extends JDialog {
      * Функция записывает во все TextField текущие значения
      */
     private void fillTextFields(){
-        String precision = Double.toString(DataHandler.spline_precision);
-        precision = precision.substring(0, precision.length()-1);
-        precision = precision.substring(0, precision.length()-1);
-        precisionField.setText(precision);
-        widthField.setText(Double.toString(DataHandler.spline_width));
+        String tmp = Double.toString(DataHandler.spline_precision);
+        tmp = tmp.substring(0, tmp.length()-1);
+        tmp = tmp.substring(0, tmp.length()-1);
+        splinePrecisionField.setText(Integer.toString(DataHandler.spline_precision));
+        splineWidthField.setText(Double.toString(DataHandler.spline_width));
+        linApproxWidthField.setText(Double.toString(DataHandler.lin_appr_width));
         markerField.setText(Double.toString(DataHandler.marker_width));
+        pointWidthField.setText(Integer.toString(DataHandler.point_width));
     }
 }

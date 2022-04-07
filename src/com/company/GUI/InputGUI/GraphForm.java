@@ -10,7 +10,9 @@ import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.panel.CrosshairOverlay;
 import org.jfree.chart.plot.*;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.chart.util.ShapeUtils;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -26,8 +28,12 @@ import java.awt.geom.Rectangle2D;
 public class GraphForm extends JFrame {
     private ChartPanel chartPanel;
     private JFreeChart xyLineChart;
-    private XYDataset dataset;
-    private XYSeries series;
+
+    private XYDataset dataset1;
+    private XYDataset dataset2;
+
+    private XYSeries series1;
+    private XYSeries series2;
 
     private CrosshairOverlay crosshairOverlay;
     private Crosshair crosshairx;
@@ -37,6 +43,7 @@ public class GraphForm extends JFrame {
     private JMenuBar menuBar;
     private JMenu viewMenu;
 
+    private boolean isLinApproxGraph;
 
     public GraphForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
         this.setTitle("ADCS - Ввод графика");
@@ -57,8 +64,11 @@ public class GraphForm extends JFrame {
         // меню
         menuBar = new JMenuBar();
         viewMenu = createViewMenu();
+
         menuBar.add(viewMenu);
         setJMenuBar(menuBar);
+
+        isLinApproxGraph = false;
     }
 
     /**
@@ -66,12 +76,14 @@ public class GraphForm extends JFrame {
      * @return
      */
     private ChartPanel createChartPanel(){
-        dataset = createDataset();
+        dataset1 = createDataset1();
+        dataset2 = createDataset2();
+
         xyLineChart = ChartFactory.createXYLineChart(
                 "Введите график",
                 "t (" + DataHandler.unitOfTime + ")",
                 "φ(t)",
-                dataset,
+                dataset1,
                 PlotOrientation.VERTICAL,
                 false,
                 true,
@@ -95,11 +107,24 @@ public class GraphForm extends JFrame {
 
         xyLineChart.getTitle().setFont(new Font("Tahoma", Font.PLAIN, 20));
 
-        //XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
-        XYSplineRenderer renderer = new XYSplineRenderer(100);
-        plot.setRenderer(0, renderer);
-        renderer.setSeriesShapesVisible(0, true);
-        //renderer.setSeriesShape(0, ShapeUtilities.createTranslatedShape(new Rectangle(2,2), -1, -1));
+        plot.setDataset(0, dataset1);
+        plot.setDataset(1, dataset2);
+
+        XYSplineRenderer renderer1 = new XYSplineRenderer(100);
+        plot.setRenderer(0, renderer1);
+        renderer1.setSeriesShapesVisible(0, true);
+        renderer1.setSeriesPaint(0, Color.RED);
+
+        XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer();
+        plot.setRenderer(1,renderer2);
+        renderer2.setSeriesShapesVisible(0, false);
+        renderer2.setSeriesPaint(0, Color.BLUE);
+
+        int w1 = DataHandler.point_width;
+        int w2 = w1/2;
+
+        renderer1.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
+        renderer2.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
 
         crosshairOverlay = new CrosshairOverlay();
         crosshairx = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
@@ -117,10 +142,18 @@ public class GraphForm extends JFrame {
                     setGraphAxisSettings(xyLineChart);
                 else {
                     ChartEntity ce = chartMouseEvent.getEntity();
+
                     // удаление существующей точки
-                    if (ce instanceof XYItemEntity) removePoint(ce);
-                        // добавление новой точки
-                    else addPoint(chartMouseEvent);
+                    if (ce instanceof XYItemEntity &&
+                            (
+                                    (((XYItemEntity) ce).getDataset() == dataset1 && !isLinApproxGraph) ||
+                                    (((XYItemEntity) ce).getDataset() == dataset2 && isLinApproxGraph)
+                            ))
+                        removePoint(ce);
+
+                    // добавление новой точки
+                    else
+                        addPoint(chartMouseEvent);
                 }
             }
 
@@ -132,7 +165,12 @@ public class GraphForm extends JFrame {
                 XYItemEntity e = (XYItemEntity) ce;
                 int i = e.getItem();
                 // Если не первая (нулевая) точка
-                if(i>0) series.remove(i);
+                if(i>0){
+                    if(isLinApproxGraph)
+                        series2.remove(i);
+                    else
+                        series1.remove(i);
+                }
             }
 
             /**
@@ -151,7 +189,11 @@ public class GraphForm extends JFrame {
 
                 if(chartX < DataHandler.xmin || chartX > DataHandler.xmax) return;
                 if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
-                series.add(chartX, chartY);
+                System.out.println(isLinApproxGraph);
+                if(isLinApproxGraph)
+                    series2.add(chartX, chartY);
+                else
+                    series1.add(chartX, chartY);
             }
 
             @Override
@@ -201,17 +243,24 @@ public class GraphForm extends JFrame {
      */
     public static void setGraphViewSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
-        XYSplineRenderer renderer = (XYSplineRenderer)plot.getRenderer(0);
-        renderer.setPrecision(DataHandler.spline_precision);
-        //renderer.setAutoPopulateSeriesStroke(false);
-        renderer.setSeriesStroke(0, new BasicStroke(DataHandler.spline_width));
+
+        XYSplineRenderer r1 = (XYSplineRenderer)plot.getRenderer(0);
+        r1.setPrecision(DataHandler.spline_precision);
+        r1.setSeriesStroke(0, new BasicStroke(DataHandler.spline_width));
+
+        XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer)plot.getRenderer(1);
+        r2.setSeriesStroke(0, new BasicStroke(DataHandler.lin_appr_width));
 
         plot.clearRangeMarkers();
-
         final ValueMarker marker = new ValueMarker(0.0);
         marker.setPaint(Color.black);
         marker.setStroke(new BasicStroke(DataHandler.marker_width));
         plot.addRangeMarker(marker);
+
+        int w1 = DataHandler.point_width;
+        int w2 = w1/2;
+        r1.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
+        r2.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
     }
 
     /**
@@ -241,8 +290,11 @@ public class GraphForm extends JFrame {
         JMenu viewSettings = new JMenu("Вид");
         JMenuItem changeGraphSettings = new JMenuItem("Параметры осей");
         JMenuItem changeSplineSettings = new JMenuItem("Параметры отображения");
+        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
+
         viewSettings.add(changeGraphSettings);
         viewSettings.add(changeSplineSettings);
+        viewSettings.add(changeGraph);
 
         changeGraphSettings.addActionListener(new ActionListener() {
             @Override
@@ -257,6 +309,25 @@ public class GraphForm extends JFrame {
                 GraphViewSettingsDialog dialog = new GraphViewSettingsDialog(xyLineChart);
             }
         });
+
+        changeGraph.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XYPlot plot = (XYPlot) xyLineChart.getPlot();
+                XYSplineRenderer r1 = (XYSplineRenderer) plot.getRenderer(0);
+                XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot.getRenderer(1);
+                if(isLinApproxGraph){
+                    r1.setSeriesShapesVisible(0, true);
+                    r2.setSeriesShapesVisible(0, false);
+                }
+                else{
+                    r1.setSeriesShapesVisible(0, false);
+                    r2.setSeriesShapesVisible(0, true);
+                }
+                isLinApproxGraph = !isLinApproxGraph;
+            }
+        });
+
         return viewSettings;
     }
 
@@ -264,11 +335,19 @@ public class GraphForm extends JFrame {
      * Функция создания датасета
      * @return
      */
-    private XYDataset createDataset(){
+    private XYDataset createDataset1(){
         XYSeriesCollection dataset = new XYSeriesCollection();
-        series = new XYSeries("series");
-        series.add(0, 0);
-        dataset.addSeries(series);
+        series1 = new XYSeries("series1");
+        series1.add(0, 0);
+        dataset.addSeries(series1);
+        return dataset;
+    }
+
+    private XYDataset createDataset2(){
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        series2 = new XYSeries("series2");
+        series2.add(0, 0);
+        dataset.addSeries(series2);
         return dataset;
     }
 }

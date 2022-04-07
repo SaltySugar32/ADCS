@@ -28,10 +28,12 @@ public class DataHandler {
 
     public static String unitOfTime;
 
-    // параметры сплайна
+    // параметры отображения
     public static int spline_precision;
     public static float spline_width;
+    public static float lin_appr_width;
     public static float marker_width;
+    public static int point_width;
 
     public static void setDefaultGraphAxisSettings(){
         xmin = 0;
@@ -46,7 +48,9 @@ public class DataHandler {
     public static void setDefaultGraphViewSettings(){
         spline_precision = 100;
         spline_width = 1;
+        lin_appr_width = 1;
         marker_width = 1;
+        point_width = 6;
     }
 
     /**
@@ -95,9 +99,9 @@ public class DataHandler {
         return "";
     }
 
-    public static String setGraphViewSettings(String p1, String p2, String p3){
-        int splinePrecision;
-        float splineWidth, markerWidth;
+    public static String setGraphViewSettings(String p1, String p2, String p3, String p4, String p5){
+        int splinePrecision, pointWidth;
+        float splineWidth, linWidth, markerWidth;
         try{
             splinePrecision = Integer.parseInt(p1);
         }
@@ -107,12 +111,22 @@ public class DataHandler {
         }
         catch (Exception e){return "Ширина сплайна введена неверно";}
         try{
-            markerWidth = Float.parseFloat(p3);
+            linWidth = Float.parseFloat(p3);
+        }
+        catch (Exception e){return "Ширина лин. аппр. введена неверно";}
+        try{
+            markerWidth = Float.parseFloat(p4);
         }
         catch (Exception e){return "Ширина маркера введена неверно";}
+        try{
+            pointWidth = Integer.parseInt(p5);
+        }
+        catch (Exception e){return "Размер точки введен неверно";}
         spline_precision = splinePrecision;
         spline_width = splineWidth;
+        lin_appr_width = linWidth;
         marker_width = markerWidth;
+        point_width = pointWidth;
         return "";
     }
 
