@@ -1,6 +1,8 @@
 package com.company.GUI;
 
 import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import org.mariuszgromada.math.mxparser.Constant;
+import org.mariuszgromada.math.mxparser.Expression;
 
 /**
  * Обработчик входных данных
@@ -185,5 +187,31 @@ public class DataHandler {
     public static void setGraphInput(double[][] array){
         lin_appr_array = array;
         graph_input_status = true;
+    }
+
+    public static double[][] getFormulaArray(String p1, String p2){
+        double precision = 0;
+
+        try{
+            precision = Double.parseDouble(p2);
+        }
+        catch (Exception e){return null;}
+
+        int num = (int)((xmax - xmin)/precision) + 1;
+        double[] t_array = new double[num];
+        t_array[0] = xmin;
+        for(int i=1; i<t_array.length; i++)
+            t_array[i] = t_array[i-1]+precision;
+
+        double[][] array = new double[2][t_array.length];
+
+        for(int i=0; i< t_array.length;i++) {
+            Constant t = new Constant("t="+t_array[i]);
+            Expression e = new Expression(p1, t);
+            array[0][i] = t_array[i];
+            array[1][i] = e.calculate();
+        }
+
+        return array;
     }
 }

@@ -357,6 +357,13 @@ public class GraphForm extends JFrame {
             }
         });
 
+        setFormula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
+            }
+        });
+
         return fileSettings;
     }
 

@@ -31,6 +31,8 @@ public class GraphViewSettingsDialog extends JDialog {
         this.setAlwaysOnTop(true);
         fillTextFields();
 
+        statusLabel.setText("");
+
         setButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
