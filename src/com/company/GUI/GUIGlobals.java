@@ -13,7 +13,7 @@ public class GUIGlobals {
 
     // Размер окна ввода параметров среды
     public static int env_param_frame_width = 500;
-    public static int env_param_frame_height = 500;
+    public static int env_param_frame_height = 550;
 
     // Размер окна ввода графика
     public static int graph_frame_width = 1500;

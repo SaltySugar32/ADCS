@@ -181,5 +181,9 @@ public class DataHandler {
         env_param_input_status = true;
         return "<html><font color='green'>Параметры введены</font></html>";
     }
-    // -----------------------------------------------------------------------------------------------------------------
+
+    public static void setGraphInput(double[][] array){
+        lin_appr_array = array;
+        graph_input_status = true;
+    }
 }

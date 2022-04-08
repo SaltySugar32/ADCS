@@ -59,9 +59,6 @@ public class GraphViewSettingsDialog extends JDialog {
      * Функция записывает во все TextField текущие значения
      */
     private void fillTextFields(){
-        String tmp = Double.toString(DataHandler.spline_precision);
-        tmp = tmp.substring(0, tmp.length()-1);
-        tmp = tmp.substring(0, tmp.length()-1);
         splinePrecisionField.setText(Integer.toString(DataHandler.spline_precision));
         splineWidthField.setText(Double.toString(DataHandler.spline_width));
         linApproxWidthField.setText(Double.toString(DataHandler.lin_appr_width));
