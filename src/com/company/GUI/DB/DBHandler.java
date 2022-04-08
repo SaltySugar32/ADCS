@@ -7,7 +7,7 @@ public class DBHandler {
 
     public static List<Material> materials;
 
-    // список материалов в БД
+    // получение списка материалов
     public static void getAllMaterials() {
         materials = new ArrayList<Material>();
 
@@ -46,14 +46,17 @@ public class DBHandler {
         }
     }
 
+    // получение массива названий материалов
     public static String[] getMaterialNames(){
         String[] names = new String[materials.size()];
         int i=0;
         for(Material material:materials)
             names[i++] = material.name;
+
         return names;
     }
 
+    // запись всех материалов в файл
     public static void rewriteDB(){
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("src/com/company/GUI/DB/materials.txt"))) {
             for (Material material : materials) {
@@ -65,15 +68,18 @@ public class DBHandler {
         }
     }
 
+    // добавление материала в массив
     public static boolean addMaterial(Material material){
         for(Material mat: materials){
             if(material.name.equals(mat.name)) return false;
         }
         materials.add(material);
         rewriteDB();
+
         return true;
     }
 
+    // обновление записи о материале
     public static void updateMaterial(int index, double p1, double p2, double p3, double p4){
         materials.get(index).lameMu = p1;
         materials.get(index).lameLambda = p2;
@@ -81,9 +87,9 @@ public class DBHandler {
         materials.get(index).coefficientNu = p4;
     }
 
+    // удаление материала
     public static void deleteMaterial(int index){
         materials.remove(index);
         rewriteDB();
     }
-
 }

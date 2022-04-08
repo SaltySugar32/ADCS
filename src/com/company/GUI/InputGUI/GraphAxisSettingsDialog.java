@@ -35,14 +35,11 @@ public class GraphAxisSettingsDialog extends JDialog {
         add(mainPanel);
         setTitle("Параметры");
         setSize(350, 400);
-        //setModal(true);
-        //setLocationRelativeTo(null);
         setVisible(true);
         this.setAlwaysOnTop(true);
 
         fillTextFields();
         initComboBox();
-
 
         setButton.addActionListener(new ActionListener() {
             @Override

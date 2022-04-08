@@ -26,7 +26,6 @@ import java.awt.geom.Rectangle2D;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
-    private ChartPanel chartPanel;
     private JFreeChart xyLineChart;
 
     private XYDataset dataset1;
@@ -35,13 +34,8 @@ public class GraphForm extends JFrame {
     private XYSeries series1;
     private XYSeries series2;
 
-    private CrosshairOverlay crosshairOverlay;
     private Crosshair crosshairx;
     private Crosshair crosshairy;
-
-    private JButton setGraphButton;
-    private JMenuBar menuBar;
-    private JMenu viewMenu;
 
     private boolean isLinApproxGraph;
 
@@ -54,20 +48,23 @@ public class GraphForm extends JFrame {
         this.setLocationRelativeTo(null);
 
         // панель с графиком
-        chartPanel = createChartPanel();
+        ChartPanel chartPanel = createChartPanel();
         add(chartPanel, BorderLayout.CENTER);
 
         // кнопка "задать"
-        setGraphButton = createSetGraphButton(mainFrameLabel);
+        JButton setGraphButton = createSetGraphButton(mainFrameLabel);
         add(setGraphButton, BorderLayout.SOUTH);
 
         // меню
-        menuBar = new JMenuBar();
-        viewMenu = createViewMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu viewMenu = createViewMenu();
+        JMenu fileMenu = createFileMenu();
 
+        menuBar.add(fileMenu);
         menuBar.add(viewMenu);
         setJMenuBar(menuBar);
 
+        // флажок текущего задаваемого графика
         isLinApproxGraph = false;
     }
 
@@ -88,18 +85,22 @@ public class GraphForm extends JFrame {
                 false,
                 true,
                 false);
+
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
         ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
+        // Установка дефолтных параметров графика
         DataHandler.setDefaultGraphAxisSettings();
         DataHandler.setDefaultGraphViewSettings();
-        setGraphAxisSettings(xyLineChart);
 
+        // Отрисовка сетки
         XYPlot plot = (XYPlot) xyLineChart.getPlot();
         plot.setBackgroundPaint(Color.white);
         plot.setRangeGridlinePaint(Color.GRAY);
         plot.setDomainGridlinePaint(Color.GRAY);
+
+        // Отрисовка маркера (линия y=0)
         final ValueMarker marker = new ValueMarker(0.0);
         marker.setPaint(Color.black);
         marker.setStroke(new BasicStroke(1.0f));
@@ -107,26 +108,22 @@ public class GraphForm extends JFrame {
 
         xyLineChart.getTitle().setFont(new Font("Tahoma", Font.PLAIN, 20));
 
+        // Датасеты точек графиков
         plot.setDataset(0, dataset1);
         plot.setDataset(1, dataset2);
 
-        XYSplineRenderer renderer1 = new XYSplineRenderer(100);
+        // рендерер для графика мал. деф.
+        XYSplineRenderer renderer1 = new XYSplineRenderer(DataHandler.spline_precision);
         plot.setRenderer(0, renderer1);
-        renderer1.setSeriesShapesVisible(0, true);
         renderer1.setSeriesPaint(0, Color.RED);
 
+        // рендерер для графика лин. апр.
         XYLineAndShapeRenderer renderer2 = new XYLineAndShapeRenderer();
         plot.setRenderer(1,renderer2);
-        renderer2.setSeriesShapesVisible(0, false);
         renderer2.setSeriesPaint(0, Color.BLUE);
 
-        int w1 = DataHandler.point_width;
-        int w2 = w1/2;
-
-        renderer1.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
-        renderer2.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
-
-        crosshairOverlay = new CrosshairOverlay();
+        // отрисовка позиции мышки
+        CrosshairOverlay crosshairOverlay = new CrosshairOverlay();
         crosshairx = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
         crosshairy = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
         crosshairx.setLabelVisible(true);
@@ -135,10 +132,17 @@ public class GraphForm extends JFrame {
         crosshairOverlay.addRangeCrosshair(crosshairy);
         chartPanel.addOverlay(crosshairOverlay);
 
+        // установка параметров отрисовки графиков
+        setGraphAxisSettings(xyLineChart);
+        setGraphViewSettings(xyLineChart);
+
+        // обработчик кликов
         chartPanel.addChartMouseListener(new ChartMouseListener() {
             @Override
             public void chartMouseClicked(ChartMouseEvent chartMouseEvent) {
+                // если нажата правая кнопка
                 if (chartMouseEvent.getTrigger().getButton() == MouseEvent.BUTTON3)
+                    // возврат к исходным параметрам графика
                     setGraphAxisSettings(xyLineChart);
                 else {
                     ChartEntity ce = chartMouseEvent.getEntity();
@@ -198,20 +202,20 @@ public class GraphForm extends JFrame {
 
             @Override
             public void chartMouseMoved(ChartMouseEvent chartMouseEvent) {
+                // отрисовка оверлея - позиция мышки
                 showCrosshair(chartMouseEvent);
             }
 
             /**
-             *
+             * Функция отрисовки овердея - позиции мышки
              * @param cme
              */
             private void showCrosshair(ChartMouseEvent cme){
                 int mouseX = cme.getTrigger().getX();
                 int mouseY = cme.getTrigger().getY();
 
-                // StackOverflow, спасибо, что ты есть
                 Rectangle2D plotArea = chartPanel.getScreenDataArea();
-                XYPlot plot = (XYPlot) xyLineChart.getPlot(); // your plot
+                XYPlot plot = (XYPlot) xyLineChart.getPlot();
                 double chartX = plot.getDomainAxis().java2DToValue(mouseX, plotArea, plot.getDomainAxisEdge());
                 double chartY = plot.getRangeAxis().java2DToValue(mouseY, plotArea, plot.getRangeAxisEdge());
 
@@ -219,6 +223,7 @@ public class GraphForm extends JFrame {
                 crosshairy.setValue(chartY);
             }
         });
+
         return chartPanel;
     }
 
@@ -228,35 +233,43 @@ public class GraphForm extends JFrame {
      */
     public static void setGraphAxisSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
+
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+
         xAxis.setRange(DataHandler.xmin, DataHandler.xmax);
         xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
+
         yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
         yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
+
         plot.getDomainAxis().setLabel("t (" + DataHandler.unitOfTime + ")");
     }
 
     /**
-     * Функция, задающая стандартные настройки сплайна
+     * Функция, задающая стандартные настройки отображения графиков
      * @param chart
      */
     public static void setGraphViewSettings(JFreeChart chart){
         XYPlot plot = (XYPlot) chart.getPlot();
 
+        // рендерер для 1го графика
         XYSplineRenderer r1 = (XYSplineRenderer)plot.getRenderer(0);
         r1.setPrecision(DataHandler.spline_precision);
         r1.setSeriesStroke(0, new BasicStroke(DataHandler.spline_width));
 
+        // рендерер для 2го графика
         XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer)plot.getRenderer(1);
         r2.setSeriesStroke(0, new BasicStroke(DataHandler.lin_appr_width));
 
+        // отрисовка маркера
         plot.clearRangeMarkers();
         final ValueMarker marker = new ValueMarker(0.0);
         marker.setPaint(Color.black);
         marker.setStroke(new BasicStroke(DataHandler.marker_width));
         plot.addRangeMarker(marker);
 
+        // отрисовка маток точек
         int w1 = DataHandler.point_width;
         int w2 = w1/2;
         r1.setSeriesShape(0, ShapeUtils.createTranslatedShape(new Rectangle(w1,w1), -w2, -w2));
@@ -276,26 +289,26 @@ public class GraphForm extends JFrame {
         setGraphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DataHandler.lin_appr_array = series2.toArray();
+                // получение массива точек графика лин. апр.
+                DataHandler.setGraphInput(series2.toArray());
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
             }
         });
+
         return setGraphButton;
     }
 
     /**
-     * Функция создания меню
+     * Функция создания меню "Вид"
      * @return
      */
     private JMenu createViewMenu(){
         JMenu viewSettings = new JMenu("Вид");
         JMenuItem changeGraphSettings = new JMenuItem("Параметры осей");
         JMenuItem changeSplineSettings = new JMenuItem("Параметры отображения");
-        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
 
         viewSettings.add(changeGraphSettings);
         viewSettings.add(changeSplineSettings);
-        viewSettings.add(changeGraph);
 
         changeGraphSettings.addActionListener(new ActionListener() {
             @Override
@@ -310,6 +323,21 @@ public class GraphForm extends JFrame {
                 GraphViewSettingsDialog dialog = new GraphViewSettingsDialog(xyLineChart);
             }
         });
+
+        return viewSettings;
+    }
+
+    /**
+     * Функция создания меню "Файл"
+     * @return
+     */
+    private JMenu createFileMenu(){
+        JMenu fileSettings = new JMenu("Файл");
+        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
+        JMenuItem setFormula = new JMenuItem("Задать формулу");
+
+        fileSettings.add(changeGraph);
+        fileSettings.add(setFormula);
 
         changeGraph.addActionListener(new ActionListener() {
             @Override
@@ -329,11 +357,18 @@ public class GraphForm extends JFrame {
             }
         });
 
-        return viewSettings;
+        setFormula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
+            }
+        });
+
+        return fileSettings;
     }
 
     /**
-     * Функция создания датасета
+     * Функция создания датасета1 - график мал. деф., со сплайном
      * @return
      */
     private XYDataset createDataset1(){
@@ -341,14 +376,20 @@ public class GraphForm extends JFrame {
         series1 = new XYSeries("series1");
         series1.add(0, 0);
         dataset.addSeries(series1);
+
         return dataset;
     }
 
+    /**
+     * Функция создания датасета2 - график лин. апр.
+     * @return
+     */
     private XYDataset createDataset2(){
         XYSeriesCollection dataset = new XYSeriesCollection();
         series2 = new XYSeries("series2");
         series2.add(0, 0);
         dataset.addSeries(series2);
+
         return dataset;
     }
 }

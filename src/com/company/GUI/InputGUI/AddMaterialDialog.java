@@ -15,7 +15,6 @@ public class AddMaterialDialog extends JDialog {
 
     public AddMaterialDialog(EnvParamForm frame) {
         add(contentPane);
-        //setModal(true);
         setVisible(true);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
