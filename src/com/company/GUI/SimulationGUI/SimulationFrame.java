@@ -6,6 +6,7 @@ import com.company.Simulation.SimulationSynchronizerThread;
 
 import javax.swing.*;
 import javax.xml.crypto.Data;
+import java.awt.*;
 
 /**
  * Окно симуляции
@@ -36,5 +37,15 @@ public class SimulationFrame extends JFrame {
                     System.out.println(array[0][i] + "; " + array[1][i]);
                 }
          */
+
+        // заглушка
+        JButton b1 = new JButton("Пауза");
+        //b1.setSize(new Dimension(100,50));
+        JButton b2 = new JButton("Остановка");
+        //b2.setSize(new Dimension(100,50));
+        JPanel panel = new JPanel();
+        panel.add(b1);
+        panel.add(b2);
+        add(panel, BorderLayout.NORTH);
     }
 }
