@@ -1,10 +1,10 @@
 package com.company.Simulation.SimulationVariables;
 
 /**
- * Функция, предоставляющая выбор множителя времени (с, мс, мкс, нс).
- *
- * Рекомендуется использование вместе с SimulationGlobals.setSimulationTimePow().
- *
+ * Перечисление, предоставляющее выбор множителя времени (с, мс, мкс, нс).
+ * <br>
+ * Рекомендуется использование вместе с SimulationTime.setSimulationTimePow().
+ * <br>
  * Функция getPow() возвращает степень множителя времени.
  */
 public enum SimulationTimePow {

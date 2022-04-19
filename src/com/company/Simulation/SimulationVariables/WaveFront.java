@@ -18,12 +18,14 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * - Также можно описать как du/dx
      */
     double A1;
+
     /**
      * Зависимость смещения от времени
      * <br>
      * Также можно описать как du/dt
      */
     double A2;
+
     /**
      * Смещение по координате / задержка во времени
      */
@@ -44,6 +46,8 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         characteristicSpeed = 0;
     }
 
+    double currentX;
+
     //-------------------------------SETTERS--------------------------------
 
     /**
@@ -58,6 +62,12 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
+        //TODO: убедиться, что A0 в момент столкновения являет собой координату старта волнового фронта
+        this.currentX = A0;
+    }
+
+    public void setCurrentX(double currentX) {
+        this.currentX = currentX;
     }
 
     //-------------------------------GETTERS--------------------------------
@@ -72,6 +82,7 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
     public double getA1() {
         return A1;
     }
+
     /**
      * Зависимость смещения от времени
      * <br>
@@ -91,6 +102,10 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
 
     public double getCharacteristicSpeed() {
         return characteristicSpeed;
+    }
+
+    public double getCurrentX() {
+        return currentX;
     }
 
     //-------------------------------ФУНКЦИИ--------------------------------

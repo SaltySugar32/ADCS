@@ -12,7 +12,6 @@ public class SimulationGlobals {
 
     //----------------------НЕОТСОРТИРОВАННЫЕ ПЕРЕМЕННЫЕ-----------------------
 
-    static Comparator<WaveFront> comparator = Comparator.comparingDouble(o -> o.getA2() * SimulationTime.getSimulationTime());
 
     //-------------------------------------------------------------------------
 
@@ -113,10 +112,6 @@ public class SimulationGlobals {
 
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
-    }
-
-    public static Comparator<WaveFront> getComparator() {
-        return comparator;
     }
 
     //-------------------------------------------------------------------------

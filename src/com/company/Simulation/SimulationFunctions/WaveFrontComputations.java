@@ -1,6 +1,7 @@
 package com.company.Simulation.SimulationFunctions;
 
 import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.Simulation.SimulationVariables.WaveFront;
 
 public class WaveFrontComputations {
 
@@ -53,6 +54,23 @@ public class WaveFrontComputations {
     {
         return displacementNeg * (Math.pow(speedLeft, 2) - Math.pow(newSpeed, 2)) / (Math.pow(speedRight, 2) - Math.pow(newSpeed, 2));
     }
+
+    //TODO: создание нового волнового фронта
+    public static WaveFront createNewWaveFront(WaveFront firstWaveFront, WaveFront secondWaveFront) {
+
+
+        return new WaveFront(0, 0, 0);
+    }
+
+    //Неверно - скорость - плохая характеристика для такого описания
+    //TODO: сравнение волн
+    public static boolean checkIfTwoWavesCollided(WaveFront firstWaveFront, WaveFront secondWaveFront) {
+        return firstWaveFront.getCurrentX() > secondWaveFront.getCurrentX();
+    }
+
+
+
+
 
     //Вычисление системы уравнений из четырех элементов
     //Предыдущий = новый;

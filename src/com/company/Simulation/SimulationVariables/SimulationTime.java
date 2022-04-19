@@ -16,7 +16,6 @@ public class SimulationTime {
     public static void setSimulationTime(double simulationTime) {
         SimulationTime.simulationTime = simulationTime;
     }
-    //Все переменные выше - константы материала
 
     public static void nextSimulationTime() {
         simulationTime += simulationTimeDelta;
@@ -26,12 +25,12 @@ public class SimulationTime {
 
     //---------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ЦИКЛ-----------------------
 
-    /*
-     * Число от 0.1 до 1, выражающее длительность операции.
+    /**
+     * Число в рамках от (0.1 до 1) * simulationTimePow
      */
     static double simulationTimeDelta;
 
-    /*
+    /**
      * Эквивалентно 10 ^ SimulationTimePow.getPow()
      */
     static double simulationTimePow;
@@ -41,6 +40,10 @@ public class SimulationTime {
         simulationTimeDelta = 0.5 * simulationTimePow;
     }
 
+    /**
+     * Число, выражающее длительность операции.
+     * @return Число в рамках (от 0.1 до 1) * simulationTimePow
+     */
     public static double getSimulationTimeDelta() {
         return simulationTimeDelta;
     }
@@ -54,6 +57,10 @@ public class SimulationTime {
         SimulationTime.simulationTimeDelta = simulationTimeDelta * simulationTimePow;
     }
 
+    /**
+     * Число, выражающее множитель степени секунды.
+     * @return Число в рамках (от 1 до 10^-9)
+     */
     public static double getSimulationTimePow() {
         return simulationTimePow;
     }
