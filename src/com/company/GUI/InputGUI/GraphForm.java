@@ -65,9 +65,11 @@ public class GraphForm extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = createViewMenu();
         JMenu fileMenu = createFileMenu();
+        JMenu changeGraphMenu = createChangeGraphMenu();
 
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);
+        menuBar.add(changeGraphMenu);
         setJMenuBar(menuBar);
 
         // флажок текущего задаваемого графика
@@ -83,9 +85,9 @@ public class GraphForm extends JFrame {
         dataset2 = createDataset2();
 
         xyLineChart = ChartFactory.createXYLineChart(
-                "Введите график",
-                "t (" + DataHandler.unitOfTime + ")",
-                "φ(t)",
+                "График малых деформаций",
+                "t, " + DataHandler.unitOfTime + "",
+                "φ(t), мм",
                 dataset1,
                 PlotOrientation.VERTICAL,
                 false,
@@ -249,7 +251,7 @@ public class GraphForm extends JFrame {
         yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
         yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
 
-        plot.getDomainAxis().setLabel("t (" + DataHandler.unitOfTime + ")");
+        plot.getDomainAxis().setLabel("t, " + DataHandler.unitOfTime + "");
     }
 
     /**
@@ -339,31 +341,13 @@ public class GraphForm extends JFrame {
      */
     private JMenu createFileMenu(){
         JMenu fileSettings = new JMenu("Файл");
-        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
+
         JMenuItem setFormula = new JMenuItem("Задать формулу");
         JMenuItem savePNG = new JMenuItem("Сохранить изображение");
 
-        fileSettings.add(changeGraph);
         fileSettings.add(setFormula);
         fileSettings.add(savePNG);
 
-        changeGraph.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                XYPlot plot = (XYPlot) xyLineChart.getPlot();
-                XYSplineRenderer r1 = (XYSplineRenderer) plot.getRenderer(0);
-                XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot.getRenderer(1);
-                if(isLinApproxGraph){
-                    r1.setSeriesShapesVisible(0, true);
-                    r2.setSeriesShapesVisible(0, false);
-                }
-                else{
-                    r1.setSeriesShapesVisible(0, false);
-                    r2.setSeriesShapesVisible(0, true);
-                }
-                isLinApproxGraph = !isLinApproxGraph;
-            }
-        });
 
         setFormula.addActionListener(new ActionListener() {
             @Override
@@ -380,6 +364,42 @@ public class GraphForm extends JFrame {
         });
 
         return fileSettings;
+    }
+
+    /**
+     * создание меню смены задаваемого графика
+     * @return
+     */
+    private JMenu createChangeGraphMenu(){
+        JMenu changeGraphMenu = new JMenu("Ввод");
+        JMenuItem item = new JMenuItem("Сменить задаваемый график");
+
+        changeGraphMenu.add(item);
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XYPlot plot = (XYPlot) xyLineChart.getPlot();
+                XYSplineRenderer r1 = (XYSplineRenderer) plot.getRenderer(0);
+                XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot.getRenderer(1);
+                if(isLinApproxGraph){
+                    r1.setSeriesShapesVisible(0, true);
+                    r2.setSeriesShapesVisible(0, false);
+                }
+                else{
+                    r1.setSeriesShapesVisible(0, false);
+                    r2.setSeriesShapesVisible(0, true);
+                }
+                isLinApproxGraph = !isLinApproxGraph;
+
+                if(isLinApproxGraph)
+                    xyLineChart.getTitle().setText("График линейной аппроксимации");
+                else
+                    xyLineChart.getTitle().setText("График малых деформаций");
+            }
+        });
+
+        return changeGraphMenu;
     }
 
     /**

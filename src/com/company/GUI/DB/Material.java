@@ -12,12 +12,12 @@ public class Material {
     public String name;
 
     // Конструктор
-    public Material(String name, double p1, double p2, double p3, double p4) {
+    public Material(String name, double lameMu, double lameLambda, double materialDensity, double coefficientNu) {
         this.name = name;
-        this.lameMu = p1;
-        this.lameLambda = p2;
-        this.materialDensity = p3;
-        this.coefficientNu = p4;
+        this.lameMu = lameMu;
+        this.lameLambda = lameLambda;
+        this.materialDensity = materialDensity;
+        this.coefficientNu = coefficientNu;
     }
 
     // Выводим информацию по материалу

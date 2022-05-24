@@ -8,6 +8,7 @@ import com.company.Simulation.SimulationSynchronizerThread;
 import com.company.Simulation.SimulationVariables.SimulationGlobals;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -84,17 +85,27 @@ public class EnvParamForm extends JFrame{
 
         // сообщение о корректности ввода
         statusLabel.setText(DataHandler.setEnvParams(t1, t2, t3, t4));
-        // если ввод коректный, то на главном фрейме отобразить "Задано" для параметров среды
-        if (DataHandler.env_param_input_status) mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
 
-        if(comboBox1.getSelectedIndex()!=0)
-            DBHandler.updateMaterial(
-                    comboBox1.getSelectedIndex()-1,
-                    DataHandler.lameMu,
-                    DataHandler.lameLambda,
-                    DataHandler.materialDensity,
-                    DataHandler.coefficientNu
-            );
+        // изменение материала
+        if (statusLabel.getText().equals("<html><font color='green'>Параметры введены</font></html>")){
+            if(comboBox1.getSelectedIndex()!=0) {
+                DBHandler.updateMaterial(
+                        comboBox1.getSelectedIndex() - 1,
+                        DataHandler.lameMu,
+                        DataHandler.lameLambda,
+                        DataHandler.materialDensity,
+                        DataHandler.coefficientNu
+                );
+
+                // Сообщение об изменении материала
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, "Материал '" + comboBox1.getSelectedItem() + "' был изменен.");
+            }
+        }
+
+        // отобразить "Задано" для параметров среды
+        if (DataHandler.env_param_input_status)
+            mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
     }
 
     // отображение текущих значений параметров среды в текстовых полях
@@ -122,7 +133,7 @@ public class EnvParamForm extends JFrame{
     public void loadComboBox(){
         DBHandler.getAllMaterials();
         String[] items = DBHandler.getMaterialNames();
-        //comboBox1.removeAllItems();
+
         // Дефолтный айтем, который можно сохранить как новый материал
         comboBox1.addItem("...");
 

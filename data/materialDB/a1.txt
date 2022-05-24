@@ -1,0 +1,5 @@
+name=a1
+lambda=0.01
+nu=0.01
+mu=0.011
+density=0.01
