@@ -444,7 +444,9 @@ public class GraphForm extends JFrame {
     }
 
     /**
-     * Функция сохранения графика как PNG файл
+     * Сохранение изображения как png файл
+     * @param chart
+     * @param panel
      */
     private void saveChartAsPNG(JFreeChart chart, ChartPanel panel){
         JFrame parentFrame = new JFrame();
@@ -460,10 +462,6 @@ public class GraphForm extends JFrame {
             fileToSave = fileChooser.getSelectedFile();
         }
 
-        // Удаление названия графика в изображении
-        String title = chart.getTitle().getText();
-        chart.getTitle().setText("");
-
         // сохранение графика как PNG файл
         if(fileToSave!=null) {
             String file_path = fileToSave.getAbsolutePath().toString();
@@ -471,32 +469,38 @@ public class GraphForm extends JFrame {
             if(!file_path.endsWith(".png"))
                 file_path += ".png";
 
-            try {
-                ChartUtils.saveChartAsPNG(
-                        new File(file_path),
-                        chart,
-                        panel.getWidth(),
-                        panel.getHeight()
-                );
-            }
-            catch (IOException ex) {}
+            SaveChart(chart, panel, file_path);
         }
-        // Откат названия графика
-        chart.getTitle().setText(title);
     }
 
+    /**
+     * Быстрое сохранение изображения
+     * @param chart
+     * @param panel
+     */
     private void quickSaveChartAsPNG(JFreeChart chart, ChartPanel panel){
         String path = "data/inputImages/";
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String file_path = path + timeStamp + ".png";
 
+        SaveChart(chart, panel, file_path);
+    }
+
+    /**
+     * Сохранение графика в файл
+     * @param chart
+     * @param panel
+     * @param file
+     */
+    private void SaveChart(JFreeChart chart, ChartPanel panel, String file){
         // Удаление названия графика в изображении
         String title = chart.getTitle().getText();
         chart.getTitle().setText("");
 
+        // сохранение графика
         try {
             ChartUtils.saveChartAsPNG(
-                    new File(file_path),
+                    new File(file),
                     chart,
                     panel.getWidth(),
                     panel.getHeight()
