@@ -22,12 +22,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
@@ -343,9 +346,11 @@ public class GraphForm extends JFrame {
         JMenu fileSettings = new JMenu("Файл");
 
         JMenuItem setFormula = new JMenuItem("Задать формулу");
-        JMenuItem savePNG = new JMenuItem("Сохранить изображение");
+        JMenuItem quickSavePNG = new JMenuItem("Сохранить изображение");
+        JMenuItem savePNG = new JMenuItem("Сохранить изображение как...");
 
         fileSettings.add(setFormula);
+        fileSettings.add(quickSavePNG);
         fileSettings.add(savePNG);
 
 
@@ -355,6 +360,16 @@ public class GraphForm extends JFrame {
                 SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
             }
         });
+
+        quickSavePNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quickSaveChartAsPNG(xyLineChart, chartPanel);
+            }
+        });
+
+        KeyStroke key = KeyStroke.getKeyStroke("control S");
+        quickSavePNG.setAccelerator(key);
 
         savePNG.addActionListener(new ActionListener() {
             @Override
@@ -466,6 +481,28 @@ public class GraphForm extends JFrame {
             }
             catch (IOException ex) {}
         }
+        // Откат названия графика
+        chart.getTitle().setText(title);
+    }
+
+    private void quickSaveChartAsPNG(JFreeChart chart, ChartPanel panel){
+        String path = "data/inputImages/";
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        String file_path = path + timeStamp + ".png";
+
+        // Удаление названия графика в изображении
+        String title = chart.getTitle().getText();
+        chart.getTitle().setText("");
+
+        try {
+            ChartUtils.saveChartAsPNG(
+                    new File(file_path),
+                    chart,
+                    panel.getWidth(),
+                    panel.getHeight()
+            );
+        }
+        catch (IOException ex) {}
 
         // Откат названия графика
         chart.getTitle().setText(title);
