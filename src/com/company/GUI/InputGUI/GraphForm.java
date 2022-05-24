@@ -18,15 +18,21 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
     private JFreeChart xyLineChart;
+    private ChartPanel chartPanel;
 
     private XYDataset dataset1;
     private XYDataset dataset2;
@@ -87,7 +93,7 @@ public class GraphForm extends JFrame {
                 false);
 
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
-        ChartPanel chartPanel  = new ChartPanel(xyLineChart);
+        chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
         // Установка дефолтных параметров графика
@@ -335,9 +341,11 @@ public class GraphForm extends JFrame {
         JMenu fileSettings = new JMenu("Файл");
         JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
         JMenuItem setFormula = new JMenuItem("Задать формулу");
+        JMenuItem savePNG = new JMenuItem("Сохранить изображение");
 
         fileSettings.add(changeGraph);
         fileSettings.add(setFormula);
+        fileSettings.add(savePNG);
 
         changeGraph.addActionListener(new ActionListener() {
             @Override
@@ -361,6 +369,13 @@ public class GraphForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
+            }
+        });
+
+        savePNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveChartAsPNG(xyLineChart, chartPanel);
             }
         });
 
@@ -391,5 +406,48 @@ public class GraphForm extends JFrame {
         dataset.addSeries(series2);
 
         return dataset;
+    }
+
+    /**
+     * Функция сохранения графика как PNG файл
+     */
+    private void saveChartAsPNG(JFreeChart chart, ChartPanel panel){
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Выберите файл для сохранения");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG images", "png"));
+
+        // Окно выбора файла
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        File fileToSave = null;
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            fileToSave = fileChooser.getSelectedFile();
+        }
+
+        // Удаление названия графика в изображении
+        String title = chart.getTitle().getText();
+        chart.getTitle().setText("");
+
+        // сохранение графика как PNG файл
+        if(fileToSave!=null) {
+            String file_path = fileToSave.getAbsolutePath().toString();
+
+            if(!file_path.endsWith(".png"))
+                file_path += ".png";
+
+            try {
+                ChartUtils.saveChartAsPNG(
+                        new File(file_path),
+                        chart,
+                        panel.getWidth(),
+                        panel.getHeight()
+                );
+            }
+            catch (IOException ex) {}
+        }
+
+        // Откат названия графика
+        chart.getTitle().setText(title);
     }
 }
