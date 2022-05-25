@@ -1,4 +1,4 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.GraphGUI;
 
 import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
@@ -22,13 +22,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -68,7 +65,7 @@ public class GraphForm extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = createViewMenu();
         JMenu fileMenu = createFileMenu();
-        JMenu changeGraphMenu = createChangeGraphMenu();
+        JMenu changeGraphMenu = createInputMenu();
 
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);
@@ -385,13 +382,15 @@ public class GraphForm extends JFrame {
      * создание меню смены задаваемого графика
      * @return
      */
-    private JMenu createChangeGraphMenu(){
-        JMenu changeGraphMenu = new JMenu("Ввод");
-        JMenuItem item = new JMenuItem("Сменить задаваемый график");
+    private JMenu createInputMenu(){
+        JMenu inputMenu = new JMenu("Ввод");
+        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
+        JMenuItem loadGraph = new JMenuItem("Загрузить график");
 
-        changeGraphMenu.add(item);
+        inputMenu.add(changeGraph);
+        inputMenu.add(loadGraph);
 
-        item.addActionListener(new ActionListener() {
+        changeGraph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 XYPlot plot = (XYPlot) xyLineChart.getPlot();
@@ -414,7 +413,14 @@ public class GraphForm extends JFrame {
             }
         });
 
-        return changeGraphMenu;
+        loadGraph.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LoadGraphDialog dialog = new LoadGraphDialog();
+            }
+        });
+
+        return inputMenu;
     }
 
     /**

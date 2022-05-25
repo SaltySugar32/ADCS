@@ -1,6 +1,8 @@
 package com.company.GUI.InputGUI;
 
 import com.company.GUI.GUIGlobals;
+import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
+import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
 import com.company.Simulation.SimulationSynchronizerThread;
 

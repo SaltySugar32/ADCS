@@ -1,18 +1,18 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.EnvParamGUI;
 
-import com.company.GUI.DB.DBHandler;
-import com.company.GUI.DB.Material;
+import com.company.GUI.Database.DBHandler;
+import com.company.GUI.Database.Material;
 import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class EnvParamForm extends JFrame{
     private JPanel mainPanel;
@@ -42,6 +42,13 @@ public class EnvParamForm extends JFrame{
         statusLabel.setText("");
 
         loadComboBox();
+
+        // Загрузка иконки - мусорки для кнопки Удалить
+        try {
+            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash-10-16.png"));
+            DeleteButton.setIcon(new ImageIcon(deleteIcon));
+        }
+        catch (IOException ex){}
 
         // отображение текущих значений параметров среды
         fillTextFields();

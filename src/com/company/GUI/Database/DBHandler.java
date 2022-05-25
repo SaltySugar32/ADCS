@@ -1,6 +1,5 @@
-package com.company.GUI.DB;
+package com.company.GUI.Database;
 import java.io.*;
-import java.sql.*;
 import java.util.*;
 
 public class DBHandler {

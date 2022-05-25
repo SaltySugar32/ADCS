@@ -1,4 +1,4 @@
-package com.company.GUI.DB;
+package com.company.GUI.Database;
 
 /**
  * Класс материала
