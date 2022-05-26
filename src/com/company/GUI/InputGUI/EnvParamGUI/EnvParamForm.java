@@ -1,17 +1,18 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.EnvParamGUI;
 
-import com.company.GUI.DB.DBHandler;
-import com.company.GUI.DB.Material;
+import com.company.GUI.Database.DBHandler;
+import com.company.GUI.Database.Material;
 import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class EnvParamForm extends JFrame{
     private JPanel mainPanel;
@@ -41,6 +42,13 @@ public class EnvParamForm extends JFrame{
         statusLabel.setText("");
 
         loadComboBox();
+
+        // Загрузка иконки - мусорки для кнопки Удалить
+        try {
+            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash-10-16.png"));
+            DeleteButton.setIcon(new ImageIcon(deleteIcon));
+        }
+        catch (IOException ex){}
 
         // отображение текущих значений параметров среды
         fillTextFields();
@@ -84,17 +92,27 @@ public class EnvParamForm extends JFrame{
 
         // сообщение о корректности ввода
         statusLabel.setText(DataHandler.setEnvParams(t1, t2, t3, t4));
-        // если ввод коректный, то на главном фрейме отобразить "Задано" для параметров среды
-        if (DataHandler.env_param_input_status) mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
 
-        if(comboBox1.getSelectedIndex()!=0)
-            DBHandler.updateMaterial(
-                    comboBox1.getSelectedIndex()-1,
-                    DataHandler.lameMu,
-                    DataHandler.lameLambda,
-                    DataHandler.materialDensity,
-                    DataHandler.coefficientNu
-            );
+        // изменение материала
+        if (statusLabel.getText().equals("<html><font color='green'>Параметры введены</font></html>")){
+            if(comboBox1.getSelectedIndex()!=0) {
+                DBHandler.updateMaterial(
+                        comboBox1.getSelectedIndex() - 1,
+                        DataHandler.lameMu,
+                        DataHandler.lameLambda,
+                        DataHandler.materialDensity,
+                        DataHandler.coefficientNu
+                );
+
+                // Сообщение об изменении материала
+                JFrame frame = new JFrame();
+                JOptionPane.showMessageDialog(frame, "Материал '" + comboBox1.getSelectedItem() + "' был изменен.");
+            }
+        }
+
+        // отобразить "Задано" для параметров среды
+        if (DataHandler.env_param_input_status)
+            mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
     }
 
     // отображение текущих значений параметров среды в текстовых полях
@@ -122,7 +140,7 @@ public class EnvParamForm extends JFrame{
     public void loadComboBox(){
         DBHandler.getAllMaterials();
         String[] items = DBHandler.getMaterialNames();
-        //comboBox1.removeAllItems();
+
         // Дефолтный айтем, который можно сохранить как новый материал
         comboBox1.addItem("...");
 

@@ -1,7 +1,7 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.EnvParamGUI;
 
-import com.company.GUI.DB.DBHandler;
-import com.company.GUI.DB.Material;
+import com.company.GUI.Database.DBHandler;
+import com.company.GUI.Database.Material;
 import com.company.GUI.DataHandler;
 
 import javax.swing.*;

@@ -1,6 +1,6 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.EnvParamGUI;
 
-import com.company.GUI.DB.DBHandler;
+import com.company.GUI.Database.DBHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

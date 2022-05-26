@@ -1,6 +1,7 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.GraphGUI;
 
 import com.company.GUI.DataHandler;
+import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
 import org.jfree.chart.*;
@@ -18,15 +19,21 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 // Без UI дизайнера, ибо он плохо работает с библиотекой jfreechart
 public class GraphForm extends JFrame {
     private JFreeChart xyLineChart;
+    private ChartPanel chartPanel;
 
     private XYDataset dataset1;
     private XYDataset dataset2;
@@ -59,9 +66,11 @@ public class GraphForm extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = createViewMenu();
         JMenu fileMenu = createFileMenu();
+        JMenu changeGraphMenu = createInputMenu();
 
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);
+        menuBar.add(changeGraphMenu);
         setJMenuBar(menuBar);
 
         // флажок текущего задаваемого графика
@@ -77,9 +86,9 @@ public class GraphForm extends JFrame {
         dataset2 = createDataset2();
 
         xyLineChart = ChartFactory.createXYLineChart(
-                "Введите график",
-                "t (" + DataHandler.unitOfTime + ")",
-                "φ(t)",
+                "График малых деформаций",
+                "t, " + DataHandler.unitOfTime + "",
+                "φ(t), мм",
                 dataset1,
                 PlotOrientation.VERTICAL,
                 false,
@@ -87,7 +96,7 @@ public class GraphForm extends JFrame {
                 false);
 
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
-        ChartPanel chartPanel  = new ChartPanel(xyLineChart);
+        chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
         // Установка дефолтных параметров графика
@@ -243,7 +252,7 @@ public class GraphForm extends JFrame {
         yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
         yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
 
-        plot.getDomainAxis().setLabel("t (" + DataHandler.unitOfTime + ")");
+        plot.getDomainAxis().setLabel("t, " + DataHandler.unitOfTime + "");
     }
 
     /**
@@ -290,6 +299,7 @@ public class GraphForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // получение массива точек графика лин. апр.
+                DBHandler.addGraphFile("temp", series2.toArray());
                 DataHandler.setGraphInput(series2.toArray());
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
             }
@@ -333,11 +343,54 @@ public class GraphForm extends JFrame {
      */
     private JMenu createFileMenu(){
         JMenu fileSettings = new JMenu("Файл");
-        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
-        JMenuItem setFormula = new JMenuItem("Задать формулу");
 
-        fileSettings.add(changeGraph);
+        JMenuItem setFormula = new JMenuItem("Задать формулу");
+        JMenuItem quickSavePNG = new JMenuItem("Сохранить изображение");
+        JMenuItem savePNG = new JMenuItem("Сохранить изображение как...");
+
         fileSettings.add(setFormula);
+        fileSettings.add(quickSavePNG);
+        fileSettings.add(savePNG);
+
+
+        setFormula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
+            }
+        });
+
+        quickSavePNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                quickSaveChartAsPNG(xyLineChart, chartPanel);
+            }
+        });
+
+        KeyStroke key = KeyStroke.getKeyStroke("control S");
+        quickSavePNG.setAccelerator(key);
+
+        savePNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveChartAsPNG(xyLineChart, chartPanel);
+            }
+        });
+
+        return fileSettings;
+    }
+
+    /**
+     * создание меню смены задаваемого графика
+     * @return
+     */
+    private JMenu createInputMenu(){
+        JMenu inputMenu = new JMenu("Ввод");
+        JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
+        JMenuItem loadGraph = new JMenuItem("Загрузить график");
+
+        inputMenu.add(changeGraph);
+        inputMenu.add(loadGraph);
 
         changeGraph.addActionListener(new ActionListener() {
             @Override
@@ -354,17 +407,22 @@ public class GraphForm extends JFrame {
                     r2.setSeriesShapesVisible(0, true);
                 }
                 isLinApproxGraph = !isLinApproxGraph;
+
+                if(isLinApproxGraph)
+                    xyLineChart.getTitle().setText("График линейной аппроксимации");
+                else
+                    xyLineChart.getTitle().setText("График малых деформаций");
             }
         });
 
-        setFormula.addActionListener(new ActionListener() {
+        loadGraph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
+                LoadGraphDialog dialog = new LoadGraphDialog(series2);
             }
         });
 
-        return fileSettings;
+        return inputMenu;
     }
 
     /**
@@ -391,5 +449,74 @@ public class GraphForm extends JFrame {
         dataset.addSeries(series2);
 
         return dataset;
+    }
+
+    /**
+     * Сохранение изображения как png файл
+     * @param chart
+     * @param panel
+     */
+    private void saveChartAsPNG(JFreeChart chart, ChartPanel panel){
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Выберите файл для сохранения");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG images", "png"));
+
+        // Окно выбора файла
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        File fileToSave = null;
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            fileToSave = fileChooser.getSelectedFile();
+        }
+
+        // сохранение графика как PNG файл
+        if(fileToSave!=null) {
+            String file_path = fileToSave.getAbsolutePath().toString();
+
+            if(!file_path.endsWith(".png"))
+                file_path += ".png";
+
+            SaveChart(chart, panel, file_path);
+        }
+    }
+
+    /**
+     * Быстрое сохранение изображения
+     * @param chart
+     * @param panel
+     */
+    private void quickSaveChartAsPNG(JFreeChart chart, ChartPanel panel){
+        String path = "data/inputImages/";
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        String file_path = path + timeStamp + ".png";
+
+        SaveChart(chart, panel, file_path);
+    }
+
+    /**
+     * Сохранение графика в файл
+     * @param chart
+     * @param panel
+     * @param file
+     */
+    private void SaveChart(JFreeChart chart, ChartPanel panel, String file){
+        // Удаление названия графика в изображении
+        String title = chart.getTitle().getText();
+        chart.getTitle().setText("");
+
+        // сохранение графика
+        try {
+            ChartUtils.saveChartAsPNG(
+                    new File(file),
+                    chart,
+                    panel.getWidth(),
+                    panel.getHeight()
+            );
+        }
+        catch (IOException ex) {}
+
+        // Откат названия графика
+        chart.getTitle().setText(title);
     }
 }

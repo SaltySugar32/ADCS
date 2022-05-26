@@ -1,4 +1,4 @@
-package com.company.GUI.InputGUI;
+package com.company.GUI.InputGUI.GraphGUI;
 
 import com.company.GUI.DataHandler;
 import org.jfree.chart.JFreeChart;
