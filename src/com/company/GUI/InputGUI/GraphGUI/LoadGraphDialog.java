@@ -1,11 +1,14 @@
 package com.company.GUI.InputGUI.GraphGUI;
 
+import com.company.GUI.Database.DBHandler;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class LoadGraphDialog extends JDialog {
     private JPanel contentPane;
@@ -29,7 +32,18 @@ public class LoadGraphDialog extends JDialog {
         }
         catch(IOException ex){}
 
+        loadComboBox(comboBox1);
+
         setVisible(true);
         this.setAlwaysOnTop(true);
+    }
+
+    public void loadComboBox(JComboBox cb){
+        cb.removeAllItems();
+
+        List<String> names = DBHandler.getGraphNames();
+        for (String name : names) {
+            cb.addItem(name);
+        }
     }
 }

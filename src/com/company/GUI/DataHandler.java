@@ -41,6 +41,9 @@ public class DataHandler {
     // array[p1][p2]
     // p1 - 0(x)/1(y)
     // p2 - point num
+    // Example
+    // array[0][5] = 12 >> x5 = 12
+    // array[1][5] = 7  >> y5 = 7
     public static double[][] lin_appr_array;
 
     public static void setDefaultGraphAxisSettings(){

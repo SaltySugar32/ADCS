@@ -4,14 +4,16 @@ import java.util.*;
 
 public class DBHandler {
 
-    public static String path = "data/materialDB/";
+    public static String materialPath = "data/materialDB/";
     public static List<Material> materials;
+
+    public static String graphPath = "data/graphDB/";
 
     // заполнение списка материалов
     public static void getAllMaterials() {
         materials = new ArrayList<Material>();
 
-        File folder = new File(path);
+        File folder = new File(materialPath);
         File[] materialFiles = folder.listFiles();
 
         if(materialFiles != null) {
@@ -122,7 +124,7 @@ public class DBHandler {
     public static void addMaterialFile(Material material){
 
         // создание файла
-        String file_path = path + material.name + ".txt";
+        String file_path = materialPath + material.name + ".txt";
         File file = new File(file_path);
         try {
             file.createNewFile();
@@ -153,13 +155,143 @@ public class DBHandler {
         addMaterialFile(materials.get(index));
     }
 
-
-
     // удаление материала
     public static void deleteMaterial(int index){
         Material material = materials.get(index);
         materials.remove(index);
-        File file = new File(path + material.name + ".txt");
+        File file = new File(materialPath + material.name + ".txt");
         file.delete();
     }
+
+    // чтение всех имен файлов графиков
+    public static List<String> getGraphNames(){
+        List<String> names = new ArrayList<>();
+
+        File folder = new File(graphPath);
+        File[] graphFiles = folder.listFiles();
+
+        if(graphFiles != null) {
+            // чтение всех материалов
+            for (File file : graphFiles) {
+
+                if (file.isFile()) {
+                    names.add(file.getName());
+                }
+            }
+        }
+        return names;
+    }
+
+    // чтение содержимого файла графика
+    public static double[][] getGraphArray(String filename){
+
+        File folder = new File(graphPath);
+        File[] graphFiles = folder.listFiles();
+        File target_file = null;
+
+        // поиск файла по имени
+        if(graphFiles != null) {
+            for (File file : graphFiles) {
+                if (file.isFile() && filename.equals(file.getName())) {
+                    target_file = file;
+                }
+            }
+        }
+
+        if (target_file == null)
+            return null;
+
+        // создание массива размера файла
+        int size = getGraphFileSize(target_file);
+        if(size < 1)
+            return null;
+
+        double[][] array = new double[2][size];
+
+        // чтение координат из файла
+        try (BufferedReader br = new BufferedReader(new FileReader(target_file.getAbsolutePath()))) {
+            int i=0;
+            for(String line = br.readLine(); line!=null; line = br.readLine()) {
+
+                String[] parts = line.split(";");
+                try{
+                    array[0][i] = Double.parseDouble(parts[0]);
+                    array[1][i] = Double.parseDouble(parts[1]);
+                }
+                catch (Exception ex){return null;}
+                i++;
+            }
+        }
+        catch (Exception ex){return null;}
+
+        return array;
+    }
+
+    // Проверка на корректность + подсчет строк в файле графика
+    public static int getGraphFileSize(File file){
+        int rows = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+            for(String line = br.readLine(); line!=null; line = br.readLine()){
+                // подсчет строк
+                rows++;
+
+                // проверка строки файла на 2 части, разделенные символом ";"
+                String[] parts = line.split(";");
+                if(parts.length!=2)
+                    return -1;
+
+                // проверка на числа
+                try{
+                    Double.parseDouble(parts[0]);
+                    Double.parseDouble(parts[1]);
+                }
+                catch (Exception ex){return -1;}
+            }
+        }
+        catch (Exception ex){return -1;}
+
+        return rows;
+    }
+
+    // запись координат в файл
+    public static void addGraphFile(String fileName, double[][] array){
+        File file = new File(graphPath + fileName + ".txt");
+
+        try{
+            file.createNewFile();
+        }
+        catch (Exception ex){}
+
+        //запись в файл
+        try {
+            FileWriter fileWriter = new FileWriter(file, false);
+
+            for(int i=1; i<array[0].length; i++)
+                fileWriter.write(array[0][i] + ";" + array[1][i] + "\n");
+
+            fileWriter.close();
+        }
+        catch (IOException ex) {}
+    }
+
+    // удаление файла с координатами графика
+    public static void deleteGraphFile(String fileName){
+
+        File folder = new File(graphPath);
+        File[] graphFiles = folder.listFiles();
+        File target_file = null;
+
+        // поиск файла по имени
+        if(graphFiles != null) {
+            for (File file : graphFiles) {
+                if (file.isFile() && fileName.equals(file.getName())) {
+                    target_file = file;
+                }
+            }
+        }
+
+        if(target_file != null)
+            target_file.delete();
+    }
+
 }
