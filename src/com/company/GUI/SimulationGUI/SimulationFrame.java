@@ -1,11 +1,9 @@
 package com.company.GUI.SimulationGUI;
 
-import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
-import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 
 /**

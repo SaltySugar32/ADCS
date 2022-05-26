@@ -4,7 +4,7 @@ import com.company.GUI.GUIGlobals;
 import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
-import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

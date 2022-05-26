@@ -1,7 +1,5 @@
 package com.company.Simulation.SimulationVariables;
 
-import com.company.Simulation.SimulationFunctions.WaveFrontComputations;
-
 /**Описание волнового фронта
  * Пока далеко от истины
  * Здесь не должно быть ничего, кроме базовых get/set методов
@@ -62,7 +60,7 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
-        //TODO: убедиться, что A0 в момент столкновения являет собой координату старта волнового фронта
+
         this.currentX = A0;
     }
 
@@ -132,5 +130,6 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
+        this.currentX = A0;
     }
 }

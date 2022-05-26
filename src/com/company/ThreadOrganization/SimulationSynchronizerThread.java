@@ -1,7 +1,7 @@
-package com.company.Simulation;
+package com.company.ThreadOrganization;
 
 import com.company.ProgramGlobals;
-import com.company.Simulation.SimulationVariables.NextJobs;
+import com.company.ThreadOrganization.ThreadStates.NextThreadState;
 
 public class SimulationSynchronizerThread extends Thread {
     /**
@@ -19,10 +19,10 @@ public class SimulationSynchronizerThread extends Thread {
     /**
      * переменная, указывающая, что делать следующим
      */
-    private volatile NextJobs nextJob;
+    private volatile NextThreadState nextThreadState;
 
     {
-        nextJob = NextJobs.RESUME;
+        nextThreadState = NextThreadState.RESUME;
     }
 
     /**
@@ -30,45 +30,45 @@ public class SimulationSynchronizerThread extends Thread {
      */
     public void setNextJob(int nextJob) {
         switch (nextJob) {
-            case 1 -> setNextJob(NextJobs.PAUSE);
-            case 2 -> setNextJob(NextJobs.RESUME);
-            default -> setNextJob(NextJobs.DISABLE);
+            case 1 -> setNextJob(NextThreadState.PAUSE);
+            case 2 -> setNextJob(NextThreadState.RESUME);
+            default -> setNextJob(NextThreadState.DISABLE);
         }
     }
 
     /**
      * SETTER, непосредственно указывающий, что делать дальше
      */
-    public void setNextJob(NextJobs nextJob) {
-        this.nextJob = nextJob;
+    public void setNextJob(NextThreadState nextThreadState) {
+        this.nextThreadState = nextThreadState;
     }
 
     /**
      * Указать симуляции, что она должна быть поставлена на паузу
      */
     public void setNextJobPAUSE() {
-        nextJob = NextJobs.PAUSE;
+        nextThreadState = NextThreadState.PAUSE;
     }
 
     /**
      * Указать симуляции, что её работа должна быть возобновлена
      */
     public void setNextJobRESUME() {
-        nextJob = NextJobs.RESUME;
+        nextThreadState = NextThreadState.RESUME;
     }
 
     /**
      * Указать симуляции, что она должна быть отключена
      */
     public void setNextJobDISABLE() {
-        nextJob = NextJobs.DISABLE;
+        nextThreadState = NextThreadState.DISABLE;
     }
 
     /**
      * GETTER, что должно выполняться следующим
      */
-    public NextJobs getNextJob() {
-        return nextJob;
+    public NextThreadState getNextJob() {
+        return nextThreadState;
     }
 
     /**
@@ -86,7 +86,7 @@ public class SimulationSynchronizerThread extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            nextJob.nextJob(simulationServerThread);
+            nextThreadState.nextJob(simulationServerThread);
         }
     }
 }

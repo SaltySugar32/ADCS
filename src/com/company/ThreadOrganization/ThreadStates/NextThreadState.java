@@ -1,11 +1,11 @@
-package com.company.Simulation.SimulationVariables;
+package com.company.ThreadOrganization.ThreadStates;
 
-import com.company.Simulation.SimulationServerThread;
+import com.company.ThreadOrganization.SimulationServerThread;
 
 /**
  * Перечисление всех указаний для сервера, что нужно выполнить следующим
  */
-public enum NextJobs {
+public enum NextThreadState {
     RESUME {
         @Override
         public void nextJob(SimulationServerThread simulationServerThread) {

@@ -3,7 +3,7 @@ package com.company.GUI.InputGUI.GraphGUI;
 import com.company.GUI.DataHandler;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
-import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;

@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
 import com.company.UserClients.UserClient_v1;
 import com.company.UserClients.UserClient_v2;

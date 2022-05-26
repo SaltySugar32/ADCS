@@ -4,7 +4,7 @@ import com.company.GUI.Database.DBHandler;
 import com.company.GUI.Database.Material;
 import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
-import com.company.Simulation.SimulationSynchronizerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

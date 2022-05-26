@@ -1,8 +1,7 @@
 package com.company;
 
-import com.company.Simulation.SimulationServerThread;
-import com.company.Simulation.SimulationSynchronizerThread;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.ThreadOrganization.SimulationServerThread;
+import com.company.ThreadOrganization.SimulationSynchronizerThread;
 import com.company.UserClients.UserClient;
 
 public class Main {
@@ -33,3 +32,30 @@ public class Main {
         ClientThread.start();
     }
 }
+
+//V Передвижение волновых фронтов относительно точки их появления
+//TODO: Проверка наличия столкновения
+//TODO: Приближение к месту столкновения
+//TODO: Проход по списку хэндлеров столкновения
+//TODO: Обработка взаимодействия на материал
+
+//TODO: A0 - координата начала для волнового фронта?
+
+
+
+//TODO: DOFIGA
+//Вычисление системы уравнений из четырех элементов
+//Предыдущий = новый;
+//Новый = следующий.
+//Преобразуем два уравнения в системе так, чтобы они приняли следующий вид:
+//Предыдущий = новый:
+//  Равенство членов 0-й степени производной
+//  Равенство членов 1-й степени производной
+//Новый = следующий:
+//  Равенство членов 0-й степени производной
+//  Равенство членов 1-й степени производной
+
+//В данных системах имеем четыре неизвестные: A1_i, A2_i, A0_i, V_i
+//Выражаем из формулы поиска скорости волнового фронта U-,x === A1_i
+//Подставляем на соответствующее место выраженное уравнение (ручками нужно предварительно всё подготовить)
+//Таким образом получаем все четыре неизвестные

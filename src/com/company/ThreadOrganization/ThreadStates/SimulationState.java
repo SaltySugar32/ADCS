@@ -1,6 +1,6 @@
-package com.company.Simulation.SimulationVariables;
+package com.company.ThreadOrganization.ThreadStates;
 
-public enum SimulationStatuses {
+public enum SimulationState {
     /**
      * Список все возможных состояний сервера
      * <br>На данный момент DISABLED, INTERPROCESS, PAUSED
