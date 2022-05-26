@@ -1,6 +1,7 @@
 package com.company.GUI.InputGUI.GraphGUI;
 
 import com.company.GUI.DataHandler;
+import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.Simulation.SimulationSynchronizerThread;
 import org.jfree.chart.*;
@@ -298,6 +299,7 @@ public class GraphForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // получение массива точек графика лин. апр.
+                DBHandler.addGraphFile("temp", series2.toArray());
                 DataHandler.setGraphInput(series2.toArray());
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
             }
@@ -416,7 +418,7 @@ public class GraphForm extends JFrame {
         loadGraph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoadGraphDialog dialog = new LoadGraphDialog();
+                LoadGraphDialog dialog = new LoadGraphDialog(series2);
             }
         });
 
