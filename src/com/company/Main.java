@@ -1,8 +1,8 @@
 package com.company;
 
-import com.company.ThreadOrganization.SimulationServerThread;
-import com.company.ThreadOrganization.SimulationSynchronizerThread;
-import com.company.UserClients.UserClient;
+import com.company.thread_organization.SimulationServerThread;
+import com.company.thread_organization.SimulationSynchronizerThread;
+import com.company.user_clients.UserClient;
 
 public class Main {
 
@@ -34,10 +34,10 @@ public class Main {
 }
 
 //V Передвижение волновых фронтов относительно точки их появления
+//TODO: Обработка воздействия на границу среды
 //TODO: Проверка наличия столкновения
 //TODO: Приближение к месту столкновения
 //TODO: Проход по списку хэндлеров столкновения
-//TODO: Обработка взаимодействия на материал
 
 //TODO: A0 - координата начала для волнового фронта?
 

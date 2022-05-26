@@ -1,7 +1,7 @@
-package com.company.ThreadOrganization;
+package com.company.thread_organization;
 
 import com.company.ProgramGlobals;
-import com.company.ThreadOrganization.ThreadStates.NextThreadState;
+import com.company.thread_organization.thread_states.NextThreadState;
 
 public class SimulationSynchronizerThread extends Thread {
     /**

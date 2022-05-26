@@ -1,6 +1,6 @@
 package com.company.GUI;
 
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.simulation.simulation_variables.SimulationGlobals;
 import org.mariuszgromada.math.mxparser.Constant;
 import org.mariuszgromada.math.mxparser.Expression;
 

@@ -1,6 +1,6 @@
-package com.company.Simulation.InterProcessFunctions.CollisionHandlers.CollisionHandlerRealisations;
+package com.company.simulation.inter_process_functions.collision_handlers.collision_handler_realisations;
 
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.simulation.simulation_variables.SimulationGlobals;
 
 public class ObsoleteWaveFrontComputations {
 

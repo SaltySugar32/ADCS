@@ -1,6 +1,6 @@
-package com.company.ThreadOrganization.ThreadStates;
+package com.company.thread_organization.thread_states;
 
-import com.company.ThreadOrganization.SimulationServerThread;
+import com.company.thread_organization.SimulationServerThread;
 
 /**
  * Перечисление всех указаний для сервера, что нужно выполнить следующим

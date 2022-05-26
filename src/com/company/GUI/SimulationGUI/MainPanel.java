@@ -1,6 +1,6 @@
 package com.company.GUI.SimulationGUI;
 
-import com.company.ThreadOrganization.SimulationSynchronizerThread;
+import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
 import java.awt.*;

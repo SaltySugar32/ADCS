@@ -1,6 +1,6 @@
-package com.company.Simulation.InterProcessFunctions;
+package com.company.simulation.inter_process_functions;
 
-import com.company.Simulation.SimulationVariables.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 public class WaveFrontComputations {
     public static boolean checkIfTwoWavesCollided(WaveFront firstWaveFront, WaveFront secondWaveFront) {

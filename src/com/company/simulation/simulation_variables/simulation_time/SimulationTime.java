@@ -1,4 +1,4 @@
-package com.company.Simulation.SimulationVariables;
+package com.company.simulation.simulation_variables.simulation_time;
 
 public class SimulationTime {
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
@@ -36,7 +36,7 @@ public class SimulationTime {
     static double simulationTimePow;
 
     static {
-        setSimulationTimePow(SimulationTimePow.MICROSECONDS);
+        setSimulationTimePow(SimulationTimePow.MILLISECONDS);
         simulationTimeDelta = 0.5 * simulationTimePow;
     }
 
@@ -70,6 +70,34 @@ public class SimulationTime {
      */
     public static void setSimulationTimePow(SimulationTimePow simulationTimePow) {
         SimulationTime.simulationTimePow = Math.pow(10, simulationTimePow.getPow());
+    }
+
+    //-------------------------------------------------------------------------
+
+    //-----------------ИЗМЕНЕНИЕ ВРЕМЕНИ С ПОВЫШЕННОЙ ТОЧНОСТЬЮ----------------
+
+    /**
+     * Эквивалентно 10 ^ SimulationTimeHiPrecisionPow.getPow()
+     */
+    static double simulationTimeHiPrecisionDelta;
+
+    static {
+        setSimulationTimeHiPrecisionDelta(SimulationTimePow.MICROSECONDS);
+    }
+
+    /**
+     * Число, выражающее множитель степени секунды.
+     * @return Число в рамках (от 1 до 10^-9)
+     */
+    public static double getSimulationTimeHiPrecisionDelta() {
+        return simulationTimeHiPrecisionDelta;
+    }
+
+    /**
+     * Ввод множителя шага повышенной точности для симуляции, выражаемого в степени секунды.
+     */
+    public static void setSimulationTimeHiPrecisionDelta(SimulationTimePow simulationTimeHiPrecisionDelta) {
+        SimulationTime.simulationTimeHiPrecisionDelta = Math.pow(10, simulationTimeHiPrecisionDelta.getPow());
     }
 
     //-------------------------------------------------------------------------

@@ -1,8 +1,8 @@
-package com.company.ThreadOrganization;
+package com.company.thread_organization;
 
-import com.company.Simulation.InterProcessFunctions.InterProcessComputations;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
-import com.company.ThreadOrganization.ThreadStates.SimulationState;
+import com.company.simulation.inter_process_functions.InterProcessComputations;
+import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.thread_organization.thread_states.SimulationState;
 
 import java.util.Stack;
 

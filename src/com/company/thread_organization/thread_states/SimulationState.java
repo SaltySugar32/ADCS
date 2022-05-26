@@ -1,4 +1,4 @@
-package com.company.ThreadOrganization.ThreadStates;
+package com.company.thread_organization.thread_states;
 
 public enum SimulationState {
     /**

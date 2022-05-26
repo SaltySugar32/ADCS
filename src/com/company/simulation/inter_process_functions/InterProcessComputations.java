@@ -1,7 +1,7 @@
-package com.company.Simulation.InterProcessFunctions;
+package com.company.simulation.inter_process_functions;
 
-import com.company.Simulation.SimulationVariables.SimulationTime;
-import com.company.Simulation.SimulationVariables.WaveFront;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
