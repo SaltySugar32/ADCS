@@ -16,8 +16,8 @@ public class GUIGlobals {
     public static int env_param_frame_height = 550;
 
     // Размер окна ввода графика
-    public static int graph_frame_width = 1500;
-    public static int graph_frame_height = 1000;
+    public static int graph_frame_width = 1280;
+    public static int graph_frame_height = 720;
 
     // Цвет бекграунда
     public static Color background_color = Color.decode("#A9CADC");

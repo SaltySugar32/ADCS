@@ -27,8 +27,9 @@ public class LoadGraphDialog extends JDialog {
         setTitle("Загрузка графика");
         setSize(400, 220);
 
+        // Загрузка иконки для кнопки
         try {
-            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash-10-16.png"));
+            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash.png"));
             deleteButton.setIcon(new ImageIcon(deleteIcon));
         }
         catch(IOException ex){}

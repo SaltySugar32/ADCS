@@ -55,7 +55,7 @@ public class GraphForm extends JFrame {
         this.setLocationRelativeTo(null);
 
         // панель с графиком
-        ChartPanel chartPanel = createChartPanel();
+        chartPanel = createChartPanel();
         add(chartPanel, BorderLayout.CENTER);
 
         // кнопка "задать"
@@ -96,7 +96,7 @@ public class GraphForm extends JFrame {
                 false);
 
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
-        chartPanel  = new ChartPanel(xyLineChart);
+        ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
         // Установка дефолтных параметров графика
@@ -367,6 +367,7 @@ public class GraphForm extends JFrame {
             }
         });
 
+        // Shortcut квиксейва CTRL + S
         KeyStroke key = KeyStroke.getKeyStroke("control S");
         quickSavePNG.setAccelerator(key);
 
@@ -477,7 +478,7 @@ public class GraphForm extends JFrame {
             if(!file_path.endsWith(".png"))
                 file_path += ".png";
 
-            SaveChart(chart, panel, file_path);
+            DBHandler.SaveChart(chart, panel, file_path);
         }
     }
 
@@ -491,32 +492,6 @@ public class GraphForm extends JFrame {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String file_path = path + timeStamp + ".png";
 
-        SaveChart(chart, panel, file_path);
-    }
-
-    /**
-     * Сохранение графика в файл
-     * @param chart
-     * @param panel
-     * @param file
-     */
-    private void SaveChart(JFreeChart chart, ChartPanel panel, String file){
-        // Удаление названия графика в изображении
-        String title = chart.getTitle().getText();
-        chart.getTitle().setText("");
-
-        // сохранение графика
-        try {
-            ChartUtils.saveChartAsPNG(
-                    new File(file),
-                    chart,
-                    panel.getWidth(),
-                    panel.getHeight()
-            );
-        }
-        catch (IOException ex) {}
-
-        // Откат названия графика
-        chart.getTitle().setText(title);
+        DBHandler.SaveChart(chart, panel, file_path);
     }
 }

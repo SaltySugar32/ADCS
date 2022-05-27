@@ -1,4 +1,8 @@
 package com.company.GUI.Database;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+
 import java.io.*;
 import java.util.*;
 
@@ -292,6 +296,27 @@ public class DBHandler {
 
         if(target_file != null)
             target_file.delete();
+    }
+
+    // Сохранение графика в файл
+    public static void SaveChart(JFreeChart chart, ChartPanel panel, String file){
+        // Удаление названия графика в изображении
+        String title = chart.getTitle().getText();
+        chart.getTitle().setText("");
+
+        // сохранение графика
+        try {
+            ChartUtils.saveChartAsPNG(
+                    new File(file),
+                    chart,
+                    panel.getWidth(),
+                    panel.getHeight()
+            );
+        }
+        catch (IOException ex) {}
+
+        // Откат названия графика
+        chart.getTitle().setText(title);
     }
 
 }
