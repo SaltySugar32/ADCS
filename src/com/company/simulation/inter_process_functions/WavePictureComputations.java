@@ -15,7 +15,7 @@ public class WavePictureComputations {
     }
 
     public static void moveWaveFronts(ArrayList<WaveFront> currentWavePicture) {
-        for (WaveFront waveFront: currentWavePicture) {
+        for (WaveFront waveFront : currentWavePicture) {
             //Устанавливаем смещение относительно текущей координаты + скорости волнового фронта
             waveFront.setCurrentX(waveFront.getCurrentX() + waveFront.getA1() * SimulationTime.getSimulationTimeDelta());
         }
@@ -23,5 +23,19 @@ public class WavePictureComputations {
 
     public static void checkCollisions(ArrayList<WaveFront> currentWavePicture) {
 
+        if (currentWavePicture.size() > 1) {
+            for (int index = 0; index < currentWavePicture.size() - 1; index++) {
+                if (WaveFrontComputations
+                        .checkIfTwoWavesCollided(currentWavePicture.get(index),
+                                currentWavePicture.get(index + 1))) {
+
+                    WaveFrontComputations
+                            .calculatePreciseTime(currentWavePicture.get(index),
+                                    currentWavePicture.get(index + 1));
+                }
+            }
+        }
+
     }
+
 }

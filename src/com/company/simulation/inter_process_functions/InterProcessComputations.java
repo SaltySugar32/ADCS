@@ -10,9 +10,11 @@ public class InterProcessComputations {
 
     /**
      * Основная функция для выполнения операций, происходящих внутри симуляции
-     * <li>Изменение текущего времени</li>
+     * <li>Добавление нового волнового фронта</li>
      * <li>Обновление координат</li>
+     * <li>Изменение текущего времени</li>
      * <li>Проверка столкновений (вычисление в случае такового)</li>
+     * <li>Обновление координат</li>
      */
     public static ArrayList<WaveFront> getResult(ArrayList<WaveFront> prevWavePicture) {
         var wavePicture = new ArrayList<>(prevWavePicture);
@@ -24,13 +26,12 @@ public class InterProcessComputations {
         var borderWaveFront = BorderDisplacement.createBorderWaveFront();
         if (borderWaveFront != null) {
             SimulationGlobals.getCurrentWavePicture().add(borderWaveFront);
-            System.out.println("Added + " + borderWaveFront.getCurrentX());
-
         }
-
+        WavePictureComputations.sortCurrentWavePicture(wavePicture);
         WavePictureComputations.moveWaveFronts(wavePicture);
         WavePictureComputations.checkCollisions(wavePicture);
-        //WavePictureComputations.sortCurrentWavePicture(wavePicture);
+
+        WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
         return wavePicture;
     }

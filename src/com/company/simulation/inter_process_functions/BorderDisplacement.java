@@ -22,15 +22,15 @@ public class BorderDisplacement {
         //coordinates[0][index] = x = currentT
         //coordinates[1][index] = y = currentU
         for (int index = 0; index < coordinates[0].length - 1; index++) {
-            var currentT = coordinates[0][index];
-            var currentU = denoteFactor.toMillimeters(coordinates[1][index]);
-            var endT = coordinates[0][index + 1];
-            var endU = denoteFactor.toMillimeters(coordinates[1][index + 1]);
+            double currentT = coordinates[0][index];
+            double currentU = denoteFactor.toMillimeters(coordinates[1][index]);
+            double endT = coordinates[0][index + 1];
+            double endU = denoteFactor.toMillimeters(coordinates[1][index + 1]);
 
             //k = следующее значение перемещения минус значение перемещения в момент разрыва,
             // делённое на следующее время минус текущее время перегиба.
             //То есть k = (endU(endT) - currentU(currentT)) / (endT - currentT)
-            var k = (endU -  currentU) / (endT - currentT);
+            double k = (endU -  currentU) / (endT - currentT);
 
             borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
         }
@@ -39,13 +39,15 @@ public class BorderDisplacement {
     }
 
     /**
-     * Функция, отображающая текущее смещение границы материала
+     * Функция, возвращающая текущее смещение границы материала
      * @return double Значение смещения границы материала
      */
     public static double getCurrentBorderDisplacement() {
-        for (LinearFunction linearFunction: SimulationGlobals.getBorderDisplacementFunctions()) {
-            if (linearFunction.getStartTime() < SimulationTime.getSimulationTime()) {
-                return linearFunction.calculateBorderDisplacement(SimulationTime.getSimulationTime());
+        for (int index = SimulationGlobals.getBorderDisplacementFunctions().size() - 1; index >= 0; index--) {
+            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).getStartTime()
+                    < SimulationTime.getSimulationTime()) {
+                return SimulationGlobals.getBorderDisplacementFunctions().get(index)
+                        .calculateBorderDisplacement(SimulationTime.getSimulationTime());
             }
         }
 
@@ -74,6 +76,8 @@ public class BorderDisplacement {
      * Функция, добавляющая новый волновой фронт в волновую картину,
      * если за такт времени должно было произойти его появление
      * на границе волновой картины.
+     * Смещает волновой фронт в обратном направлении с повышенной точностью,
+     * дабы потом вместе со всеми фронтами обработать его смещение.
      * @return WaveFront новый волновой фронт
      */
     public static WaveFront createBorderWaveFront() {
@@ -82,16 +86,18 @@ public class BorderDisplacement {
         if (linearFunction == null)
             return null;
 
-        var A1 = linearFunction.getK();
-        var A2 = 0 - (linearFunction.getK() / linearFunction.getB());
-        var A0 = 0;
+        double A1 = linearFunction.getK();
+        double A2 = 0 - (linearFunction.getK() / linearFunction.getB());
+        double A0 = 0.0;
 
         for (double time = linearFunction.getStartTime();
-             time < SimulationTime.getSimulationTime();
-             time += SimulationTime.getSimulationTimeHiPrecisionDelta()) {
-            A0 += A1 * SimulationTime.getSimulationTimeHiPrecisionDelta();
+             time > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta();
+             time -= SimulationTime.getSimulationTimeHiPrecisionDelta()) {
+            A0 -= A1 * SimulationTime.getSimulationTimeHiPrecisionDelta();
         }
-        System.out.println(A0);
+
+        //System.out.println("Новый волновой фронт");
+        //System.out.println("U = " + A0 + " + x * " + A1 + " + t * " + A2);
 
         return new WaveFront(A1, A2, A0, DenoteFactor.MILLI);
     }
