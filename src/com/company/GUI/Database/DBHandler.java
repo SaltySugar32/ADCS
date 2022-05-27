@@ -150,13 +150,33 @@ public class DBHandler {
     }
 
     // обновление записи о материале
-    public static void updateMaterial(int index, double p1, double p2, double p3, double p4){
-        materials.get(index).lameMu = p1;
-        materials.get(index).lameLambda = p2;
-        materials.get(index).materialDensity = p3;
-        materials.get(index).coefficientNu = p4;
+    public static boolean updateMaterial(int index, double p1, double p2, double p3, double p4){
+        boolean updated = false;
 
-        addMaterialFile(materials.get(index));
+        if(materials.get(index).lameMu != p1){
+            updated = true;
+            materials.get(index).lameMu = p1;
+        }
+
+        if(materials.get(index).lameLambda != p2){
+            updated = true;
+            materials.get(index).lameLambda = p2;
+        }
+
+        if(materials.get(index).materialDensity != p3){
+            updated = true;
+            materials.get(index).materialDensity = p3;
+        }
+
+        if(materials.get(index).coefficientNu != p4){
+            updated = true;
+            materials.get(index).coefficientNu = p4;
+        }
+
+        if(updated)
+            addMaterialFile(materials.get(index));
+
+        return updated;
     }
 
     // удаление материала

@@ -1,12 +1,16 @@
 package com.company.GUI.InputGUI;
 
+import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
+import com.company.simulation.inter_process_functions.BorderDisplacement;
+import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -47,8 +51,6 @@ public class MainForm extends JFrame {
         graphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-                //ChartInputForm testfornm = new ChartInputForm("1", ServerThread);
                 GraphForm graphForm = new GraphForm(graphLabel, ServerThread);
             }
         });
@@ -56,7 +58,16 @@ public class MainForm extends JFrame {
         simulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
+                if(DataHandler.graph_input_status && DataHandler.env_param_input_status) {
+                    SimulationGlobals.setSimulationGlobals(
+                            DataHandler.lameMu,
+                            DataHandler.lameLambda,
+                            DataHandler.materialDensity,
+                            DataHandler.coefficientNu
+                    );
+                    BorderDisplacement.initBorderDisplacementFunctions(DataHandler.lin_appr_array);
+                    SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
+                }
             }
         });
     }

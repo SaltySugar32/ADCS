@@ -96,7 +96,7 @@ public class EnvParamForm extends JFrame{
         // изменение материала
         if (statusLabel.getText().equals("<html><font color='green'>Параметры введены</font></html>")){
             if(comboBox1.getSelectedIndex()!=0) {
-                DBHandler.updateMaterial(
+                boolean status = DBHandler.updateMaterial(
                         comboBox1.getSelectedIndex() - 1,
                         DataHandler.lameMu,
                         DataHandler.lameLambda,
@@ -106,7 +106,10 @@ public class EnvParamForm extends JFrame{
 
                 // Сообщение об изменении материала
                 JFrame frame = new JFrame();
-                JOptionPane.showMessageDialog(frame, "Материал '" + comboBox1.getSelectedItem() + "' был изменен.");
+                if (status)
+                    JOptionPane.showMessageDialog(frame, "Материал '" + comboBox1.getSelectedItem() + "' изменен и задан.");
+                else
+                    JOptionPane.showMessageDialog(frame, "Материал '" + comboBox1.getSelectedItem() + "' задан.");
             }
         }
 

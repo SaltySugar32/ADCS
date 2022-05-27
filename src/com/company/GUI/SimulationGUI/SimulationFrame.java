@@ -32,7 +32,6 @@ public class SimulationFrame extends JFrame {
     public SimulationFrame(SimulationSynchronizerThread ServerThread){
 
         this.setTitle("ADCS - Симуляция");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(GUIGlobals.graph_frame_width,GUIGlobals.graph_frame_height);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

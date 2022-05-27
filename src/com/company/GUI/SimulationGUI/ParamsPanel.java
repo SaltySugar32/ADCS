@@ -1,13 +1,18 @@
 package com.company.GUI.SimulationGUI;
 
 import com.company.ProgramGlobals;
+import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
+import com.company.thread_organization.thread_states.NextThreadState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +71,24 @@ public class ParamsPanel extends JPanel {
         timeDelta_slider.setLabelTable( labelTable );
 
         JButton pauseButton = new JButton("PAUSE");
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(ServerThread.getNextJob() == NextThreadState.RESUME)
+                    ServerThread.setNextJobPAUSE();
+
+                if(ServerThread.getNextJob() == NextThreadState.PAUSE)
+                    ServerThread.setNextJobRESUME();
+            }
+        });
+
         JButton stopButton = new JButton(" STOP");
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ServerThread.setNextJobPAUSE();
+            }
+        });
 
         // Загрузка иконки для кнопок
         try {
@@ -150,7 +172,7 @@ public class ParamsPanel extends JPanel {
 
                 // Изменение дельты времени
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
-                //SimulationGlobals.setSimulationTimeDelta(value);
+                SimulationTime.setSimulationTimeDelta(value);
                 timeDelta_label.setText("Дельта времени, мкс ("+value+")");
 
                 // Возобновление решателя
