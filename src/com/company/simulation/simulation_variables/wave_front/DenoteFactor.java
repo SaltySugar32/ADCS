@@ -11,31 +11,31 @@ package com.company.simulation.simulation_variables.wave_front;
 public enum DenoteFactor {
     NULL {
         @Override
-        public double toMilliseconds(double value) {
+        public double toMillimeters(double value) {
             return value * Math.pow(10, 3);
         }
     },
 
     MILLI {
         @Override
-        public double toMilliseconds(double value) {
+        public double toMillimeters(double value) {
             return value;
         }
     },
 
     MICRO {
         @Override
-        public double toMilliseconds(double value) {
+        public double toMillimeters(double value) {
             return value * Math.pow(10, -3);
         }
     },
 
     NANO {
         @Override
-        public double toMilliseconds(double value) {
+        public double toMillimeters(double value) {
             return value * Math.pow(10, -6);
         }
     };
 
-    public abstract double toMilliseconds(double value);
+    public abstract double toMillimeters(double value);
 }

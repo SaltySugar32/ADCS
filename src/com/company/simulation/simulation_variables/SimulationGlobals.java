@@ -55,7 +55,7 @@ public class SimulationGlobals {
     /**
      * Текущая волновая картина, содержащая в себе каждый из волновых фронтов
      */
-    static ArrayList<WaveFront> currentWavePicture;
+    static volatile ArrayList<WaveFront> currentWavePicture;
 
     /**
      * Воздействие на границу материала

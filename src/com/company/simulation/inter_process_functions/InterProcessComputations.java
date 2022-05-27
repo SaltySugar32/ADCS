@@ -22,10 +22,11 @@ public class InterProcessComputations {
 
         //Создание нового волнового фронта на границе полупространства
         var borderWaveFront = BorderDisplacement.createBorderWaveFront();
-        if (borderWaveFront != null)
+        if (borderWaveFront != null) {
             SimulationGlobals.getCurrentWavePicture().add(borderWaveFront);
+            System.out.println("Added");
+        }
 
-        System.out.println(SimulationGlobals.getCurrentWavePicture().size());
         WavePictureComputations.moveWaveFronts(wavePicture);
         WavePictureComputations.checkCollisions(wavePicture);
         //WavePictureComputations.sortCurrentWavePicture(wavePicture);

@@ -74,11 +74,12 @@ public class ParamsPanel extends JPanel {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(ServerThread.getNextJob() == NextThreadState.RESUME)
+                if(ServerThread.getNextJob() == NextThreadState.RESUME) {
                     ServerThread.setNextJobPAUSE();
-
-                if(ServerThread.getNextJob() == NextThreadState.PAUSE)
+                }
+                else {
                     ServerThread.setNextJobRESUME();
+                }
             }
         });
 
@@ -126,17 +127,10 @@ public class ParamsPanel extends JPanel {
         FPS_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
-                // Остановка решателя
-                ServerThread.setNextJobPAUSE();
-
                 // Изменение FPS
                 int value = (FPS_slider.getValue()==0)? 1:FPS_slider.getValue();
                 ProgramGlobals.setFramesPerSecond(value);
                 FPS_label.setText("Кадры в секунду ("+value+")");
-
-                // Возобновление решателя
-                ServerThread.setNextJobRESUME();
             }
         });
 
@@ -146,17 +140,10 @@ public class ParamsPanel extends JPanel {
         OPS_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
-                // Остановка решателя
-                ServerThread.setNextJobPAUSE();
-
                 // Изменение OPS
                 int value = (OPS_slider.getValue()==0)? 1:OPS_slider.getValue();
                 ProgramGlobals.setOperationsPerSecond(value);
                 OPS_label.setText("Операции в секунду ("+value+")");
-
-                // Возобновление решателя
-                ServerThread.setNextJobRESUME();
             }
         });
 
@@ -166,17 +153,10 @@ public class ParamsPanel extends JPanel {
         timeDelta_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
-                // Остановка решателя
-                ServerThread.setNextJobPAUSE();
-
                 // Изменение дельты времени
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
                 SimulationTime.setSimulationTimeDelta(value);
                 timeDelta_label.setText("Дельта времени, мкс ("+value+")");
-
-                // Возобновление решателя
-                ServerThread.setNextJobRESUME();
             }
         });
 

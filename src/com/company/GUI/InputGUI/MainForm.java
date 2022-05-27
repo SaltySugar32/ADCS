@@ -7,6 +7,7 @@ import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
 import com.company.simulation.inter_process_functions.BorderDisplacement;
 import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
@@ -65,7 +66,7 @@ public class MainForm extends JFrame {
                             DataHandler.materialDensity,
                             DataHandler.coefficientNu
                     );
-                    BorderDisplacement.initBorderDisplacementFunctions(DataHandler.lin_appr_array);
+                    BorderDisplacement.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
                     SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
                 }
             }
