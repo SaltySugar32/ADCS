@@ -1,12 +1,15 @@
-package com.company.Simulation.SimulationVariables;
+package com.company.simulation.simulation_variables.wave_front;
 
-import com.company.Simulation.SimulationFunctions.WaveFrontComputations;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 
-/**Описание волнового фронта
- * Пока далеко от истины
+/**
+ * Описание волнового фронта
+ * <br>
  * Здесь не должно быть ничего, кроме базовых get/set методов
+ * <br>
+ * Любые поступающие сюда значения преобразуются в миллиметры
  */
-public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
+public class WaveFront {
 
     //---------------------------ПАРАМЕТРЫ ВОЛНЫ-----------------------------
 
@@ -17,36 +20,24 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * <br>
      * - Также можно описать как du/dx
      */
-    double A1;
+    private double A1;
 
     /**
      * Зависимость смещения от времени
      * <br>
      * Также можно описать как du/dt
      */
-    double A2;
+    private double A2;
 
     /**
      * Смещение по координате / задержка во времени
      */
-    double A0;
+    private double A0;
 
     /**
-     * Тензор напряжений Эйлера-Коши по оси Ox - \sigma в формулах
+     * Текущая координата волнового фронта
      */
-    double tension;
-
-    /**
-     * Характеристическая скорость волнового фронта
-     */
-    double characteristicSpeed;
-
-    {
-        tension = 0;
-        characteristicSpeed = 0;
-    }
-
-    double currentX;
+    private double currentX;
 
     //-------------------------------SETTERS--------------------------------
 
@@ -58,14 +49,18 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * @param A2 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A0 смещение по координате / задержка по времени
      */
-    public void setWaveFront(double A1, double A2, double A0) {
-        this.A1 = A1;
-        this.A2 = A2;
-        this.A0 = A0;
-        //TODO: убедиться, что A0 в момент столкновения являет собой координату старта волнового фронта
+    public void setWaveFront(double A1, double A2, double A0 , DenoteFactor denoteFactor) {
+        this.A1 = denoteFactor.toMilliseconds(A1);
+        this.A2 = denoteFactor.toMilliseconds(A2);
+        this.A0 = denoteFactor.toMilliseconds(A0);
+
         this.currentX = A0;
     }
 
+    /**
+     * Изменение координаты волнового фронта
+     * @param currentX double Новая координата волнового фронта
+     */
     public void setCurrentX(double currentX) {
         this.currentX = currentX;
     }
@@ -78,6 +73,7 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * - Тензор малых деформаций e
      * <br>
      * - Также можно описать как du/dx
+     * @return double A1
      */
     public double getA1() {
         return A1;
@@ -87,35 +83,38 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * Зависимость смещения от времени
      * <br>
      * - Также можно описать как du/dt
+     * @return double A2
      */
     public double getA2() {
         return A2;
     }
 
+    /**
+     * Начальная координата волнового фронта
+     * @return double A0
+     */
     public double getA0() {
         return A0;
     }
 
-    public double getTension() {
-        return tension;
-    }
-
-    public double getCharacteristicSpeed() {
-        return characteristicSpeed;
-    }
-
+    /**
+     * Функция, возвращающая текущую координату волнового фронта
+     * @return double
+     */
     public double getCurrentX() {
         return currentX;
     }
 
     //-------------------------------ФУНКЦИИ--------------------------------
 
-    public void setTension(double tension) {
-        this.tension = tension;
-    }
-
-    public void setCharacteristicSpeed(double characteristicSpeed) {
-        this.characteristicSpeed = characteristicSpeed;
+    /**
+     * Функция, вычисляющая смещение на границе волнового фронта
+     * <br>
+     * U(x,t) = A1 * x + A2 * t + A0
+     * @return double
+     */
+    public double calculateDisplacement() {
+        return (getA0() + getA1() * SimulationTime.getSimulationTime() + getA2() * currentX);
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
@@ -128,9 +127,11 @@ public class WaveFront { //U(x,t) = A1 * x + A2 * t + A0
      * @param A2 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A0 смещение по координате / задержка по времени
      */
-    public WaveFront(double A1, double A2, double A0) {
-        this.A1 = A1;
-        this.A2 = A2;
-        this.A0 = A0;
+    public WaveFront(double A1, double A2, double A0, DenoteFactor denoteFactor) {
+        this.A1 = denoteFactor.toMilliseconds(A1);
+        this.A2 = denoteFactor.toMilliseconds(A2);
+        this.A0 = denoteFactor.toMilliseconds(A0);
+
+        this.currentX = A0;
     }
 }

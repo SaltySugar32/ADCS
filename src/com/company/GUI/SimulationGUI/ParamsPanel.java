@@ -1,8 +1,7 @@
 package com.company.GUI.SimulationGUI;
 
 import com.company.ProgramGlobals;
-import com.company.Simulation.SimulationSynchronizerThread;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
+import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

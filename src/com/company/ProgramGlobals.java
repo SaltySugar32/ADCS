@@ -1,9 +1,9 @@
 package com.company;
 
-import com.company.Simulation.SimulationSynchronizerThread;
-import com.company.UserClients.UserClient;
-import com.company.UserClients.UserClient_v1;
-import com.company.UserClients.UserClient_v2;
+import com.company.thread_organization.SimulationSynchronizerThread;
+import com.company.user_clients.UserClient;
+import com.company.user_clients.UserClient_v1;
+import com.company.user_clients.UserClient_v2;
 
 /**Файл с глобальными переменными сборки*/
 public record ProgramGlobals() {

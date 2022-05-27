@@ -1,8 +1,8 @@
-package com.company.Simulation;
+package com.company.thread_organization;
 
-import com.company.Simulation.SimulationFunctions.InterProcessComputations;
-import com.company.Simulation.SimulationVariables.SimulationGlobals;
-import com.company.Simulation.SimulationVariables.SimulationStatuses;
+import com.company.simulation.inter_process_functions.InterProcessComputations;
+import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.thread_organization.thread_states.SimulationState;
 
 import java.util.Stack;
 
@@ -21,11 +21,11 @@ public class SimulationServerThread extends Thread {
      * <p>
      * Такое представление весьма условно, но для понимания вполне сойдет
      */
-    Stack<SimulationStatuses> simulationStatusesStack;
+    Stack<SimulationState> simulationStateStack;
 
     {
-        simulationStatusesStack = new Stack<>();
-        addInSimStatusesStack(SimulationStatuses.INTERPROCESS);
+        simulationStateStack = new Stack<>();
+        addInSimStatusesStack(SimulationState.INTERPROCESS);
     }
 
     //-----------------------РАБОТА СО СТЕКОМ ОПЕРАЦИЙ ПОТОКА--------------------------
@@ -33,38 +33,38 @@ public class SimulationServerThread extends Thread {
     /**
      * SETTER для стека статусов симуляции
      */
-    public void addInSimStatusesStack(SimulationStatuses simStatus) {
-        simulationStatusesStack.push(simStatus);
+    public void addInSimStatusesStack(SimulationState simStatus) {
+        simulationStateStack.push(simStatus);
     }
 
     /**
      * GETTER для стека статусов симуляции
      */
-    public SimulationStatuses getFromSimStatusesStack() {
-        return simulationStatusesStack.peek();
+    public SimulationState getFromSimStatusesStack() {
+        return simulationStateStack.peek();
     }
 
     /**
      * Выход из приостановки потока симуляции
      */
     public void simResume() {
-        if (SimulationStatuses.PAUSED == simulationStatusesStack.peek())
-            simulationStatusesStack.pop();
+        if (SimulationState.PAUSED == simulationStateStack.peek())
+            simulationStateStack.pop();
     }
 
     /**
      * Вход в приостановку потока симуляции
      */
     public void simPause() {
-        if (SimulationStatuses.INTERPROCESS == simulationStatusesStack.peek())
-            simulationStatusesStack.push(SimulationStatuses.PAUSED);
+        if (SimulationState.INTERPROCESS == simulationStateStack.peek())
+            simulationStateStack.push(SimulationState.PAUSED);
     }
 
     /**
      * Отключение потока симуляции
      */
     public void simDisable() {
-        simulationStatusesStack.push(SimulationStatuses.DISABLED);
+        simulationStateStack.push(SimulationState.DISABLED);
     }
 
     /**
@@ -84,15 +84,15 @@ public class SimulationServerThread extends Thread {
      */
     @Override
     public void run() {
-        addInSimStatusesStack(SimulationStatuses.PAUSED);
+        addInSimStatusesStack(SimulationState.PAUSED);
         //int debug_numOfOperations = 0;
 
         //Если симуляция не деактивирована, то ...
-        while (SimulationStatuses.DISABLED != simulationStatusesStack.peek()) {
+        while (SimulationState.DISABLED != simulationStateStack.peek()) {
             //System.out.println(debug_numOfOperations++ + " " + SimulationGlobals.getSimulationTime());
 
             //Если симуляция на паузе, то ждем ...
-            while (SimulationStatuses.PAUSED == simulationStatusesStack.peek()) {
+            while (SimulationState.PAUSED == simulationStateStack.peek()) {
                 onSpinWait();
             }
             //Иначе выполняем следующую операцию ...
