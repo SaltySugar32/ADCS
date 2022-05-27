@@ -1,8 +1,9 @@
-package com.company.simulation.initializers;
+package com.company.simulation.inter_process_functions;
 
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class BorderDisplacement {
      * @param coordinates Множество координат, где coordinates[0] = x = t, coordinates[1] = y = u
      * @return ArrayList of LinearFunction - Множество линейных функций
      */
-    public ArrayList<LinearFunction> initBorderDisplacementFunctions(double[][] coordinates) {
+    public static ArrayList<LinearFunction> initBorderDisplacementFunctions(double[][] coordinates) {
         ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
         borderDisplacementFunctions.add(new LinearFunction(0,0,0));
 
@@ -40,5 +41,19 @@ public class BorderDisplacement {
         }
 
         return borderDisplacementFunctions;
+    }
+
+    /**
+     * Функция, отображающая текущее смещение границы материала
+     * @return double Значение смещения границы материала
+     */
+    public static double getCurrentBorderDisplacement() {
+        for (LinearFunction linearFunction: SimulationGlobals.getBorderDisplacementFunctions()) {
+            if (linearFunction.getStartTime() < SimulationTime.getSimulationTime()) {
+                return linearFunction.calculateBorderDisplacement(SimulationTime.getSimulationTime());
+            }
+        }
+
+        return 0;
     }
 }
