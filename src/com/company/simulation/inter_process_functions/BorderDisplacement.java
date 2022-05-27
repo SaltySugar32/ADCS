@@ -21,7 +21,7 @@ public class BorderDisplacement {
         // коэффициентов линейных функций
         //coordinates[0] = x = endT
         //coordinates[1] = y = endU
-        for (int index = 0; index < coordinates.length - 1; index++) {
+        for (int index = 0; index < coordinates[0].length - 1; index++) {
 
             //Время - момент начала нового разрыва первого рода
             //t = currentT

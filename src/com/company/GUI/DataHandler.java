@@ -176,8 +176,6 @@ public class DataHandler {
         }
         catch (Exception e){return "Коффициент разномодульности ν введен неверно";}
 
-        // Передача данных в решатель
-        SimulationGlobals.setSimulationGlobals(d1,d2,d3,d4);
         lameMu = d1;
         lameLambda = d2;
         materialDensity = d3;
