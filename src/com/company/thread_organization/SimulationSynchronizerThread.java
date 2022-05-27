@@ -22,7 +22,7 @@ public class SimulationSynchronizerThread extends Thread {
     private volatile NextThreadState nextThreadState;
 
     {
-        nextThreadState = NextThreadState.RESUME;
+        nextThreadState = NextThreadState.PAUSE;
     }
 
     /**

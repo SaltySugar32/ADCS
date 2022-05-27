@@ -20,24 +20,24 @@ public class WaveFront {
      * <br>
      * - Также можно описать как du/dx
      */
-    private double A1;
+    double A1;
 
     /**
      * Зависимость смещения от времени
      * <br>
      * Также можно описать как du/dt
      */
-    private double A2;
+    double A2;
 
     /**
      * Смещение по координате / задержка во времени
      */
-    private double A0;
+    double A0;
 
     /**
      * Текущая координата волнового фронта
      */
-    private double currentX;
+    double currentX;
 
     //-------------------------------SETTERS--------------------------------
 
