@@ -22,7 +22,7 @@ public class BorderDisplacement {
         // коэффициентов линейных функций
         //coordinates[0][index] = x = currentT
         //coordinates[1][index] = y = currentU
-        for (int index = 0; index < coordinates.length - 1; index++) {
+        for (int index = 0; index < coordinates[0].length - 1; index++) {
             var currentT = denoteFactor.toMilliseconds(coordinates[0][index]);
             var currentU = coordinates[1][index];
             var endT = denoteFactor.toMilliseconds(coordinates[0][index + 1]);
