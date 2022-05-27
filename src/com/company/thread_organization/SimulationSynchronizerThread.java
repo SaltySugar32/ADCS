@@ -2,7 +2,6 @@ package com.company.thread_organization;
 
 import com.company.ProgramGlobals;
 import com.company.thread_organization.thread_states.NextThreadState;
-import com.company.thread_organization.thread_states.SimulationState;
 
 public class SimulationSynchronizerThread extends Thread {
     /**
@@ -15,14 +14,6 @@ public class SimulationSynchronizerThread extends Thread {
      */
     public SimulationSynchronizerThread(SimulationServerThread simulationServerThread) {
         this.simulationServerThread = simulationServerThread;
-    }
-
-    /**
-     * Функция, возвращающая текущее состояние сервера симуляции
-     * @return SimulationState состояние сервера симуляции
-     */
-    public SimulationState getCurrentSimulationState() {
-        return simulationServerThread.getFromSimStatusesStack();
     }
 
     /**
@@ -86,12 +77,9 @@ public class SimulationSynchronizerThread extends Thread {
     @Override
     public void run() {
 
-        int timeOnOperation;
-
         while (simulationServerThread.isAlive()) {
-            timeOnOperation = 1000 / ProgramGlobals.getOperationsPerSecond();
             try {
-                sleep(timeOnOperation);
+                sleep(1000 / ProgramGlobals.getOperationsPerSecond());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

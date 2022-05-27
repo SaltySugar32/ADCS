@@ -24,7 +24,8 @@ public class InterProcessComputations {
         var borderWaveFront = BorderDisplacement.createBorderWaveFront();
         if (borderWaveFront != null) {
             SimulationGlobals.getCurrentWavePicture().add(borderWaveFront);
-            System.out.println("Added");
+            System.out.println("Added + " + borderWaveFront.getCurrentX());
+
         }
 
         WavePictureComputations.moveWaveFronts(wavePicture);

@@ -91,6 +91,7 @@ public class BorderDisplacement {
              time += SimulationTime.getSimulationTimeHiPrecisionDelta()) {
             A0 += A1 * SimulationTime.getSimulationTimeHiPrecisionDelta();
         }
+        System.out.println(A0);
 
         return new WaveFront(A1, A2, A0, DenoteFactor.MILLI);
     }

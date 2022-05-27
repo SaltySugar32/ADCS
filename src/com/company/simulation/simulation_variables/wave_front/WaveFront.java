@@ -49,10 +49,10 @@ public class WaveFront {
      * @param A2 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A0 смещение по координате / задержка по времени
      */
-    public void setWaveFront(double A1, double A2, double A0) {
-        this.A1 = A1;
-        this.A2 = A2;
-        this.A0 = A0;
+    public void setWaveFront(double A1, double A2, double A0, DenoteFactor denoteFactor) {
+        this.A1 = denoteFactor.toMillimeters(A1);
+        this.A2 = denoteFactor.toMillimeters(A2);
+        this.A0 = denoteFactor.toMillimeters(A0);
 
         this.currentX = A0;
     }

@@ -1,5 +1,6 @@
 package com.company.thread_organization;
 
+import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.InterProcessComputations;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.thread_organization.thread_states.SimulationState;
@@ -93,7 +94,11 @@ public class SimulationServerThread extends Thread {
 
             //Если симуляция на паузе, то ждем ...
             while (SimulationState.PAUSED == simulationStateStack.peek()) {
-                onSpinWait();
+                try {
+                    sleep(1000 / (10L * ProgramGlobals.getOperationsPerSecond()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             //Иначе выполняем следующую операцию ...
             doNextComputation();

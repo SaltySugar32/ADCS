@@ -14,6 +14,10 @@ public class SimulationGlobals {
 
     //----------------------НЕОТСОРТИРОВАННЫЕ ПЕРЕМЕННЫЕ-----------------------
 
+    public static void clearSimulation() {
+        currentWavePicture.clear();
+        borderDisplacementFunctions.clear();
+    }
 
     //-------------------------------------------------------------------------
 

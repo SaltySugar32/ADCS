@@ -37,7 +37,7 @@ public record ProgramGlobals() {
 
     //---------------------------КАДРОВАЯ ЧАСТОТА------------------------------
 
-    static int framesPerSecond;
+    static volatile int framesPerSecond;
 
     static {
         framesPerSecond = 5;
@@ -56,7 +56,7 @@ public record ProgramGlobals() {
 
     //----------------------КОЛИЧЕСТВО ОПЕРАЦИЙ В СЕКУНДУ----------------------
 
-    static int operationsPerSecond;
+    static volatile int operationsPerSecond;
 
     static {
         operationsPerSecond = 100;
@@ -68,20 +68,6 @@ public record ProgramGlobals() {
 
     public static void setOperationsPerSecond(int operationsPerSecond) {
         ProgramGlobals.operationsPerSecond = operationsPerSecond;
-    }
-
-    //-------------------------------------------------------------------------
-
-    //-----------------------ПОГРЕШНОСТЬ ПРИ СРАВНЕНИИ-------------------------
-
-    static double epsilon = Math.pow(10, -6);
-
-    public static double getEpsilon() {
-        return epsilon;
-    }
-
-    public static void setEpsilon(double pow) {
-        ProgramGlobals.epsilon = Math.pow(10, pow);
     }
 
     //-------------------------------------------------------------------------
