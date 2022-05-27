@@ -3,10 +3,14 @@ package com.company.GUI.SimulationGUI;
 import com.company.ProgramGlobals;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Hashtable;
 
 /**
@@ -61,8 +65,17 @@ public class ParamsPanel extends JPanel {
         labelTable.put(10, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
 
-        JButton pauseButton = new JButton("Пауза");
-        JButton stopButton = new JButton("Стоп");
+        JButton pauseButton = new JButton("PAUSE");
+        JButton stopButton = new JButton(" STOP");
+
+        // Загрузка иконки для кнопок
+        try {
+            BufferedImage pauseIcon = ImageIO.read(new File("resources/images/play-pause.png"));
+            BufferedImage stopIcon = ImageIO.read(new File("resources/images/stop.png"));
+            pauseButton.setIcon(new ImageIcon(pauseIcon));
+            stopButton.setIcon(new ImageIcon(stopIcon));
+        }
+        catch(IOException ex){}
 
         JPanel slider_panel = new JPanel();
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);

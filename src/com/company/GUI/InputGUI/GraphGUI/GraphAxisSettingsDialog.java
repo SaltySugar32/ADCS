@@ -84,9 +84,10 @@ public class GraphAxisSettingsDialog extends JDialog {
     }
 
     private void initComboBox(){
+        comboBox1.removeAllItems();
+
         comboBox1.addItem("мс");
         comboBox1.addItem("мкс");
-        comboBox1.addItem("нс");
 
         comboBox1.setSelectedItem(DataHandler.unitOfTime);
     }
