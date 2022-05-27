@@ -62,22 +62,29 @@ public class ParamsPanel extends JPanel {
         labelTable.put(10, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
 
+        JButton pauseButton = new JButton("Пауза");
+        JButton stopButton = new JButton("Стоп");
+
         JPanel slider_panel = new JPanel();
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel timeDelta_label = new JLabel("Дельта времени, мкс ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
-        GridLayout layout = new GridLayout(2,0, 50, 5);
-        slider_panel.setLayout(layout);
 
         slider_panel.add(FPS_label);
         slider_panel.add(OPS_label);
         slider_panel.add(timeDelta_label);
+        slider_panel.add(pauseButton);
 
         slider_panel.add(FPS_slider);
         slider_panel.add(OPS_slider);
         slider_panel.add(timeDelta_slider);
+        slider_panel.add(stopButton);
 
-        this.add(slider_panel, BorderLayout.SOUTH);
+        GridLayout layout = new GridLayout(2,0, 50, 10);
+
+        slider_panel.setLayout(layout);
+
+        this.add(slider_panel);
 
         /**
          * Обработчики событий изменения ползунка FPS

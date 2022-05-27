@@ -56,7 +56,7 @@ public class MainForm extends JFrame {
         simulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SimulationFrame simulationFrame = new SimulationFrame("ADCS - Симуляция", ServerThread);
+                SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
             }
         });
     }

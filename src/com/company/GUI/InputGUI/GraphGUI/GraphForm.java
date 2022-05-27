@@ -55,7 +55,7 @@ public class GraphForm extends JFrame {
         this.setLocationRelativeTo(null);
 
         // панель с графиком
-        ChartPanel chartPanel = createChartPanel();
+        chartPanel = createChartPanel();
         add(chartPanel, BorderLayout.CENTER);
 
         // кнопка "задать"
@@ -96,7 +96,7 @@ public class GraphForm extends JFrame {
                 false);
 
         xyLineChart.setBackgroundPaint(GUIGlobals.background_color);
-        chartPanel  = new ChartPanel(xyLineChart);
+        ChartPanel chartPanel  = new ChartPanel(xyLineChart);
         chartPanel.setPopupMenu(null);
 
         // Установка дефолтных параметров графика

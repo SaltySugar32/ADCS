@@ -5,6 +5,7 @@ import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,6 +88,6 @@ public class GraphAxisSettingsDialog extends JDialog {
         comboBox1.addItem("мкс");
         comboBox1.addItem("нс");
 
-        comboBox1.setSelectedItem("нс");
+        comboBox1.setSelectedItem(DataHandler.unitOfTime);
     }
 }
