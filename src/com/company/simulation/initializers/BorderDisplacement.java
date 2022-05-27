@@ -1,5 +1,6 @@
 package com.company.simulation.initializers;
 
+import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 
