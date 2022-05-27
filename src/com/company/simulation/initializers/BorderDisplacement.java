@@ -12,7 +12,7 @@ public class BorderDisplacement {
      * @param coordinates Множество координат, где coordinates[0] = x = t, coordinates[1] = y = u
      * @return ArrayList of LinearFunction - Множество линейных функций
      */
-    public ArrayList<LinearFunction> calculateBorderDisplacementFunctions(double[][] coordinates) {
+    public ArrayList<LinearFunction> initBorderDisplacementFunctions(double[][] coordinates) {
         ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
         borderDisplacementFunctions.add(new LinearFunction(0,0,0));
 
