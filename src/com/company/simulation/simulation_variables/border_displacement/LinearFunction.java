@@ -6,7 +6,7 @@ public class LinearFunction {
 
     private final double b;
 
-    private final double time;
+    private final double startTime;
 
     public double getK() {
         return k;
@@ -16,17 +16,17 @@ public class LinearFunction {
         return b;
     }
 
-    public double getTime() {
-        return time;
+    public double getStartTime() {
+        return startTime;
     }
 
     public double calculateBorderDisplacement(double currentTime) {
-        return k * (time - currentTime) + b;
+        return k * (currentTime - startTime) + b;
     }
 
-    public LinearFunction(double k, double b, double time) {
+    public LinearFunction(double k, double b, double startTime) {
         this.k = k;
         this.b = b;
-        this.time = time;
+        this.startTime = startTime;
     }
 }

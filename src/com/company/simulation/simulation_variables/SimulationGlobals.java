@@ -90,6 +90,10 @@ public class SimulationGlobals {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
+    public static void setBorderDisplacementFunctions(ArrayList<LinearFunction> borderDisplacementFunctions) {
+        SimulationGlobals.borderDisplacementFunctions = borderDisplacementFunctions;
+    }
+
     //-------------------------------------------------------------------------
 
     //--------------------------------GETTERS----------------------------------
@@ -112,6 +116,10 @@ public class SimulationGlobals {
 
     public static ArrayList<WaveFront> getCurrentWavePicture() {
         return currentWavePicture;
+    }
+
+    public static ArrayList<LinearFunction> getBorderDisplacementFunctions() {
+        return borderDisplacementFunctions;
     }
 
     //-------------------------------------------------------------------------
