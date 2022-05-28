@@ -2,6 +2,9 @@ package com.company.GUI.SimulationGUI;
 
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
+import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.wave_front.WaveFront;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
@@ -13,12 +16,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimerTask;
 import java.util.Timer;
+import java.util.List;
+
 
 /**
  * Окно симуляции
@@ -37,6 +44,14 @@ public class SimulationFrame extends JFrame {
         this.setSize(GUIGlobals.graph_frame_width,GUIGlobals.graph_frame_height);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ServerThread.setNextJobSTOP();
+                super.windowClosing(e);
+            }
+        });
 
         // Меню
         JMenuBar menuBar = new JMenuBar();
@@ -64,7 +79,12 @@ public class SimulationFrame extends JFrame {
 
     public void drawOutput(){
         // тест
-        graphsPanel.series1.add(Math.random()*10, (Math.random()*10)-5);
+        graphsPanel.series1.clear();
+        
+        List<WaveFront> waveFronts = SimulationGlobals.getCurrentWavePicture();
+        for (WaveFront wavefront : waveFronts) {
+            graphsPanel.series1.add(wavefront.getCurrentX() , wavefront.calculateDisplacement());
+        }
         graphsPanel.series2.add(Math.random()*10, (Math.random()*10)-5);
     }
 

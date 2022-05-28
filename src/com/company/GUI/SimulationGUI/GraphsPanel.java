@@ -28,7 +28,7 @@ public class GraphsPanel extends JPanel {
     public XYSeries series1 = createSeries("series1");
     public XYSeries series2 = createSeries("series2");
 
-    public JFreeChart chart1 = createChart(series1, "График смещений", "x", "u(x,t)");
+    public JFreeChart chart1 = createChart(series1, "График смещений", "x", "u(x)");
     public JFreeChart chart2 = createChart(series2, "График деформаций", "x", "u");
 
     public ChartPanel chartPanel1 = createChartPanel(chart1);
@@ -83,8 +83,8 @@ public class GraphsPanel extends JPanel {
         marker.setStroke(new BasicStroke(1.0f));
         plot.addRangeMarker(marker);
 
-        DataHandler.setDefaultGraphAxisSettings();
-        setGraphAxisSettings(chart);
+        //DataHandler.setDefaultGraphAxisSettings();
+        //setGraphAxisSettings(chart);
 
         return chart;
     }

@@ -70,15 +70,17 @@ public class ParamsPanel extends JPanel {
         labelTable.put(10, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
 
-        JButton pauseButton = new JButton("PAUSE");
+        JButton pauseButton = new JButton("START");
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(ServerThread.getNextJob() == NextThreadState.RESUME) {
                     ServerThread.setNextJobPAUSE();
+                    pauseButton.setText("START");
                 }
                 else {
                     ServerThread.setNextJobRESUME();
+                    pauseButton.setText("PAUSE");
                 }
             }
         });
@@ -87,7 +89,7 @@ public class ParamsPanel extends JPanel {
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ServerThread.setNextJobPAUSE();
+                ServerThread.setNextJobSTOP();
             }
         });
 
