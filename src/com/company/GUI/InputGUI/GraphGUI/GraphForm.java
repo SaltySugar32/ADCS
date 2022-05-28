@@ -86,7 +86,7 @@ public class GraphForm extends JFrame {
         dataset2 = createDataset2();
 
         xyLineChart = ChartFactory.createXYLineChart(
-                "График малых деформаций",
+                "Гладкая функция граничного воздействия",
                 "t, " + DataHandler.unitOfTime + "",
                 "φ(t), мм",
                 dataset1,
@@ -412,7 +412,7 @@ public class GraphForm extends JFrame {
                 if(isLinApproxGraph)
                     xyLineChart.getTitle().setText("График линейной аппроксимации");
                 else
-                    xyLineChart.getTitle().setText("График малых деформаций");
+                    xyLineChart.getTitle().setText("Гладкая функция граничного воздействия");
             }
         });
 

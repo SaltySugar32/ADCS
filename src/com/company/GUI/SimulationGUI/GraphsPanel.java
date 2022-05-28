@@ -28,8 +28,8 @@ public class GraphsPanel extends JPanel {
     public XYSeries series1 = createSeries("series1");
     public XYSeries series2 = createSeries("series2");
 
-    public JFreeChart chart1 = createChart(series1, "График перемещений");
-    public JFreeChart chart2 = createChart(series2, "График деформаций");
+    public JFreeChart chart1 = createChart(series1, "График смещений", "x", "u(x,t)");
+    public JFreeChart chart2 = createChart(series2, "График деформаций", "x", "u");
 
     public ChartPanel chartPanel1 = createChartPanel(chart1);
     public ChartPanel chartPanel2 = createChartPanel(chart2);
@@ -54,15 +54,15 @@ public class GraphsPanel extends JPanel {
      * @param title
      * @return
      */
-    public JFreeChart createChart(XYSeries series, String title){
+    public JFreeChart createChart(XYSeries series, String title, String xAxisLabel, String yAxisLabel){
         // Создание датасета точек
         XYDataset dataset = createDataset(series);
 
         // Создание графика
         JFreeChart chart = ChartFactory.createXYLineChart(
                 title,
-                "x",
-                "u",
+                xAxisLabel,
+                yAxisLabel,
                 dataset,
                 PlotOrientation.VERTICAL,
                 false,
@@ -149,8 +149,7 @@ public class GraphsPanel extends JPanel {
      */
     public XYDataset createDataset(XYSeries series) {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        //dataset.addSeries(series);
-
+        dataset.addSeries(series);
         return dataset;
     }
 }
