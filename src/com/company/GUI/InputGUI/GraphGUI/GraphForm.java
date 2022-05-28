@@ -298,8 +298,10 @@ public class GraphForm extends JFrame {
         setGraphButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // получение массива точек графика лин. апр.
-                DBHandler.addGraphFile("temp", series2.toArray());
+                // получение массива точек
+                DBHandler.addGraphFile("temp1", series1.toArray());
+                DBHandler.addGraphFile("temp2", series2.toArray());
+
                 DataHandler.setGraphInput(series2.toArray());
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
             }
@@ -390,8 +392,16 @@ public class GraphForm extends JFrame {
         JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
         JMenuItem loadGraph = new JMenuItem("Загрузить график");
 
+        JMenu clearGraph = new JMenu("Очистить график");
+        JMenuItem clearRed = new JMenuItem("Гладкая функция граничного воздействия");
+        JMenuItem clearBlue = new JMenuItem("График линейной аппроксимации");
+
+        clearGraph.add(clearRed);
+        clearGraph.add(clearBlue);
+
         inputMenu.add(changeGraph);
         inputMenu.add(loadGraph);
+        inputMenu.add(clearGraph);
 
         changeGraph.addActionListener(new ActionListener() {
             @Override
@@ -423,6 +433,22 @@ public class GraphForm extends JFrame {
             }
         });
 
+        clearRed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                series1.clear();
+                series1.add(0,0);
+            }
+        });
+
+        clearBlue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                series2.clear();
+                series2.add(0,0);
+            }
+        });
+
         return inputMenu;
     }
 
@@ -434,6 +460,17 @@ public class GraphForm extends JFrame {
         XYSeriesCollection dataset = new XYSeriesCollection();
         series1 = new XYSeries("series1");
         series1.add(0, 0);
+
+        // чтение заданных ранее точек
+        if(DataHandler.graph_input_status) {
+
+            double[][] array = DBHandler.getGraphArray("temp1.txt");
+            if (array != null) {
+                for (int i = 1; i < array[0].length; i++)
+                    series1.add(array[0][i], array[1][i]);
+            }
+        }
+
         dataset.addSeries(series1);
 
         return dataset;
@@ -447,6 +484,14 @@ public class GraphForm extends JFrame {
         XYSeriesCollection dataset = new XYSeriesCollection();
         series2 = new XYSeries("series2");
         series2.add(0, 0);
+
+        // чтение заданных ранее точек
+        if(DataHandler.graph_input_status) {
+            double[][] array = DataHandler.lin_appr_array;
+            for (int i=1; i<array[0].length; i++)
+                series2.add(array[0][i], array[1][i]);
+        }
+
         dataset.addSeries(series2);
 
         return dataset;

@@ -90,7 +90,11 @@ public class LoadGraphDialog extends JDialog {
                 );
 
 
-                if((dialogResult == null) || (dialogResult.strip().equals("")) || (dialogResult.strip().equals("temp")))
+                if((dialogResult == null)
+                        || (dialogResult.strip().equals(""))
+                        || (dialogResult.strip().equals("temp1")
+                        || (dialogResult.strip().equals("temp2"))
+                ))
                     JOptionPane.showMessageDialog(
                             null,
                             "Недопустимое имя",
