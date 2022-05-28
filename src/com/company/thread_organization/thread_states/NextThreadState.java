@@ -18,6 +18,12 @@ public enum NextThreadState {
             simulationServerThread.simPause();
         }
     },
+    STOP {
+        @Override
+        public void nextJob(SimulationServerThread simulationServerThread) {
+            simulationServerThread.simStop();
+        }
+    },
     DISABLE {
         @Override
         public void nextJob(SimulationServerThread simulationServerThread) {

@@ -58,6 +58,13 @@ public class SimulationSynchronizerThread extends Thread {
     }
 
     /**
+     * Указать симуляции, что её работа должна быть остановлена, но не прекращена полностью
+     */
+    public void setNextJobSTOP() {
+        nextThreadState = NextThreadState.STOP;
+    }
+
+    /**
      * Указать симуляции, что она должна быть отключена
      */
     public void setNextJobDISABLE() {

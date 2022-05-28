@@ -15,12 +15,6 @@ public class SimulationGlobals {
 
     //----------------------НЕОТСОРТИРОВАННЫЕ ПЕРЕМЕННЫЕ-----------------------
 
-    public static void clearSimulation() {
-        currentWavePicture.clear();
-        borderDisplacementFunctions.clear();
-        SimulationTime.setSimulationTime(0.0);
-    }
-
     //-------------------------------------------------------------------------
 
     //---------------------ХАРАКТЕРИСТИКИ СРЕДЫ СИМУЛЯЦИИ----------------------

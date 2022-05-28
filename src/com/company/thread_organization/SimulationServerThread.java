@@ -3,6 +3,7 @@ package com.company.thread_organization;
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.InterProcessComputations;
 import com.company.simulation.simulation_variables.SimulationGlobals;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.thread_states.SimulationState;
 
 import java.util.Stack;
@@ -62,6 +63,18 @@ public class SimulationServerThread extends Thread {
     }
 
     /**
+     * Остановка симуляции без выключения потока симуляции
+     */
+    public void simStop() {
+        if (SimulationState.INTERPROCESS == simulationStateStack.peek())
+            simulationStateStack.push(SimulationState.PAUSED);
+
+        SimulationGlobals.getCurrentWavePicture().clear();
+        SimulationGlobals.getBorderDisplacementFunctions().clear();
+        SimulationTime.setSimulationTime(0.0);
+    }
+
+    /**
      * Отключение потока симуляции
      */
     public void simDisable() {
@@ -93,7 +106,7 @@ public class SimulationServerThread extends Thread {
             //System.out.println(debug_numOfOperations++ + " " + SimulationGlobals.getSimulationTime());
 
             //Если симуляция на паузе, то ждем ...
-            while (SimulationState.PAUSED == simulationStateStack.peek()) {
+            while (SimulationState.INTERPROCESS != simulationStateStack.peek()) {
                 try {
                     sleep(1000 / (10L * ProgramGlobals.getOperationsPerSecond()));
                 } catch (InterruptedException e) {
