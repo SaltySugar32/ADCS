@@ -39,6 +39,11 @@ public class WaveFront {
      */
     double currentX;
 
+    /**
+     * Скорость волнового фронта
+     */
+    double speed;
+
     //-------------------------------SETTERS--------------------------------
 
     /**
@@ -63,6 +68,14 @@ public class WaveFront {
      */
     public void setCurrentX(double currentX) {
         this.currentX = currentX;
+    }
+
+    /**
+     * Изменение скорости волнового фронта
+     * @param speed Новая скорость волнового фронта
+     */
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     //-------------------------------GETTERS--------------------------------
@@ -103,6 +116,14 @@ public class WaveFront {
      */
     public double getCurrentX() {
         return currentX;
+    }
+
+    /**
+     * Функция, возвращающая текущую скорость волнового фронта
+     * @return double скорость волнового фронта
+     */
+    public double getSpeed() {
+        return speed;
     }
 
     //-------------------------------ФУНКЦИИ--------------------------------

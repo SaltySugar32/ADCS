@@ -87,7 +87,7 @@ public class BorderDisplacement {
             return null;
 
         double A1 = linearFunction.getK();
-        double A2 = 0 - (linearFunction.getK() / linearFunction.getB());
+        double A2 = 0.0 - (linearFunction.getK() / linearFunction.getB());
         double A0 = 0.0;
 
         for (double time = linearFunction.getStartTime();

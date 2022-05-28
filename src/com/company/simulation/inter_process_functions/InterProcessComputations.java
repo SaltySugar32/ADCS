@@ -17,6 +17,7 @@ public class InterProcessComputations {
      * <li>Обновление координат</li>
      */
     public static ArrayList<WaveFront> getResult(ArrayList<WaveFront> prevWavePicture) {
+
         var wavePicture = new ArrayList<>(prevWavePicture);
 
         //Сдвиг времени
@@ -25,7 +26,11 @@ public class InterProcessComputations {
         //Создание нового волнового фронта на границе полупространства
         var borderWaveFront = BorderDisplacement.createBorderWaveFront();
         if (borderWaveFront != null) {
-            SimulationGlobals.getCurrentWavePicture().add(borderWaveFront);
+            wavePicture.add(borderWaveFront);
+            for (var waveFront: SimulationGlobals.getCurrentWavePicture()) {
+                System.out.println(waveFront);
+            }
+            System.out.println("--------------------------------");
         }
         WavePictureComputations.sortCurrentWavePicture(wavePicture);
         WavePictureComputations.moveWaveFronts(wavePicture);

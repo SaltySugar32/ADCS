@@ -1,6 +1,7 @@
 package com.company.simulation.simulation_variables;
 
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class SimulationGlobals {
     public static void clearSimulation() {
         currentWavePicture.clear();
         borderDisplacementFunctions.clear();
+        SimulationTime.setSimulationTime(0.0);
     }
 
     //-------------------------------------------------------------------------
