@@ -84,7 +84,7 @@ public class GraphsPanel extends JPanel {
         plot.addRangeMarker(marker);
 
         //DataHandler.setDefaultGraphAxisSettings();
-        //setGraphAxisSettings(chart);
+        //setGraphAxis(chart);
 
         return chart;
     }
@@ -93,17 +93,17 @@ public class GraphsPanel extends JPanel {
      * Функция, задающая стандартные диапазоны осей
      * @param chart
      */
-    public static void setGraphAxisSettings(JFreeChart chart){
+    public void setGraphAxis(JFreeChart chart, double minX, double maxX, double minY, double maxY){
         XYPlot plot = (XYPlot) chart.getPlot();
 
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
 
-        xAxis.setRange(DataHandler.xmin, DataHandler.xmax);
-        xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
+        xAxis.setRange(minX, maxX);
+        //xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
 
-        yAxis.setRange(DataHandler.ymin, DataHandler.ymax);
-        yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
+        yAxis.setRange(minY, maxY);
+        //yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
     }
 
     /**
