@@ -28,7 +28,9 @@ public class InterProcessComputations {
         if (borderWaveFront != null) {
             wavePicture.add(borderWaveFront);
             for (var waveFront: SimulationGlobals.getCurrentWavePicture()) {
-                System.out.println(waveFront);
+                System.out.println(waveFront.getCurrentX());
+                System.out.println(waveFront.getSpeed());
+                System.out.println("---");
             }
             System.out.println("--------------------------------");
         }

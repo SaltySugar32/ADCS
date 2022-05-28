@@ -1,5 +1,6 @@
 package com.company.simulation.inter_process_functions;
 
+import com.company.simulation.inter_process_functions.collision_handlers.CollisionTypeSwitcher;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
@@ -32,8 +33,15 @@ public class BorderDisplacement {
             //То есть k = (endU(endT) - currentU(currentT)) / (endT - currentT)
             double k = (endU -  currentU) / (endT - currentT);
 
+            System.out.println("Time = " + currentT);
+            System.out.println("k = " + k);
+            System.out.println("b = " + currentU);
+
+
             borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
         }
+
+        borderDisplacementFunctions.remove(0);
 
         SimulationGlobals.setBorderDisplacementFunctions(borderDisplacementFunctions);
     }
@@ -90,16 +98,27 @@ public class BorderDisplacement {
         double A2 = 0.0 - (linearFunction.getK() / linearFunction.getB());
         double A0 = 0.0;
 
+        var newWaveFront = new WaveFront(A1, A2, A0, DenoteFactor.MILLI);
+
+        var waveFrontWrapper = new ArrayList<WaveFront>();
+
+        waveFrontWrapper.add(newWaveFront);
+
+        if (SimulationGlobals.getCurrentWavePicture().size() != 0) {
+            waveFrontWrapper.add(SimulationGlobals.getCurrentWavePicture().get(0));
+        }
+
+        var collisionHandler = CollisionTypeSwitcher.switchCollisionHandler(waveFrontWrapper);
+
+        waveFrontWrapper = collisionHandler.generateNewWaveFronts(waveFrontWrapper);
+
         for (double time = linearFunction.getStartTime();
              time > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta();
              time -= SimulationTime.getSimulationTimeHiPrecisionDelta()) {
-            A0 -= A1 * SimulationTime.getSimulationTimeHiPrecisionDelta();
+            A0 -= waveFrontWrapper.get(0).getSpeed() * SimulationTime.getSimulationTimeHiPrecisionDelta();
         }
 
-        //System.out.println("Новый волновой фронт");
-        //System.out.println("U = " + A0 + " + x * " + A1 + " + t * " + A2);
-
-        return new WaveFront(A1, A2, A0, DenoteFactor.MILLI);
+        return waveFrontWrapper.get(0);
     }
 
 }

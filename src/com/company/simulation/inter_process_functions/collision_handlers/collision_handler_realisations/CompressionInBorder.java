@@ -31,7 +31,7 @@ public class CompressionInBorder implements ICollisionHandler {
 
         WaveFront newWaveFront = new WaveFront(prevWaveFronts.get(0).getA1(), prevWaveFronts.get(0).getA2(), prevWaveFronts.get(0).getA0(), DenoteFactor.MILLI);
 
-        newWaveFront.setSpeed(DenoteFactor.NULL.toMillimeters(computeCharSpeed()));
+        newWaveFront.setSpeed(DenoteFactor.MILLI.toMillimeters(computeCharSpeed()));
 
         newWaveFronts.add(newWaveFront);
 

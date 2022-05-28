@@ -72,4 +72,13 @@ public record ProgramGlobals() {
 
     //-------------------------------------------------------------------------
 
+    static double epsilon;
+
+    static {
+        epsilon = Math.pow(10, -12);
+    }
+
+    public static double getEpsilon() {
+        return epsilon;
+    }
 }
