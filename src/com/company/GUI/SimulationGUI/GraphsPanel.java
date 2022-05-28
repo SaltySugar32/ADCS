@@ -46,6 +46,7 @@ public class GraphsPanel extends JPanel {
         this.add(chartPanel2);
 
         this.setLayout(new FlowLayout());
+
     }
 
     /**

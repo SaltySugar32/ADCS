@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimerTask;
+import java.util.Timer;
 
 /**
  * Окно симуляции
@@ -47,6 +49,23 @@ public class SimulationFrame extends JFrame {
         // Панель с ползунками и кнопками
         ParamsPanel paramsPanel = new ParamsPanel(ServerThread);
         this.add(paramsPanel, BorderLayout.SOUTH);
+
+        // Таймер - чтение данных из решателя
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                drawOutput();
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(task, 0, 1000);
+    }
+
+    public void drawOutput(){
+        // тест
+        graphsPanel.series1.add(Math.random()*10, (Math.random()*10)-5);
+        graphsPanel.series2.add(Math.random()*10, (Math.random()*10)-5);
     }
 
     /**

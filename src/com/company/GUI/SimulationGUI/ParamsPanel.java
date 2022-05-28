@@ -156,7 +156,7 @@ public class ParamsPanel extends JPanel {
                 // Изменение дельты времени
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
                 SimulationTime.setSimulationTimeDelta(value);
-                timeDelta_label.setText("Дельта времени, мкс ("+value+")");
+                timeDelta_label.setText("Дельта времени, мс ("+value+")");
             }
         });
 
