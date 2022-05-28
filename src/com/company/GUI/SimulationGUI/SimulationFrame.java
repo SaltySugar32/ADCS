@@ -33,6 +33,7 @@ import java.util.List;
 public class SimulationFrame extends JFrame {
 
     GraphsPanel graphsPanel = new GraphsPanel();
+    ParamsPanel paramsPanel;
     /**
      * Главное окно симуляции
      *
@@ -62,7 +63,7 @@ public class SimulationFrame extends JFrame {
         this.add(graphsPanel);
 
         // Панель с ползунками и кнопками
-        ParamsPanel paramsPanel = new ParamsPanel(ServerThread);
+        paramsPanel = new ParamsPanel(ServerThread);
         this.add(paramsPanel, BorderLayout.SOUTH);
 
         // Таймер - чтение данных из решателя
@@ -80,12 +81,16 @@ public class SimulationFrame extends JFrame {
     public void drawOutput(){
         // тест
         graphsPanel.series1.clear();
-        
+        graphsPanel.series2.clear();
+
         List<WaveFront> waveFronts = SimulationGlobals.getCurrentWavePicture();
         for (WaveFront wavefront : waveFronts) {
             graphsPanel.series1.add(wavefront.getCurrentX() , wavefront.calculateDisplacement());
+            graphsPanel.series2.add(wavefront.getCurrentX(), wavefront.getA1());
         }
-        graphsPanel.series2.add(Math.random()*10, (Math.random()*10)-5);
+
+        String time = Double.toString(SimulationTime.getSimulationTime());
+        paramsPanel.simulationTime.setText(time);
     }
 
     /**

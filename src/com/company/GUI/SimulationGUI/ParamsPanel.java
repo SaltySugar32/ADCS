@@ -41,6 +41,8 @@ public class ParamsPanel extends JPanel {
     static final int timeDelta_INIT = 5;
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
+    public JLabel simulationTime = new JLabel("0");
+
     /**
      * Панель изменения парамеров отображения
      *
@@ -107,11 +109,15 @@ public class ParamsPanel extends JPanel {
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel timeDelta_label = new JLabel("Дельта времени, мкс ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
 
+        JLabel simulationTimeLabel = new JLabel("Текущее время симуляции");
+
+        slider_panel.add(simulationTimeLabel);
         slider_panel.add(FPS_label);
         slider_panel.add(OPS_label);
         slider_panel.add(timeDelta_label);
         slider_panel.add(pauseButton);
 
+        slider_panel.add(simulationTime);
         slider_panel.add(FPS_slider);
         slider_panel.add(OPS_slider);
         slider_panel.add(timeDelta_slider);
