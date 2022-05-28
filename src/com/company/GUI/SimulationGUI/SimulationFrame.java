@@ -64,8 +64,29 @@ public class SimulationFrame extends JFrame {
 
     public void drawOutput(){
         // тест
+<<<<<<< Updated upstream
         graphsPanel.series1.add(Math.random()*10, (Math.random()*10)-5);
         graphsPanel.series2.add(Math.random()*10, (Math.random()*10)-5);
+=======
+        graphsPanel.series1.clear();
+        graphsPanel.series2.clear();
+
+        List<WaveFront> waveFronts = SimulationGlobals.getCurrentWavePicture();
+        for (WaveFront wavefront : waveFronts) {
+            graphsPanel.series1.add(wavefront.getCurrentX() , wavefront.calculateDisplacement());
+            graphsPanel.series2.add(wavefront.getCurrentX(), wavefront.getA1());
+        }
+
+        double maxX = Math.max(graphsPanel.series1.getMaxX(), graphsPanel.series2.getMaxX()) * 1.1;
+        double maxY = Math.max(graphsPanel.series1.getMaxY(), graphsPanel.series2.getMaxY()) * 1.1;
+        double minY = Math.min(graphsPanel.series1.getMinY(), graphsPanel.series2.getMinY()) * 1.1;
+
+        graphsPanel.setGraphAxis(graphsPanel.chart1, 0,maxX, minY, maxY);
+        graphsPanel.setGraphAxis(graphsPanel.chart2, 0,maxX, minY, maxY);
+
+        String time = Double.toString(SimulationTime.getSimulationTime());
+        paramsPanel.simulationTime.setText(time);
+>>>>>>> Stashed changes
     }
 
     /**
