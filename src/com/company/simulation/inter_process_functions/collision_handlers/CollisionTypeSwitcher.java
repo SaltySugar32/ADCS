@@ -9,7 +9,7 @@ public class CollisionTypeSwitcher {
 
 
     public static CollisionHandler switchCollisionHandler(ArrayList<WaveFront> waveFronts) {
-        //f (waveFronts.size() == 1) {
+        //if (waveFronts.size() == 1) {
             if (waveFronts.get(0).getA1() > ProgramGlobals.getEpsilon()) {
                 return CollisionHandler.StretchingInBorder;
             } else if (waveFronts.get(0).getA1() < -ProgramGlobals.getEpsilon()) {

@@ -41,7 +41,7 @@ public class BorderDisplacement {
             borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
         }
 
-        borderDisplacementFunctions.remove(0);
+        //borderDisplacementFunctions.remove(0);
 
         SimulationGlobals.setBorderDisplacementFunctions(borderDisplacementFunctions);
     }
@@ -94,11 +94,7 @@ public class BorderDisplacement {
         if (linearFunction == null)
             return null;
 
-        double A1 = linearFunction.getK();
-        double A2 = 0.0 - (linearFunction.getK() / linearFunction.getB());
-        double A0 = 0.0;
-
-        var newWaveFront = new WaveFront(A1, A2, A0, DenoteFactor.MILLI);
+        var newWaveFront = new WaveFront(linearFunction.getK(), linearFunction.getB(), 0, linearFunction.getStartTime(), DenoteFactor.MILLI);
 
         var waveFrontWrapper = new ArrayList<WaveFront>();
 
@@ -112,10 +108,17 @@ public class BorderDisplacement {
 
         waveFrontWrapper = collisionHandler.generateNewWaveFronts(waveFrontWrapper);
 
+        if (waveFrontWrapper == null) {
+            return null;
+        }
+
         for (double time = linearFunction.getStartTime();
              time > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta();
              time -= SimulationTime.getSimulationTimeHiPrecisionDelta()) {
-            A0 -= waveFrontWrapper.get(0).getSpeed() * SimulationTime.getSimulationTimeHiPrecisionDelta();
+            waveFrontWrapper.get(0).setA0(
+                    waveFrontWrapper.get(0).getA0()
+                            - waveFrontWrapper.get(0).getSpeed()
+                            * SimulationTime.getSimulationTimeHiPrecisionDelta());
         }
 
         return waveFrontWrapper.get(0);

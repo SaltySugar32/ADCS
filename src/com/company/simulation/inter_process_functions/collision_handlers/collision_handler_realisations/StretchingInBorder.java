@@ -22,14 +22,18 @@ public class StretchingInBorder implements ICollisionHandler {
     public double computeCharSpeed()
     {
         //return \sigma / \rho === (\lambda + 2 * \mu +- 2 * \nu) / \rho
-        return computeTension() / SimulationGlobals.getMaterialDensity();
+        return Math.sqrt(computeTension() / SimulationGlobals.getMaterialDensity());
     }
 
     @Override
     public ArrayList<WaveFront> generateNewWaveFronts(ArrayList<WaveFront> prevWaveFronts) {
         var newWaveFronts = new ArrayList<WaveFront>();
 
-        WaveFront newWaveFront = new WaveFront(prevWaveFronts.get(0).getA1(), prevWaveFronts.get(0).getA2(), prevWaveFronts.get(0).getA0(), DenoteFactor.MILLI);
+        double speed = computeCharSpeed();
+
+        double A2 = 0.0 - prevWaveFronts.get(0).getA1() / speed;
+
+        WaveFront newWaveFront = new WaveFront(prevWaveFronts.get(0).getA1(), A2, prevWaveFronts.get(0).getA0(), prevWaveFronts.get(0).getStartTime(), DenoteFactor.MILLI);
 
         newWaveFront.setSpeed(computeCharSpeed());
 

@@ -44,6 +44,8 @@ public class WaveFront {
      */
     double speed;
 
+    double startTime;
+
     //-------------------------------SETTERS--------------------------------
 
     /**
@@ -54,12 +56,19 @@ public class WaveFront {
      * @param A2 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A0 смещение по координате / задержка по времени
      */
-    public void setWaveFront(double A1, double A2, double A0, DenoteFactor denoteFactor) {
+    public void setWaveFront(double A1, double A2, double A0, double startTime, DenoteFactor denoteFactor) {
         this.A1 = denoteFactor.toMillimeters(A1);
         this.A2 = denoteFactor.toMillimeters(A2);
         this.A0 = denoteFactor.toMillimeters(A0);
+        this.startTime = startTime;
 
         this.currentX = A0;
+    }
+
+    public void setA0(double A0) {
+        this.A0 = A0;
+
+        currentX = A0;
     }
 
     /**
@@ -76,6 +85,10 @@ public class WaveFront {
      */
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
     //-------------------------------GETTERS--------------------------------
@@ -126,6 +139,10 @@ public class WaveFront {
         return speed;
     }
 
+    public double getStartTime() {
+        return startTime;
+    }
+
     //-------------------------------ФУНКЦИИ--------------------------------
 
     /**
@@ -135,7 +152,7 @@ public class WaveFront {
      * @return double
      */
     public double calculateDisplacement() {
-        return (getA0() + getA1() * SimulationTime.getSimulationTime() + getA2() * currentX);
+        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - startTime) + getA2() * currentX);
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
@@ -148,10 +165,11 @@ public class WaveFront {
      * @param A2 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A0 смещение по координате / задержка по времени
      */
-    public WaveFront(double A1, double A2, double A0, DenoteFactor denoteFactor) {
+    public WaveFront(double A1, double A2, double A0, double startTime, DenoteFactor denoteFactor) {
         this.A1 = denoteFactor.toMillimeters(A1);
         this.A2 = denoteFactor.toMillimeters(A2);
         this.A0 = denoteFactor.toMillimeters(A0);
+        this.startTime = startTime;
 
         this.currentX = A0;
     }
