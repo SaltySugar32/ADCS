@@ -1,13 +1,13 @@
-package com.company.simulation.inter_process_functions.collision_handlers.collision_handler_realisations;
+package com.company.simulation.inter_process_functions.border_displacement.border_handlers.border_handler_realisations;
 
-import com.company.simulation.inter_process_functions.collision_handlers.ICollisionHandler;
+import com.company.simulation.inter_process_functions.border_displacement.border_handlers.IBorderHandler;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
-public class StretchingInBorder implements ICollisionHandler {
+public class StretchingToEdge implements IBorderHandler {
     /**
      * Вычисление напряжения Эйлера-Коши на стыке волн деформации
      */
@@ -29,7 +29,7 @@ public class StretchingInBorder implements ICollisionHandler {
     public ArrayList<WaveFront> generateNewWaveFronts(ArrayList<WaveFront> prevWaveFronts) {
         var newWaveFronts = new ArrayList<WaveFront>();
 
-        double speed = computeCharSpeed();
+        double speed = DenoteFactor.NULL.toMillimeters(computeCharSpeed());
 
         double A2 = 0.0 - prevWaveFronts.get(0).getA1() / speed;
 

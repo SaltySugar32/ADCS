@@ -1,9 +1,9 @@
-package com.company.simulation.inter_process_functions.collision_handlers;
+package com.company.simulation.inter_process_functions.border_displacement.border_handlers;
 
 import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
-public interface ICollisionHandler {
+public interface IBorderHandler {
     public ArrayList<WaveFront> generateNewWaveFronts(ArrayList<WaveFront> prevWaveFronts);
 }

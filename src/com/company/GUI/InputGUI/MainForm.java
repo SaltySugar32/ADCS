@@ -5,7 +5,7 @@ import com.company.GUI.GUIGlobals;
 import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
-import com.company.simulation.inter_process_functions.BorderDisplacement;
+import com.company.simulation.inter_process_functions.border_displacement.BorderDisplacement;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
@@ -13,7 +13,6 @@ import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

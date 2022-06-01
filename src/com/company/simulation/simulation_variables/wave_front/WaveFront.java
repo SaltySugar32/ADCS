@@ -148,11 +148,19 @@ public class WaveFront {
     /**
      * Функция, вычисляющая смещение на границе волнового фронта
      * <br>
-     * U(x,t) = A1 * x + A2 * t + A0
+     * U(x,t) = A1 * t + A2 * x + A0
      * @return double
      */
     public double calculateDisplacement() {
         return (getA0() + getA1() * (SimulationTime.getSimulationTime() - startTime) + getA2() * currentX);
+    }
+
+    /**
+     * Функция, смещающая волновой фронт на расстояние, преодолеваемое им за timeDelta
+     * @param timeDelta Изменение времени
+     */
+    public void moveWaveFront(double timeDelta) {
+        currentX += speed * timeDelta;
     }
 
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
