@@ -17,7 +17,6 @@ public class BorderDisplacement {
      */
     public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactor) {
         ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
-        System.out.println(coordinates[0][0] + " " + coordinates[1][0]);
 
         //Берём каждый следующий после нулевого индекса индекс и на их основе генерируем последовательность
         // коэффициентов линейных функций
@@ -34,11 +33,9 @@ public class BorderDisplacement {
             //То есть k = (endU(endT) - currentU(currentT)) / (endT - currentT)
             double k = (endU - currentU) / (endT - currentT);
 
-            /*
             System.out.println("Time = " + currentT);
             System.out.println("k = " + k);
             System.out.println("b = " + currentU);
-             */
 
             borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
         }
@@ -53,7 +50,7 @@ public class BorderDisplacement {
      */
     public static double getCurrentBorderDisplacement() {
         for (int index = SimulationGlobals.getBorderDisplacementFunctions().size() - 1; index >= 0; index--) {
-            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).getStartTime()
+            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).startTime()
                     < SimulationTime.getSimulationTime()) {
                 return SimulationGlobals.getBorderDisplacementFunctions().get(index)
                         .calculateBorderDisplacement(SimulationTime.getSimulationTime());
@@ -69,9 +66,12 @@ public class BorderDisplacement {
      * @return boolean true, если должен был, false, если не должен был
      */
     public static LinearFunction getJumpDiscontinuityFunction() {
+        //Проходим по всем линейным функциям
         for (var linearFunction : SimulationGlobals.getBorderDisplacementFunctions()) {
-            if (linearFunction.getStartTime() > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta()) {
-                if (linearFunction.getStartTime() < SimulationTime.getSimulationTime()) {
+            //Если начальное время больше времени симуляции без дельты
+            if (linearFunction.startTime() > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta()) {
+                //Если начальное время меньше времени симуляции
+                if (linearFunction.startTime() < SimulationTime.getSimulationTime()) {
                     return linearFunction;
                 } else
                     return null;
@@ -98,32 +98,29 @@ public class BorderDisplacement {
 
         var waveFrontWrapper = new ArrayList<WaveFront>();
 
-        waveFrontWrapper.add(new WaveFront(linearFunction.getK(), linearFunction.getB(), 0.0,
-                linearFunction.getStartTime(), DenoteFactor.MILLI));
+        waveFrontWrapper.add(new WaveFront(
+                linearFunction.k(),
+                0.0 - linearFunction.k(),
+                linearFunction.b(),
+                linearFunction.startTime()
+        ));
 
         if (SimulationGlobals.getCurrentWavePicture().size() != 0) {
             waveFrontWrapper.add(SimulationGlobals.getCurrentWavePicture().get(0));
         }
 
-        var borderHandler = BorderSwitcher.switchBorderHandler(waveFrontWrapper);
+        var newWaveFront = BorderSwitcher.generateNewWaveFront(waveFrontWrapper);
 
-        waveFrontWrapper = borderHandler.generateNewWaveFront(waveFrontWrapper);
-
-        if (waveFrontWrapper == null) {
+        if (newWaveFront == null) {
             return null;
         }
 
-        for (double time = linearFunction.getStartTime();
-             time > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta();
-             time -= SimulationTime.getSimulationTimeHiPrecisionDelta()) {
-            waveFrontWrapper.get(0).setCurrentX(
-                    waveFrontWrapper.get(0).getCurrentX()
-                            - waveFrontWrapper.get(0).getSpeed()
-                            * SimulationTime.getSimulationTimeHiPrecisionDelta());
+        double deltaTime = linearFunction.startTime() -
+                (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
 
-            waveFrontWrapper.get(0).setStartTime(time);
-        }
-        return waveFrontWrapper.get(0);
+        newWaveFront.setCurrentX(newWaveFront.getCurrentX() - newWaveFront.getSpeed() * deltaTime);
+
+        return newWaveFront;
     }
 
 }

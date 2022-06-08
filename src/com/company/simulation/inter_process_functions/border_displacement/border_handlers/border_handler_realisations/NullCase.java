@@ -5,9 +5,9 @@ import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
-public class NullToEdge implements IBorderHandler {
+public class NullCase implements IBorderHandler {
     @Override
-    public ArrayList<WaveFront> generateNewWaveFronts(ArrayList<WaveFront> prevWaveFronts) {
+    public WaveFront generateNewWaveFront(ArrayList<WaveFront> prevWaveFronts, double speed) {
         return null;
     }
 }

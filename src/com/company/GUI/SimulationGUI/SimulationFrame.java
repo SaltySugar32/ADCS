@@ -86,7 +86,7 @@ public class SimulationFrame extends JFrame {
         List<WaveFront> waveFronts = SimulationGlobals.getCurrentWavePicture();
         for (WaveFront wavefront : waveFronts) {
             graphsPanel.series1.add(wavefront.getCurrentX() , wavefront.calculateDisplacement());
-            graphsPanel.series2.add(wavefront.getCurrentX(), wavefront.getA1());
+            graphsPanel.series2.add(wavefront.getCurrentX(), wavefront.getA2());
         }
 
         double maxX = Math.max(graphsPanel.series1.getMaxX(), graphsPanel.series2.getMaxX()) * 1.1;

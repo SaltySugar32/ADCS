@@ -16,7 +16,6 @@ public class WavePictureComputations {
 
     public static void moveWaveFronts(ArrayList<WaveFront> currentWavePicture) {
         for (WaveFront waveFront : currentWavePicture) {
-            //Устанавливаем смещение относительно текущей координаты + скорости волнового фронта
             waveFront.moveWaveFront(SimulationTime.getSimulationTimeDelta());
         }
     }

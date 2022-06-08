@@ -6,7 +6,7 @@ import com.company.user_clients.UserClient_v1;
 import com.company.user_clients.UserClient_v2;
 
 /**Файл с глобальными переменными сборки*/
-public record ProgramGlobals() {
+public class ProgramGlobals {
 
     //------------------ВЕРСИЯ ПОЛЬЗОВАТЕЛЬСКОГО ИНТЕРФЕЙСА--------------------
 
@@ -75,7 +75,7 @@ public record ProgramGlobals() {
     static double epsilon;
 
     static {
-        epsilon = Math.pow(10, -12);
+        epsilon = Math.pow(10, -9);
     }
 
     public static double getEpsilon() {

@@ -1,7 +1,6 @@
 package com.company.simulation.simulation_variables;
 
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
@@ -44,12 +43,24 @@ public class SimulationGlobals {
      */
     static double materialDensity;
 
+    /**
+     * Характеристическая скорость при растяжении
+     */
+    static double characteristicsSpeedStretching;
+
+    /**
+     * Характеристическая скорость при сжатии
+     */
+    static double characteristicsSpeedCompression;
+
     static {
         lameMu = 0;
         lameLambda = 0;
         materialDensity = 0;
         coefficientNu = 0;
         powPA = 9;
+        characteristicsSpeedStretching = 0;
+        characteristicsSpeedCompression = 0;
     }
 
     /**
@@ -84,6 +95,21 @@ public class SimulationGlobals {
         SimulationGlobals.lameLambda = lameLambda * Math.pow(10, powPA);
         SimulationGlobals.coefficientNu = coefficientNu * Math.pow(10, powPA);
         SimulationGlobals.materialDensity = materialDensity;
+
+
+        /* (\lambda + 2 * \mu - 2 * \nu) / (\rho)
+         * Вычисление характеристической скорости при растяжении
+         */
+        SimulationGlobals.characteristicsSpeedStretching =
+                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() -
+                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity());
+
+        /* (\lambda + 2 * \mu + 2 * \nu) / (\rho)
+         * Вычисление характеристической скорости при сжатии
+         */
+        SimulationGlobals.characteristicsSpeedCompression =
+                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() +
+                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity());
     }
 
     public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
@@ -120,6 +146,14 @@ public class SimulationGlobals {
 
     public static ArrayList<LinearFunction> getBorderDisplacementFunctions() {
         return borderDisplacementFunctions;
+    }
+
+    public static double getCharacteristicsSpeedStretching() {
+        return characteristicsSpeedStretching;
+    }
+
+    public static double getCharacteristicsSpeedCompression() {
+        return characteristicsSpeedCompression;
     }
 
     //-------------------------------------------------------------------------

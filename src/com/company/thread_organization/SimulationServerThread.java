@@ -6,6 +6,7 @@ import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.thread_states.SimulationState;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 //Сервер НЕ ДОЛЖЕН содержать переменные, отличные от статуса работы самого сервера
@@ -88,7 +89,8 @@ public class SimulationServerThread extends Thread {
     public void doNextComputation() {
         //Так как есть потребность в том, чтобы симуляция выполнялась синхронно с таймером,
         // то добавление паузы до или после выполнения операции обязательно
-        simPause();
+        if (SimulationState.PAUSED != simulationStateStack.peek())
+            simPause();
         SimulationGlobals.setCurrentWavePicture(InterProcessComputations.getResult(SimulationGlobals.getCurrentWavePicture()));
     }
 

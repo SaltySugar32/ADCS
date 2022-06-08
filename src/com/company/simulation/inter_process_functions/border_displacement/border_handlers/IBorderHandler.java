@@ -5,5 +5,5 @@ import com.company.simulation.simulation_variables.wave_front.WaveFront;
 import java.util.ArrayList;
 
 public interface IBorderHandler {
-    public ArrayList<WaveFront> generateNewWaveFronts(ArrayList<WaveFront> prevWaveFronts);
+    WaveFront generateNewWaveFront(ArrayList<WaveFront> prevWaveFronts, double speed);
 }
