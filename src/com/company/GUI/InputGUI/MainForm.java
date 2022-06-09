@@ -5,7 +5,7 @@ import com.company.GUI.GUIGlobals;
 import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationFrame;
-import com.company.simulation.inter_process_functions.border_displacement.BorderDisplacement;
+import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
@@ -74,7 +74,7 @@ public class MainForm extends JFrame {
                         default -> SimulationTime.setSimulationTimePow(SimulationTimePow.MILLISECONDS);
                     }
 
-                    BorderDisplacement.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
+                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
                     SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
                 }
             }

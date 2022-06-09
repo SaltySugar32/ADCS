@@ -2,14 +2,13 @@ package com.company.GUI.SimulationGUI;
 
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
+import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XYSeries;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimerTask;
@@ -83,8 +81,10 @@ public class SimulationFrame extends JFrame {
         graphsPanel.series1.clear();
         graphsPanel.series2.clear();
 
-        List<WaveFront> waveFronts = SimulationGlobals.getCurrentWavePicture();
-        for (WaveFront wavefront : waveFronts) {
+        List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
+        graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
+
+        for (LayerDescription wavefront : layerDescriptions) {
             graphsPanel.series1.add(wavefront.getCurrentX() , wavefront.calculateDisplacement());
             graphsPanel.series2.add(wavefront.getCurrentX(), wavefront.getA2());
         }
@@ -93,8 +93,8 @@ public class SimulationFrame extends JFrame {
         double maxY = Math.max(graphsPanel.series1.getMaxY(), graphsPanel.series2.getMaxY()) * 1.1;
         double minY = Math.min(graphsPanel.series1.getMinY(), graphsPanel.series2.getMinY()) * 1.1;
 
-        graphsPanel.setGraphAxis(graphsPanel.chart1, 0,maxX, minY, maxY);
-        graphsPanel.setGraphAxis(graphsPanel.chart2, 0,maxX, minY, maxY);
+        graphsPanel.setGraphAxis(graphsPanel.chart1, 0, maxX, minY, maxY);
+        graphsPanel.setGraphAxis(graphsPanel.chart2, 0, maxX, minY, maxY);
 
         String time = Double.toString(SimulationTime.getSimulationTime());
         paramsPanel.simulationTime.setText(time);

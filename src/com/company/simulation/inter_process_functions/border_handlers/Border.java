@@ -1,15 +1,14 @@
-package com.company.simulation.inter_process_functions.border_displacement;
+package com.company.simulation.inter_process_functions.border_handlers;
 
-import com.company.simulation.inter_process_functions.border_displacement.border_handlers.BorderSwitcher;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 
-public class BorderDisplacement {
+public class Border {
     /**
      * Функция, создающая набор линейных функций воздействия на границу материала.
      *
@@ -90,18 +89,18 @@ public class BorderDisplacement {
      *
      * @return WaveFront новый волновой фронт
      */
-    public static WaveFront createBorderWaveFront() {
+    public static LayerDescription createBorderWaveFront() {
         var linearFunction = getJumpDiscontinuityFunction();
 
         if (linearFunction == null)
             return null;
 
-        var waveFrontWrapper = new ArrayList<WaveFront>();
+        var waveFrontWrapper = new ArrayList<LayerDescription>();
 
-        waveFrontWrapper.add(new WaveFront(
-                linearFunction.k(),
-                0.0 - linearFunction.k(),
+        waveFrontWrapper.add(new LayerDescription(
                 linearFunction.b(),
+                linearFunction.k(),
+                -linearFunction.k(),
                 linearFunction.startTime()
         ));
 

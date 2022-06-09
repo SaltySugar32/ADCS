@@ -1,7 +1,7 @@
 package com.company.simulation.simulation_variables;
 
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 
@@ -66,7 +66,7 @@ public class SimulationGlobals {
     /**
      * Текущая волновая картина, содержащая в себе каждый из волновых фронтов
      */
-    static volatile ArrayList<WaveFront> currentWavePicture;
+    static volatile ArrayList<LayerDescription> currentWavePicture;
 
     /**
      * Воздействие на границу материала
@@ -112,7 +112,7 @@ public class SimulationGlobals {
                         2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity());
     }
 
-    public static void setCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
+    public static void setCurrentWavePicture(ArrayList<LayerDescription> currentWavePicture) {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
@@ -140,7 +140,7 @@ public class SimulationGlobals {
         return coefficientNu;
     }
 
-    public static ArrayList<WaveFront> getCurrentWavePicture() {
+    public static ArrayList<LayerDescription> getCurrentWavePicture() {
         return currentWavePicture;
     }
 

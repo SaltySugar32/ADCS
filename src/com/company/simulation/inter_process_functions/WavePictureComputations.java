@@ -1,26 +1,26 @@
 package com.company.simulation.inter_process_functions;
 
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class WavePictureComputations {
 
-    static Comparator<WaveFront> comparator = Comparator.comparingDouble(WaveFront::getCurrentX);
+    static Comparator<LayerDescription> comparator = Comparator.comparingDouble(LayerDescription::getCurrentX);
 
-    public static void sortCurrentWavePicture(ArrayList<WaveFront> currentWavePicture) {
+    public static void sortCurrentWavePicture(ArrayList<LayerDescription> currentWavePicture) {
         currentWavePicture.sort(comparator);
     }
 
-    public static void moveWaveFronts(ArrayList<WaveFront> currentWavePicture) {
-        for (WaveFront waveFront : currentWavePicture) {
-            waveFront.moveWaveFront(SimulationTime.getSimulationTimeDelta());
+    public static void moveWaveFronts(ArrayList<LayerDescription> currentWavePicture) {
+        for (LayerDescription layerDescription : currentWavePicture) {
+            layerDescription.moveWaveFront(SimulationTime.getSimulationTimeDelta());
         }
     }
 
-    public static void checkCollisions(ArrayList<WaveFront> currentWavePicture) {
+    public static void checkCollisions(ArrayList<LayerDescription> currentWavePicture) {
 
         if (currentWavePicture.size() > 1) {
             for (int index = 0; index < currentWavePicture.size() - 1; index++) {

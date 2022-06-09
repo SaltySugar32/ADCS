@@ -1,13 +1,13 @@
-package com.company.simulation.inter_process_functions.border_displacement.border_handlers;
+package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
-import com.company.simulation.inter_process_functions.border_displacement.border_handlers.border_handler_realisations.EdgeCase;
-import com.company.simulation.inter_process_functions.border_displacement.border_handlers.border_handler_realisations.EqualsCase;
-import com.company.simulation.inter_process_functions.border_displacement.border_handlers.border_handler_realisations.NullCase;
-import com.company.simulation.inter_process_functions.border_displacement.border_handlers.border_handler_realisations.OppositesCase;
+import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.EdgeCase;
+import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.EqualsCase;
+import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.NullCase;
+import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.OppositesCase;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
+import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 
@@ -19,22 +19,22 @@ public class BorderSwitcher {
 
     /**
      * Функция, выбирающая вид создаваемого волнового фронта
-     * @param waveFronts Один или два воздействия - параметры границы и первый волновой фронт в волновой картине
+     * @param layerDescriptions Один или два воздействия - параметры границы и первый волновой фронт в волновой картине
      * @return Тип создаваемого волнового фронта
      */
-    public static WaveFront generateNewWaveFront(ArrayList<WaveFront> waveFronts) {
+    public static LayerDescription generateNewWaveFront(ArrayList<LayerDescription> layerDescriptions) {
 
         double currentSpeed;
 
         //Выбор типа деформации и от него следующей скорости волнового фронта
-        if (waveFronts.get(0).getA2() > ProgramGlobals.getEpsilon()) {
+        if (layerDescriptions.get(0).getA2() > ProgramGlobals.getEpsilon()) {
             //creationE > 0 => растяжение
 
             currentSpeed = DenoteFactor.METERS.toMillimeters(
                     SimulationGlobals.getCharacteristicsSpeedStretching()
             );
 
-        } else if (waveFronts.get(0).getA2() < -ProgramGlobals.getEpsilon()) {
+        } else if (layerDescriptions.get(0).getA2() < -ProgramGlobals.getEpsilon()) {
             //creationE < 0 => сжатие
 
             currentSpeed = DenoteFactor.METERS.toMillimeters(
@@ -43,26 +43,26 @@ public class BorderSwitcher {
 
         } else {
             System.out.println(nullCase);
-            return nullCase.generateNewWaveFront(waveFronts, 0.0);
+            return nullCase.generateNewWaveFront(layerDescriptions, 0.0);
         }
 
         
         //Если нет первого волнового фронта, то создаём первый волновой фронт
-        if (waveFronts.size() == 1) {
+        if (layerDescriptions.size() == 1) {
             System.out.println(edgeCase);
-            return edgeCase.generateNewWaveFront(waveFronts, currentSpeed);
+            return edgeCase.generateNewWaveFront(layerDescriptions, currentSpeed);
         }
 
 
         //Если произведение изменений перемещений двух волновых фронтов меньше нуля,
         // то мы работаем с противоположными волновыми фронтами (нуль к этому моменту мы уже отфильтровали)
-        if (waveFronts.get(0).getA2() * waveFronts.get(1).calculateDeformations() < -ProgramGlobals.getEpsilon()) {
+        if (layerDescriptions.get(0).getA2() * layerDescriptions.get(1).getA2() < 0.0) {
             System.out.println(oppositesCase);
-            return oppositesCase.generateNewWaveFront(waveFronts, 0.0);
+            return oppositesCase.generateNewWaveFront(layerDescriptions, 0.0);
         }
 
         System.out.println(equalsCase);
         //Ну а иначе обработчик сходных волновых фронтов
-        return equalsCase.generateNewWaveFront(waveFronts, currentSpeed);
+        return equalsCase.generateNewWaveFront(layerDescriptions, currentSpeed);
     }
 }
