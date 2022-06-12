@@ -21,7 +21,7 @@ public class EqualsCase implements IBorderHandler {
 
         //Частный случай при CL = 0, xL = 0, Xi = 0
         double A2i = (A1R + A2R * speed - A1L) / (speed);
-        double A1i = A1L;
+        double A1i = (A1L + 0.0);
         double A0i = A0R + A1R * (startTL - startTR);
 
         LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL);

@@ -26,17 +26,6 @@ public class SimulationSynchronizerThread extends Thread {
     }
 
     /**
-     * SETTER через int переменную, что делать дальше
-     */
-    public void setNextJob(int nextJob) {
-        switch (nextJob) {
-            case 1 -> setNextJob(NextThreadState.PAUSE);
-            case 2 -> setNextJob(NextThreadState.RESUME);
-            default -> setNextJob(NextThreadState.DISABLE);
-        }
-    }
-
-    /**
      * SETTER, непосредственно указывающий, что делать дальше
      */
     public void setNextJob(NextThreadState nextThreadState) {
@@ -61,7 +50,8 @@ public class SimulationSynchronizerThread extends Thread {
      * Указать симуляции, что её работа должна быть остановлена, но не прекращена полностью
      */
     public void setNextJobSTOP() {
-        nextThreadState = NextThreadState.STOP;
+        simulationServerThread.simStop();
+        nextThreadState = NextThreadState.PAUSE;
     }
 
     /**

@@ -2,7 +2,6 @@ package com.company;
 
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.user_clients.UserClient;
-import com.company.user_clients.UserClient_v1;
 import com.company.user_clients.UserClient_v2;
 
 /**Файл с глобальными переменными сборки*/
@@ -17,12 +16,6 @@ public class ProgramGlobals {
     static final ClientVersion clientVersion = ClientVersion.v2;
 
     enum ClientVersion {
-        v1 { //Клиент для отладки работоспособности программного средства
-
-            public UserClient client(SimulationSynchronizerThread SynchroThread) {
-                return new UserClient_v1(SynchroThread);
-            }
-        },
         v2 { //Клиент визуального интерфейса клиента
 
             public UserClient client(SimulationSynchronizerThread SynchroThread) {

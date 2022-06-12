@@ -68,11 +68,7 @@ public class SimulationServerThread extends Thread {
      * с очисткой переменных симуляции.
      */
     public void simStop() {
-        if (SimulationState.INTERPROCESS == simulationStateStack.peek())
-            simulationStateStack.push(SimulationState.PAUSED);
-
         SimulationGlobals.getCurrentWavePicture().clear();
-        SimulationGlobals.getBorderDisplacementFunctions().clear();
         SimulationTime.setSimulationTime(0.0);
     }
 
