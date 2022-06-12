@@ -11,7 +11,7 @@ public enum SimulationTimePow {
     SECONDS {
         @Override
         public double getPow() {
-            return 0;
+            return 1;
         }
 
         @Override
@@ -27,7 +27,7 @@ public enum SimulationTimePow {
     MILLISECONDS {
         @Override
         public double getPow() {
-            return -3;
+            return Math.pow(10, -3);
         }
 
         @Override
@@ -43,7 +43,7 @@ public enum SimulationTimePow {
     MICROSECONDS {
         @Override
         public double getPow() {
-            return -6;
+            return Math.pow(10, -6);
         }
 
         @Override
@@ -59,7 +59,7 @@ public enum SimulationTimePow {
     NANOSECONDS {
         @Override
         public double getPow() {
-            return -9;
+            return Math.pow(10, -9);
         }
 
         @Override

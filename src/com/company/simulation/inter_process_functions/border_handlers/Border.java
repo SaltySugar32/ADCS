@@ -3,6 +3,7 @@ package com.company.simulation.inter_process_functions.border_handlers;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
@@ -14,7 +15,7 @@ public class Border {
      *
      * @param coordinates Множество координат, где coordinates[0] = x = t, coordinates[1] = y = u
      */
-    public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactor) {
+    public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactorU, SimulationTimePow simulationTimePow) {
         ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
 
         //Берём каждый следующий после нулевого индекса индекс и на их основе генерируем последовательность
@@ -22,10 +23,10 @@ public class Border {
         //coordinates[0][index] = x = currentT
         //coordinates[1][index] = y = currentU
         for (int index = 0; index < coordinates[0].length - 1; index++) {
-            double currentT = coordinates[0][index];
-            double currentU = denoteFactor.toMillimeters(coordinates[1][index]);
-            double endT = coordinates[0][index + 1];
-            double endU = denoteFactor.toMillimeters(coordinates[1][index + 1]);
+            double currentT = coordinates[0][index] * simulationTimePow.getPow();
+            double currentU = denoteFactorU.toMillis(coordinates[1][index]);
+            double endT = coordinates[0][index + 1] * simulationTimePow.getPow();
+            double endU = denoteFactorU.toMillis(coordinates[1][index + 1]);
 
             //k = следующее значение перемещения минус значение перемещения в момент разрыва,
             // делённое на следующее время минус текущее время перегиба.
@@ -68,7 +69,7 @@ public class Border {
         //Проходим по всем линейным функциям
         for (var linearFunction : SimulationGlobals.getBorderDisplacementFunctions()) {
             //Если начальное время больше времени симуляции без дельты
-            if (linearFunction.startTime() > SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta()) {
+            if (linearFunction.startTime() >= SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta()) {
                 //Если начальное время меньше времени симуляции
                 if (linearFunction.startTime() < SimulationTime.getSimulationTime()) {
                     return linearFunction;
@@ -84,8 +85,6 @@ public class Border {
      * Функция, добавляющая новый волновой фронт в волновую картину,
      * если за такт времени должно было произойти его появление
      * на границе волновой картины.
-     * Смещает волновой фронт в обратном направлении с повышенной точностью,
-     * дабы потом вместе со всеми фронтами обработать его смещение.
      *
      * @return WaveFront новый волновой фронт
      */
@@ -114,6 +113,9 @@ public class Border {
             return null;
         }
 
+        //Смещение волнового фронта в обратном направлении,
+        //дабы потом вместе со всеми фронтами обработать его смещение.
+        //Начальное время минус время в предыдущий момент времени.
         double deltaTime = linearFunction.startTime() -
                 (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
 

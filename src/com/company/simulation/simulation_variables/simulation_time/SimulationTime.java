@@ -23,6 +23,34 @@ public class SimulationTime {
 
     //-------------------------------------------------------------------------
 
+    //-----------------------МНОЖИТЕЛЬ ИЗМЕНЕНИЯ ВРЕМЕНИ-----------------------
+
+    /**
+     * Эквивалентно 10 ^ SimulationTimePow.getPow()
+     */
+    static SimulationTimePow simulationTimePow;
+
+    static {
+        setSimulationTimePow(SimulationTimePow.MILLISECONDS);
+    }
+
+    /**
+     * Число, выражающее множитель степени секунды.
+     * @return Число в рамках (от 1 до 10^-9)
+     */
+    public static SimulationTimePow getSimulationTimePow() {
+        return simulationTimePow;
+    }
+
+    /**
+     * Ввод множителя шага симуляции, выражаемого в степени секунды.
+     */
+    public static void setSimulationTimePow(SimulationTimePow simulationTimePow) {
+        SimulationTime.simulationTimePow = simulationTimePow;
+    }
+
+    //-------------------------------------------------------------------------
+
     //------------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ЦИКЛ------------------------
 
     /**
@@ -30,18 +58,13 @@ public class SimulationTime {
      */
     static double simulationTimeDelta;
 
-    /**
-     * Эквивалентно 10 ^ SimulationTimePow.getPow()
-     */
-    static double simulationTimePow;
-
     static {
-        setSimulationTimePow(SimulationTimePow.MILLISECONDS);
-        simulationTimeDelta = 0.5 * simulationTimePow;
+        simulationTimeDelta = 0.5 * simulationTimePow.getPow();
     }
 
     /**
      * Число, выражающее длительность операции.
+     *
      * @return Число в рамках (от 0.1 до 1) * simulationTimePow
      */
     public static double getSimulationTimeDelta() {
@@ -54,22 +77,7 @@ public class SimulationTime {
      * @param simulationTimeDelta В районе от 0.1 до 1
      */
     public static void setSimulationTimeDelta(double simulationTimeDelta) {
-        SimulationTime.simulationTimeDelta = simulationTimeDelta * simulationTimePow;
-    }
-
-    /**
-     * Число, выражающее множитель степени секунды.
-     * @return Число в рамках (от 1 до 10^-9)
-     */
-    public static double getSimulationTimePow() {
-        return simulationTimePow;
-    }
-
-    /**
-     * Ввод множителя шага симуляции, выражаемого в степени секунды.
-     */
-    public static void setSimulationTimePow(SimulationTimePow simulationTimePow) {
-        SimulationTime.simulationTimePow = Math.pow(10, simulationTimePow.getPow());
+        SimulationTime.simulationTimeDelta = simulationTimeDelta * simulationTimePow.getPow();
     }
 
     //-------------------------------------------------------------------------

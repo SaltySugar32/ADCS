@@ -25,20 +25,21 @@ public class ParamsPanel extends JPanel {
 
     // Ползунок FPS
     static final int FPS_MIN = 0;
-    static final int FPS_MAX =15;
-    static final int FPS_INIT =5;
+    static final int FPS_MAX = 15;
+    static final int FPS_INIT =ProgramGlobals.getFramesPerSecond();
     JSlider FPS_slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
     // Ползунок OPS
     static final int OPS_MIN = 0;
-    static final int OPS_MAX = 500;
-    static final int OPS_INIT = 100;
+    static final int OPS_MAX = 100;
+    static final int OPS_INIT = ProgramGlobals.getOperationsPerSecond();
     JSlider OPS_slider = new JSlider(JSlider.HORIZONTAL, OPS_MIN, OPS_MAX, OPS_INIT);
 
     // Ползунок дельты времени
     static final int timeDelta_MIN = 0;
     static final int timeDelta_MAX = 10;
-    static final int timeDelta_INIT = 5;
+    static final int timeDelta_INIT = (int) (SimulationTime.getSimulationTimeDelta()
+            / SimulationTime.getSimulationTimePow().getPow() * 10);
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
     public JLabel simulationTime = new JLabel("0");
@@ -56,8 +57,8 @@ public class ParamsPanel extends JPanel {
         FPS_slider.setPaintTicks(true);
         FPS_slider.setPaintLabels(true);
 
-        OPS_slider.setMajorTickSpacing(250);
-        OPS_slider.setMinorTickSpacing(50);
+        OPS_slider.setMajorTickSpacing(50);
+        OPS_slider.setMinorTickSpacing(10);
         OPS_slider.setPaintTicks(true);
         OPS_slider.setPaintLabels(true);
 
@@ -87,7 +88,7 @@ public class ParamsPanel extends JPanel {
             }
         });
 
-        JButton stopButton = new JButton(" STOP");
+        JButton stopButton = new JButton("STOP");
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +108,8 @@ public class ParamsPanel extends JPanel {
         JPanel slider_panel = new JPanel();
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
-        JLabel timeDelta_label = new JLabel("Дельта времени, мкс ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
+        JLabel timeDelta_label = new JLabel("Дельта времени, " + SimulationTime.getSimulationTimePow().getName()
+                + " ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
 
         JLabel simulationTimeLabel = new JLabel("Текущее время симуляции");
 

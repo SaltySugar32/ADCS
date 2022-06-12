@@ -48,8 +48,8 @@ public class DataHandler {
 
     public static void setDefaultGraphAxisSettings(){
         xmin = 0;
-        xmax = 10;
-        xtick = 1;
+        xmax = 1000;
+        xtick = 100;
         ymin = -5;
         ymax = 5;
         ytick = 1;

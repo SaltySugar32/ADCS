@@ -59,7 +59,7 @@ public class ProgramGlobals {
     static volatile int operationsPerSecond;
 
     static {
-        operationsPerSecond = 100;
+        operationsPerSecond = 10;
     }
 
     public static int getOperationsPerSecond() {

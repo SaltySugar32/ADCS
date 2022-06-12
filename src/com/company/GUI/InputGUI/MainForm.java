@@ -74,7 +74,7 @@ public class MainForm extends JFrame {
                         default -> SimulationTime.setSimulationTimePow(SimulationTimePow.MILLISECONDS);
                     }
 
-                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
+                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI, SimulationTime.getSimulationTimePow());
                     SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
                 }
             }

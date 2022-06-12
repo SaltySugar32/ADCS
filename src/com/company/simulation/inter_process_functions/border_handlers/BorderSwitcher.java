@@ -30,14 +30,14 @@ public class BorderSwitcher {
         if (layerDescriptions.get(0).getA2() > ProgramGlobals.getEpsilon()) {
             //creationE > 0 => растяжение
 
-            currentSpeed = DenoteFactor.METERS.toMillimeters(
+            currentSpeed = DenoteFactor.METERS.toMillis(
                     SimulationGlobals.getCharacteristicsSpeedStretching()
             );
 
         } else if (layerDescriptions.get(0).getA2() < -ProgramGlobals.getEpsilon()) {
             //creationE < 0 => сжатие
 
-            currentSpeed = DenoteFactor.METERS.toMillimeters(
+            currentSpeed = DenoteFactor.METERS.toMillis(
                     SimulationGlobals.getCharacteristicsSpeedCompression()
             );
 
