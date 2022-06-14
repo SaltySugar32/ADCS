@@ -1,5 +1,0 @@
-name=djc
-lambda=1.0
-nu=30.0
-mu=20.0
-density=40.0

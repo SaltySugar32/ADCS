@@ -10,6 +10,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -83,8 +84,11 @@ public class GraphsPanel extends JPanel {
         marker.setStroke(new BasicStroke(1.0f));
         plot.addRangeMarker(marker);
 
-        //DataHandler.setDefaultGraphAxisSettings();
-        //setGraphAxis(chart);
+        // Ширина линий
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        renderer.setSeriesStroke(0, new BasicStroke(2));
+
+        updateGraphAxis(chart, series);
 
         return chart;
     }
@@ -93,17 +97,27 @@ public class GraphsPanel extends JPanel {
      * Функция, задающая стандартные диапазоны осей
      * @param chart
      */
-    public void setGraphAxis(JFreeChart chart, double minX, double maxX, double minY, double maxY){
+    public void updateGraphAxis(JFreeChart chart, XYSeries series){
         XYPlot plot = (XYPlot) chart.getPlot();
 
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
 
-        xAxis.setRange(minX, maxX);
-        //xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
+        // порог
+        double threshold;
 
-        yAxis.setRange(minY, maxY);
-        //yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
+        threshold = (series.getMaxX() - series.getMinX()) / 10;
+        double maxX = Math.max(series.getMaxX(), threshold) * 1.05;
+
+        threshold = (series.getMaxY() - series.getMinY()) / 11;
+        double maxY = Math.max(series.getMaxY(), threshold) * 1.05;
+        double minY = Math.min(series.getMinY(), -threshold) * 1.05;
+
+        try {
+            xAxis.setRange(0, maxX);
+            yAxis.setRange(minY, maxY);
+        }
+        catch (Exception exception){}
     }
 
     /**
@@ -127,6 +141,8 @@ public class GraphsPanel extends JPanel {
         chartPanel.setZoomTriggerDistance(Integer.MAX_VALUE);
         chartPanel.setFillZoomRectangle(false);
         chartPanel.setZoomOutlinePaint(new Color(0f, 0f, 0f, 0f));
+
+        chartPanel.setPopupMenu(null);
 
         return chartPanel;
     }

@@ -77,6 +77,19 @@ public class MainForm extends JFrame {
                     Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI, SimulationTime.getSimulationTimePow());
                     SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
                 }
+                else{
+                    // Вывод сообщения об ошибке
+                    String error_message = "Введите:\n";
+
+                    if (!DataHandler.env_param_input_status)
+                        error_message += "\tПараметры среды\n";
+
+                    if (!DataHandler.graph_input_status)
+                        error_message += "\tГрафик линейной аппроксимации";
+
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, error_message, "Ошибка", JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
     }

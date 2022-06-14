@@ -22,7 +22,7 @@ public class LoadGraphDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public LoadGraphDialog(XYSeries series) {
+    public LoadGraphDialog(XYSeries series, boolean stopState) {
         setContentPane(contentPane);
         setTitle("Загрузка графика");
         setSize(400, 220);
@@ -48,6 +48,9 @@ public class LoadGraphDialog extends JDialog {
                     series.add(0, 0);
                     for (int i = 0; i < array[0].length; i++)
                         series.add(array[0][i], array[1][i]);
+
+                    if(stopState)
+                        series.add(Integer.MAX_VALUE, series.getY(series.getItemCount()-1));
                 }
             }
         });
@@ -102,7 +105,16 @@ public class LoadGraphDialog extends JDialog {
                             JOptionPane.ERROR_MESSAGE
                     );
                 else {
+                    int index = series.getItemCount()-1;
+                    double y = (double) series.getY(index);
+                    if (stopState)
+                        series.remove(index);
+
                     DBHandler.addGraphFile(dialogResult, series.toArray());
+
+                    if(stopState)
+                        series.add(Integer.MAX_VALUE, y);
+
                     loadComboBox(comboBox1);
                 }
 
