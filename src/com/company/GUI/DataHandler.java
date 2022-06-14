@@ -58,8 +58,8 @@ public class DataHandler {
 
     public static void setDefaultGraphViewSettings(){
         spline_precision = 100;
-        spline_width = 1;
-        lin_appr_width = 1;
+        spline_width = 2;
+        lin_appr_width = 2;
         marker_width = 1;
         point_width = 10;
     }

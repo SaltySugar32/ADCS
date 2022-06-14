@@ -93,6 +93,7 @@ public class ParamsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ServerThread.setNextJobSTOP();
+                pauseButton.setText("START");
             }
         });
 

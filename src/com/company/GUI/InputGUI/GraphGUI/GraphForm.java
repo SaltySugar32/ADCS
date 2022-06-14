@@ -45,6 +45,7 @@ public class GraphForm extends JFrame {
     private Crosshair crosshairy;
 
     private boolean isLinApproxGraph;
+    private boolean stopState;
 
     public GraphForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
         this.setTitle("ADCS - Ввод графика");
@@ -75,6 +76,9 @@ public class GraphForm extends JFrame {
 
         // флажок текущего задаваемого графика
         isLinApproxGraph = false;
+
+        // флажок создания точки стопа
+        stopState = false;
     }
 
     /**
@@ -179,8 +183,14 @@ public class GraphForm extends JFrame {
                 int i = e.getItem();
                 // Если не первая (нулевая) точка
                 if(i>0){
-                    if(isLinApproxGraph)
+                    if(isLinApproxGraph) {
                         series2.remove(i);
+                        // обновление точки стопа
+                        if(stopState){
+                            removeStopPoint();
+                            addStopPoint();
+                        }
+                    }
                     else
                         series1.remove(i);
                 }
@@ -203,8 +213,14 @@ public class GraphForm extends JFrame {
                 if(chartX < DataHandler.xmin || chartX > DataHandler.xmax) return;
                 if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
 
-                if(isLinApproxGraph)
+                if(isLinApproxGraph) {
                     series2.add(chartX, chartY);
+                    // обновление точки стопа
+                    if(stopState){
+                        removeStopPoint();
+                        addStopPoint();
+                    }
+                }
                 else
                     series1.add(chartX, chartY);
             }
@@ -384,7 +400,7 @@ public class GraphForm extends JFrame {
     }
 
     /**
-     * создание меню смены задаваемого графика
+     * Функция создания меню "Ввод"
      * @return
      */
     private JMenu createInputMenu(){
@@ -396,12 +412,16 @@ public class GraphForm extends JFrame {
         JMenuItem clearRed = new JMenuItem("Гладкая функция граничного воздействия");
         JMenuItem clearBlue = new JMenuItem("График линейной аппроксимации");
 
+        String stopStateString = stopState? "Удалить стоп" : "Создать стоп";
+        JMenuItem setStopState = new JMenuItem(stopStateString);
+
         clearGraph.add(clearRed);
         clearGraph.add(clearBlue);
 
         inputMenu.add(changeGraph);
         inputMenu.add(loadGraph);
         inputMenu.add(clearGraph);
+        inputMenu.add(setStopState);
 
         changeGraph.addActionListener(new ActionListener() {
             @Override
@@ -429,7 +449,7 @@ public class GraphForm extends JFrame {
         loadGraph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoadGraphDialog dialog = new LoadGraphDialog(series2);
+                LoadGraphDialog dialog = new LoadGraphDialog(series2, stopState);
             }
         });
 
@@ -446,6 +466,24 @@ public class GraphForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 series2.clear();
                 series2.add(0,0);
+            }
+        });
+
+        setStopState.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //stopState = !stopState;
+                if (stopState) {
+                    stopState = false;
+                    removeStopPoint();
+                }
+                else {
+                    stopState = true;
+                    addStopPoint();
+                }
+
+                String stopStateString = stopState? "Удалить стоп" : "Создать стоп";
+                setStopState.setText(stopStateString);
             }
         });
 
@@ -538,5 +576,26 @@ public class GraphForm extends JFrame {
         String file_path = path + timeStamp + ".png";
 
         DBHandler.SaveChart(chart, panel, file_path);
+    }
+
+    /**
+     * Функция добавления точки стопа
+     */
+    private void addStopPoint(){
+        int last = series2.getItemCount()-1;
+
+        // int, так как макс значение типа double не выводится в графике
+        double x = Integer.MAX_VALUE;
+        double y = (double) series2.getY(last);
+
+        series2.add(x, y);
+    }
+
+    /**
+     * Функция удаления точки стопа
+     */
+    private void removeStopPoint(){
+        int last = series2.getItemCount()-1;
+        series2.remove(last);
     }
 }

@@ -88,8 +88,7 @@ public class GraphsPanel extends JPanel {
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
         renderer.setSeriesStroke(0, new BasicStroke(2));
 
-        //DataHandler.setDefaultGraphAxisSettings();
-        //setGraphAxis(chart);
+        updateGraphAxis(chart, series);
 
         return chart;
     }
