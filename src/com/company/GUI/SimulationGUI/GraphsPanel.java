@@ -98,17 +98,27 @@ public class GraphsPanel extends JPanel {
      * Функция, задающая стандартные диапазоны осей
      * @param chart
      */
-    public void setGraphAxis(JFreeChart chart, double minX, double maxX, double minY, double maxY){
+    public void updateGraphAxis(JFreeChart chart, XYSeries series){
         XYPlot plot = (XYPlot) chart.getPlot();
 
         NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
 
-        xAxis.setRange(minX, maxX);
-        //xAxis.setTickUnit(new NumberTickUnit(DataHandler.xtick));
+        // порог
+        double threshold;
 
-        yAxis.setRange(minY, maxY);
-        //yAxis.setTickUnit(new NumberTickUnit(DataHandler.ytick));
+        threshold = (series.getMaxX() - series.getMinX()) / 10;
+        double maxX = Math.max(series.getMaxX(), threshold) * 1.05;
+
+        threshold = (series.getMaxY() - series.getMinY()) / 11;
+        double maxY = Math.max(series.getMaxY(), threshold) * 1.05;
+        double minY = Math.min(series.getMinY(), -threshold) * 1.05;
+
+        try {
+            xAxis.setRange(0, maxX);
+            yAxis.setRange(minY, maxY);
+        }
+        catch (Exception exception){}
     }
 
     /**

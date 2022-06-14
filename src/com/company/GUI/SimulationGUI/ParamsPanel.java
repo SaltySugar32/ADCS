@@ -49,7 +49,7 @@ public class ParamsPanel extends JPanel {
      *
      * @param ServerThread Поток
      */
-    ParamsPanel(SimulationSynchronizerThread ServerThread){
+    ParamsPanel(SimulationSynchronizerThread ServerThread, SimulationFrame parent){
 
         //Отрисовка панели
         FPS_slider.setMajorTickSpacing(5);
@@ -140,6 +140,7 @@ public class ParamsPanel extends JPanel {
                 // Изменение FPS
                 int value = (FPS_slider.getValue()==0)? 1:FPS_slider.getValue();
                 ProgramGlobals.setFramesPerSecond(value);
+                parent.updateTimer();
                 FPS_label.setText("Кадры в секунду ("+value+")");
             }
         });

@@ -2,6 +2,7 @@ package com.company.GUI.SimulationGUI;
 
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
+import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
@@ -18,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimerTask;
@@ -32,6 +34,10 @@ public class SimulationFrame extends JFrame {
 
     GraphsPanel graphsPanel = new GraphsPanel();
     ParamsPanel paramsPanel;
+
+    // Таймер
+    Timer timer = new Timer();
+
     /**
      * Главное окно симуляции
      *
@@ -61,10 +67,20 @@ public class SimulationFrame extends JFrame {
         this.add(graphsPanel);
 
         // Панель с ползунками и кнопками
-        paramsPanel = new ParamsPanel(ServerThread);
+        paramsPanel = new ParamsPanel(ServerThread, this);
         this.add(paramsPanel, BorderLayout.SOUTH);
 
-        // Таймер - чтение данных из решателя
+        updateTimer();
+    }
+
+    /**
+     * Обновление таймера
+     */
+    public void updateTimer(){
+        timer.cancel();
+
+        timer = new Timer();
+        // Задача для таймера - чтение данных из решателя
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -72,8 +88,8 @@ public class SimulationFrame extends JFrame {
             }
         };
 
-        Timer timer = new Timer();
-        timer.schedule(task, 0, 1000);
+        int period = 1000 / ProgramGlobals.getFramesPerSecond();
+        timer.schedule(task, 0, period);
     }
 
     /**
@@ -107,29 +123,8 @@ public class SimulationFrame extends JFrame {
             graphsPanel.series2.add(layerDescriptions.get(layerDescriptions.size() - 1).getCurrentX(), 0.0);
 
         // обновление масштабов графиков
-
-        // порог
-        double threshold;
-
-        threshold = (graphsPanel.series1.getMaxX() - graphsPanel.series1.getMinX()) / 9;
-        double maxX1 = Math.max(graphsPanel.series1.getMaxX(), threshold) * 1.1;
-
-        threshold = (graphsPanel.series1.getMaxY() - graphsPanel.series1.getMinY()) / 8;
-        double maxY1 = Math.max(graphsPanel.series1.getMaxY(), threshold) * 1.1;
-        double minY1 = Math.min(graphsPanel.series1.getMinY(), -threshold) * 1.1;
-
-        threshold = (graphsPanel.series2.getMaxX() - graphsPanel.series2.getMinX()) / 9;
-        double maxX2 = Math.max(graphsPanel.series2.getMaxX(), threshold) * 1.1;
-
-        threshold = (graphsPanel.series2.getMaxY() - graphsPanel.series2.getMinY()) / 8;
-        double maxY2 = Math.max(graphsPanel.series2.getMaxY(), threshold) * 1.1;
-        double minY2 = Math.min(graphsPanel.series2.getMinY(), -threshold) * 0.9;
-
-        try {
-            graphsPanel.setGraphAxis(graphsPanel.chart1, 0, maxX1, minY1, maxY1);
-            graphsPanel.setGraphAxis(graphsPanel.chart2, 0, maxX2, minY2, maxY2);
-        }
-        catch (Exception exception){}
+        graphsPanel.updateGraphAxis(graphsPanel.chart1, graphsPanel.series1);
+        graphsPanel.updateGraphAxis(graphsPanel.chart2, graphsPanel.series2);
 
         // вывод времени симуляции
         String time = Double.toString(SimulationTime.getSimulationTime());
@@ -145,8 +140,8 @@ public class SimulationFrame extends JFrame {
         JMenuItem quickSave = new JMenuItem("Сохранить изображения");
         JMenuItem saveAs = new JMenuItem("Сохранить изображения как...");
 
-        fileMenu.add(quickSave);
         fileMenu.add(saveAs);
+        fileMenu.add(quickSave);
 
         // Shortcut квиксейва CTRL + S
         KeyStroke key = KeyStroke.getKeyStroke("control S");

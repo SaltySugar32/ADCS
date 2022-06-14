@@ -61,7 +61,7 @@ public class DataHandler {
         spline_width = 1;
         lin_appr_width = 1;
         marker_width = 1;
-        point_width = 6;
+        point_width = 10;
     }
 
     /**

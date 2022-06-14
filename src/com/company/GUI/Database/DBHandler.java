@@ -203,6 +203,14 @@ public class DBHandler {
                 }
             }
         }
+
+        // удаление из списка временных файлов
+        try {
+            names.remove("temp1.txt");
+            names.remove("temp2.txt");
+        }
+        catch (Exception exception){}
+
         return names;
     }
 
