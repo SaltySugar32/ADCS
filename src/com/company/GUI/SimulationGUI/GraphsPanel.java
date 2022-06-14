@@ -10,6 +10,7 @@ import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -83,6 +84,10 @@ public class GraphsPanel extends JPanel {
         marker.setStroke(new BasicStroke(1.0f));
         plot.addRangeMarker(marker);
 
+        // Ширина линий
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
+        renderer.setSeriesStroke(0, new BasicStroke(2));
+
         //DataHandler.setDefaultGraphAxisSettings();
         //setGraphAxis(chart);
 
@@ -127,6 +132,8 @@ public class GraphsPanel extends JPanel {
         chartPanel.setZoomTriggerDistance(Integer.MAX_VALUE);
         chartPanel.setFillZoomRectangle(false);
         chartPanel.setZoomOutlinePaint(new Color(0f, 0f, 0f, 0f));
+
+        chartPanel.setPopupMenu(null);
 
         return chartPanel;
     }

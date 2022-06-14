@@ -76,17 +76,25 @@ public class SimulationFrame extends JFrame {
         timer.schedule(task, 0, 1000);
     }
 
+    /**
+     * Вывод графических данных
+     */
     public void drawOutput(){
-        // тест
+
+        // очистка графиков
         graphsPanel.series1.clear();
         graphsPanel.series2.clear();
 
+        // список фронтов из решателя
         List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
         graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
 
         for (int index = 0; index < layerDescriptions.size(); index++) {
+
+            // график деформаций
             graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateDisplacement());
 
+            // график перемещений
             if (index > 0)
                 graphsPanel.series2.add(layerDescriptions.get(index - 1).getCurrentX(), layerDescriptions.get(index).getA2());
             else
@@ -98,27 +106,32 @@ public class SimulationFrame extends JFrame {
         if (layerDescriptions.size() > 0)
             graphsPanel.series2.add(layerDescriptions.get(layerDescriptions.size() - 1).getCurrentX(), 0.0);
 
-        double maxX1 = Math.max(graphsPanel.series1.getMaxX(), 0.1) * 1.1;
-        double maxY1 = Math.max(graphsPanel.series1.getMaxY(), 0.1) * 1.1;
-        double minY1 = Math.min(graphsPanel.series1.getMinY(), 0.1) * 1.1;
+        // обновление масштабов графиков
 
-        double maxX2 = Math.max(0.0, graphsPanel.series2.getMaxX()) * 1.1;
-        double maxY2 = Math.max(0.0, graphsPanel.series2.getMaxY()) * 1.1;
-        double minY2 = Math.min(0.0, graphsPanel.series2.getMinY()) * 1.1;
+        // порог
+        double threshold;
 
-        graphsPanel.setGraphAxis(graphsPanel.chart1, 0, maxX1, minY1, maxY1);
-        graphsPanel.setGraphAxis(graphsPanel.chart2, 0, maxX2, minY2, maxY2);
+        threshold = (graphsPanel.series1.getMaxX() - graphsPanel.series1.getMinX()) / 9;
+        double maxX1 = Math.max(graphsPanel.series1.getMaxX(), threshold) * 1.1;
 
-        /*
-        double maxX = Math.max(graphsPanel.series1.getMaxX(), graphsPanel.series2.getMaxX()) * 1.1;
-        double maxY = Math.max(graphsPanel.series1.getMaxY(), graphsPanel.series2.getMaxY()) * 1.1;
-        double minY = Math.min(graphsPanel.series1.getMinY(), graphsPanel.series2.getMinY()) * 1.1;
+        threshold = (graphsPanel.series1.getMaxY() - graphsPanel.series1.getMinY()) / 8;
+        double maxY1 = Math.max(graphsPanel.series1.getMaxY(), threshold) * 1.1;
+        double minY1 = Math.min(graphsPanel.series1.getMinY(), -threshold) * 1.1;
 
-        graphsPanel.setGraphAxis(graphsPanel.chart1, 0, maxX, minY, maxY);
-        graphsPanel.setGraphAxis(graphsPanel.chart2, 0, maxX, minY, maxY);
+        threshold = (graphsPanel.series2.getMaxX() - graphsPanel.series2.getMinX()) / 9;
+        double maxX2 = Math.max(graphsPanel.series2.getMaxX(), threshold) * 1.1;
 
-         */
+        threshold = (graphsPanel.series2.getMaxY() - graphsPanel.series2.getMinY()) / 8;
+        double maxY2 = Math.max(graphsPanel.series2.getMaxY(), threshold) * 1.1;
+        double minY2 = Math.min(graphsPanel.series2.getMinY(), -threshold) * 0.9;
 
+        try {
+            graphsPanel.setGraphAxis(graphsPanel.chart1, 0, maxX1, minY1, maxY1);
+            graphsPanel.setGraphAxis(graphsPanel.chart2, 0, maxX2, minY2, maxY2);
+        }
+        catch (Exception exception){}
+
+        // вывод времени симуляции
         String time = Double.toString(SimulationTime.getSimulationTime());
         paramsPanel.simulationTime.setText(time);
     }
@@ -133,7 +146,7 @@ public class SimulationFrame extends JFrame {
         JMenuItem saveAs = new JMenuItem("Сохранить изображения как...");
 
         fileMenu.add(quickSave);
-        //fileMenu.add(saveAs);
+        fileMenu.add(saveAs);
 
         // Shortcut квиксейва CTRL + S
         KeyStroke key = KeyStroke.getKeyStroke("control S");
@@ -147,11 +160,47 @@ public class SimulationFrame extends JFrame {
             }
         });
 
+        saveAs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String file_name = getImageName();
+                DBHandler.SaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_деформации.png");
+                DBHandler.SaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_перемещения.png");
+            }
+        });
+
         return  fileMenu;
     }
 
     /**
-     * Быстрое сохранение изображений
+     * Выбор файла для сохранения изображений графиков
+     */
+    private String getImageName(){
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Выберите файл для сохранения");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("PNG images", "png"));
+
+        // Окно выбора файла
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        File fileToSave = null;
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            fileToSave = fileChooser.getSelectedFile();
+        }
+
+        // сохранение графика как PNG файл
+        if(fileToSave!=null) {
+            String file_path = fileToSave.getAbsolutePath().toString();
+
+            return file_path.split(".png")[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * Быстрое сохранение изображений графиков
      * @param chart
      * @param panel
      */
