@@ -2,6 +2,7 @@ package com.company.simulation.inter_process_functions.border_handlers.border_ha
 
 import com.company.simulation.inter_process_functions.border_handlers.IBorderHandler;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class EdgeCase implements IBorderHandler {
         double A1i = (A1L + 0.0);
         double A0i = 0.0;
 
-        LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL);
+        LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL, WaveType.BLUE);
 
         newLayerDescription.setSpeed(speed);
 

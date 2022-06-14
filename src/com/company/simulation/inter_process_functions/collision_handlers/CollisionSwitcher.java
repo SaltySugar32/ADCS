@@ -21,7 +21,7 @@ public class CollisionSwitcher {
             return edgeCase;
         }
 
-        if (layerDescriptions.get(0).calculateDeformations() * layerDescriptions.get(1).calculateDeformations() < 0.0) {
+        if (layerDescriptions.get(0).getA2() * layerDescriptions.get(1).getA2() < 0.0) {
             return commonCase;
         }
 

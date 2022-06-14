@@ -1,10 +1,7 @@
 package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
-import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.EdgeCase;
-import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.EqualsCase;
-import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.NullCase;
-import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.OppositesCase;
+import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.*;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
@@ -15,6 +12,7 @@ public class BorderSwitcher {
     static IBorderHandler equalsCase = new EqualsCase();
     static IBorderHandler edgeCase = new EdgeCase();
     static IBorderHandler oppositesCase = new OppositesCase();
+    static IBorderHandler stopCase = new StopCase();
     static IBorderHandler nullCase = new NullCase();
 
     /**
@@ -42,8 +40,29 @@ public class BorderSwitcher {
             );
 
         } else {
-            System.out.println(nullCase);
-            return nullCase.generateNewWaveFront(layerDescriptions, 0.0);
+            if (layerDescriptions.size() == 1) {
+                System.out.println(nullCase);
+                return nullCase.generateNewWaveFront(layerDescriptions, 0.0);
+            } else {
+
+                //Если изменение смещения на создаваемом волновом фронте равно нулю,
+                // и количество существующих волновых фронтов больше одного, то обрабатываем как стоп
+                System.out.println(stopCase);
+
+                //Если у нас было впереди растяжение, то стоп воздействует как сжатие
+                if (layerDescriptions.get(1).getA2() > ProgramGlobals.getEpsilon()) {
+                    currentSpeed = DenoteFactor.METERS.toMillis(
+                            SimulationGlobals.getCharacteristicsSpeedCompression()
+                    );
+                } else {
+                    //Если у нас впереди было сжатие, то стоп воздействует как растяжение
+                    currentSpeed = DenoteFactor.METERS.toMillis(
+                            SimulationGlobals.getCharacteristicsSpeedStretching()
+                    );
+                }
+
+                return stopCase.generateNewWaveFront(layerDescriptions, currentSpeed);
+            }
         }
 
         
@@ -52,7 +71,6 @@ public class BorderSwitcher {
             System.out.println(edgeCase);
             return edgeCase.generateNewWaveFront(layerDescriptions, currentSpeed);
         }
-
 
         //Если произведение изменений перемещений двух волновых фронтов меньше нуля,
         // то мы работаем с противоположными волновыми фронтами (нуль к этому моменту мы уже отфильтровали)

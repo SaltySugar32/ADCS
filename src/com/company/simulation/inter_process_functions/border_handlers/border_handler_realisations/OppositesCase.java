@@ -4,6 +4,7 @@ import com.company.simulation.inter_process_functions.border_handlers.IBorderHan
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
 
@@ -26,15 +27,14 @@ public class OppositesCase implements IBorderHandler {
     }
 
     @Override
-    public LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed) {
-        //Игнорируем факт поступления скорости
-        assert (speed == 0.0);
+    public LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double unused) {
 
-        double localSpeed = DenoteFactor.METERS.toMillis(computeSpeed());
+        double speed = DenoteFactor.METERS.toMillis(computeSpeed());
+        double speedR = prevLayerDescriptions.get(1).getSpeed();
 
         double A0L = prevLayerDescriptions.get(0).getA0();
         double A1L = prevLayerDescriptions.get(0).getA1();
-        double A2L = 0.0 - prevLayerDescriptions.get(0).getA1() / localSpeed;
+        double A2L = 0.0 - prevLayerDescriptions.get(0).getA1() / speedR;
         double startTL = prevLayerDescriptions.get(0).getStartTime();
 
         double A0R = prevLayerDescriptions.get(1).getA0();
@@ -43,13 +43,13 @@ public class OppositesCase implements IBorderHandler {
         double startTR = prevLayerDescriptions.get(0).getStartTime();
 
         //Частный случай при CL = 0, xL = 0, Xi = 0
-        double A2i = (A1R + A2R * localSpeed - A1L) / (localSpeed);
+        double A2i = (A1R + A2R * speedR - A1L) / (speedR);
         double A1i = (A1L + 0.0);
-        double A0i = A0R + A1R * (startTL - startTR);
+        double A0i = A0R + A1R * (startTL - startTR); //Неизменно
 
-        LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL);
+        LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL, WaveType.RED);
 
-        newLayerDescription.setSpeed(localSpeed);
+        newLayerDescription.setSpeed(speed);
 
         return newLayerDescription;
     }

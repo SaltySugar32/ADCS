@@ -51,6 +51,16 @@ public class SimulationTime {
 
     //-------------------------------------------------------------------------
 
+    //----------------------МНОЖИТЕЛЬ ВРЕМЕНИ СИМУЛЯЦИИ------------------------
+
+    static double simulationTimeMultiplier = 0.5;
+
+    public static double getSimulationTimeMultiplier() {
+        return simulationTimeMultiplier;
+    }
+
+    //-------------------------------------------------------------------------
+
     //------------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ЦИКЛ------------------------
 
     /**
@@ -59,7 +69,7 @@ public class SimulationTime {
     static double simulationTimeDelta;
 
     static {
-        simulationTimeDelta = 0.5 * simulationTimePow.getPow();
+        simulationTimeDelta = simulationTimeMultiplier * simulationTimePow.getPow();
     }
 
     /**
@@ -74,10 +84,11 @@ public class SimulationTime {
     /**
      * Ввод длительности по времени каждого шага симуляции
      *
-     * @param simulationTimeDelta В районе от 0.1 до 1
+     * @param simulationTimeMultiplier В районе от 0.1 до 1
      */
-    public static void setSimulationTimeDelta(double simulationTimeDelta) {
-        SimulationTime.simulationTimeDelta = simulationTimeDelta * simulationTimePow.getPow();
+    public static void setSimulationTimeDelta(double simulationTimeMultiplier) {
+        SimulationTime.simulationTimeDelta = simulationTimeMultiplier * simulationTimePow.getPow();
+        SimulationTime.simulationTimeMultiplier = simulationTimeMultiplier;
     }
 
     //-------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 package com.company.simulation.inter_process_functions.collision_handlers;
 
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveFront;
 
 import java.util.ArrayList;
 
@@ -12,8 +11,8 @@ public class Collision {
      * @param layerDescriptions набор характеристик слоёв деформации
      * @return ArrayList<WaveFront> Набор волновых фронтов
      */
-    public static ArrayList<WaveFront> calculateWavePicture(ArrayList<LayerDescription> layerDescriptions) {
-        var wavePicture = new ArrayList<WaveFront>();
+    public static ArrayList<LayerDescription> calculateWavePicture(ArrayList<LayerDescription> layerDescriptions) {
+        var wavePicture = new ArrayList<LayerDescription>();
 
         for (int index = 0; index < layerDescriptions.size(); index ++) {
             var localLairPair = new ArrayList<LayerDescription>();
@@ -24,9 +23,9 @@ public class Collision {
 
             var waveDisplacementType = CollisionSwitcher.switchWaveDisplacementHandler(localLairPair);
 
-            var waveFront = waveDisplacementType.calculateWaveFront(localLairPair);
+            var newLayers = waveDisplacementType.calculateWaveFront(localLairPair);
 
-            wavePicture.add(waveFront);
+            wavePicture.addAll(newLayers);
         }
 
         return wavePicture;

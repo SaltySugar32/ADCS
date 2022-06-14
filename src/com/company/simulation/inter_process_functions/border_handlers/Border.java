@@ -6,8 +6,11 @@ import com.company.simulation.simulation_variables.simulation_time.SimulationTim
 import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
 import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Stack;
 
 public class Border {
     /**
@@ -65,20 +68,22 @@ public class Border {
      *
      * @return boolean true, если должен был, false, если не должен был
      */
-    public static LinearFunction getJumpDiscontinuityFunction() {
+    public static ArrayList<LinearFunction> getJumpDiscontinuityFunctions() {
+        var linearFunctions = new ArrayList<LinearFunction>();
+
         //Проходим по всем линейным функциям
         for (var linearFunction : SimulationGlobals.getBorderDisplacementFunctions()) {
             //Если начальное время больше времени симуляции без дельты
             if (linearFunction.startTime() >= SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta()) {
                 //Если начальное время меньше времени симуляции
                 if (linearFunction.startTime() < SimulationTime.getSimulationTime()) {
-                    return linearFunction;
+                    linearFunctions.add(linearFunction);
                 } else
-                    return null;
+                    return linearFunctions;
             }
         }
 
-        return null;
+        return linearFunctions;
     }
 
     /**
@@ -88,40 +93,67 @@ public class Border {
      *
      * @return WaveFront новый волновой фронт
      */
-    public static LayerDescription createBorderWaveFront() {
-        var linearFunction = getJumpDiscontinuityFunction();
+    public static ArrayList<LayerDescription> createBorderWaveFronts(ArrayList<LayerDescription> currentWavePicture) {
+        var linearFunctions = getJumpDiscontinuityFunctions();
 
-        if (linearFunction == null)
-            return null;
+        if (linearFunctions.size() == 0)
+            return currentWavePicture;
 
-        var waveFrontWrapper = new ArrayList<LayerDescription>();
+        var newWavePicture = new LinkedList<>(currentWavePicture);
 
-        waveFrontWrapper.add(new LayerDescription(
-                linearFunction.b(),
-                linearFunction.k(),
-                -linearFunction.k(),
-                linearFunction.startTime()
-        ));
+        for (var linearFunction : linearFunctions) {
+            var waveFrontWrapper = new ArrayList<LayerDescription>();
 
-        if (SimulationGlobals.getCurrentWavePicture().size() != 0) {
-            waveFrontWrapper.add(SimulationGlobals.getCurrentWavePicture().get(0));
+            waveFrontWrapper.add(new LayerDescription(
+                    linearFunction.b(),
+                    linearFunction.k(),
+                    -linearFunction.k(),
+                    linearFunction.startTime(),
+                    WaveType.NULL
+            ));
+
+            if (newWavePicture.size() != 0) {
+                waveFrontWrapper.add(newWavePicture.peek());
+                System.out.println("PEEEEEEEEEEk");
+                System.out.println("A0 = " + newWavePicture.peek().getA0());
+                System.out.println("A1 = " + newWavePicture.peek().getA1());
+                System.out.println("A2 = " + newWavePicture.peek().getA2());
+                System.out.println("V = " + newWavePicture.peek().getSpeed());
+                System.out.println("X = " + newWavePicture.peek().getCurrentX());
+                System.out.println("U = " + newWavePicture.peek().calculateDisplacement());
+                System.out.println("T = " + newWavePicture.peek().getStartTime());
+                System.out.println("^^^^^^^^^^^^^");
+            }
+
+            var newLayerDescription = BorderSwitcher.generateNewWaveFront(waveFrontWrapper);
+
+            if (newLayerDescription == null)
+                continue;
+
+            //Смещение волнового фронта в обратном направлении,
+            //дабы потом вместе со всеми фронтами обработать его смещение.
+            //Начальное время минус время в предыдущий момент времени.
+            double deltaTime = linearFunction.startTime() -
+                    (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
+
+            newLayerDescription.setCurrentX(newLayerDescription.getCurrentX() - newLayerDescription.getSpeed() * deltaTime);
+
+            newWavePicture.add(newLayerDescription);
         }
 
-        var newWaveFront = BorderSwitcher.generateNewWaveFront(waveFrontWrapper);
-
-        if (newWaveFront == null) {
-            return null;
+        for (var waveFront: newWavePicture) {
+            System.out.println("A0 = " + waveFront.getA0());
+            System.out.println("A1 = " + waveFront.getA1());
+            System.out.println("A2 = " + waveFront.getA2());
+            System.out.println("V = " + waveFront.getSpeed());
+            System.out.println("X = " + waveFront.getCurrentX());
+            System.out.println("U = " + waveFront.calculateDisplacement());
+            System.out.println("T = " + waveFront.getStartTime());
+            System.out.println("---");
         }
+        System.out.println("--------------------------------");
 
-        //Смещение волнового фронта в обратном направлении,
-        //дабы потом вместе со всеми фронтами обработать его смещение.
-        //Начальное время минус время в предыдущий момент времени.
-        double deltaTime = linearFunction.startTime() -
-                (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
-
-        newWaveFront.setCurrentX(newWaveFront.getCurrentX() - newWaveFront.getSpeed() * deltaTime);
-
-        return newWaveFront;
+        return new ArrayList<>(newWavePicture);
     }
 
 }

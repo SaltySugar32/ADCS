@@ -87,6 +87,7 @@ public class SimulationFrame extends JFrame {
         for (int index = 0; index < layerDescriptions.size(); index++) {
             graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateDisplacement());
 
+
             if (index > 0)
                 graphsPanel.series2.add(layerDescriptions.get(index - 1).getCurrentX(), layerDescriptions.get(index).getA2());
             else

@@ -38,8 +38,7 @@ public class ParamsPanel extends JPanel {
     // Ползунок дельты времени
     static final int timeDelta_MIN = 0;
     static final int timeDelta_MAX = 10;
-    static final int timeDelta_INIT = (int) (SimulationTime.getSimulationTimeDelta()
-            / SimulationTime.getSimulationTimePow().getPow() * 10);
+    static final int timeDelta_INIT = (int) (SimulationTime.getSimulationTimeMultiplier() * 10);
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
     public JLabel simulationTime = new JLabel("0");

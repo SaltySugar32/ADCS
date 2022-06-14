@@ -28,6 +28,11 @@ public class LayerDescription {
      */
     double startTime;
 
+    /**
+     * Тип волнового фронта
+     */
+    WaveType waveType;
+
     //-------------------------------SETTERS--------------------------------
 
     /**
@@ -183,12 +188,13 @@ public class LayerDescription {
      * @param A1 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A2 зависимость смещения на границе волнового фронта от координаты x - du/dx
      */
-    public LayerDescription(double A0, double A1, double A2, double startTime) {
+    public LayerDescription(double A0, double A1, double A2, double startTime, WaveType waveType) {
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
         this.startTime = startTime;
         this.speed = 0.0;
+        this.waveType = waveType;
 
         this.currentX = A0;
     }

@@ -91,6 +91,8 @@ public class SimulationGlobals {
      * @param coefficientNu   Коэффициент разномодульности материала
      */
     public static void setSimulationGlobals(double lameMu, double lameLambda, double materialDensity, double coefficientNu) {
+        assert (materialDensity != 0.0);
+
         SimulationGlobals.lameMu = lameMu * Math.pow(10, powPA);
         SimulationGlobals.lameLambda = lameLambda * Math.pow(10, powPA);
         SimulationGlobals.coefficientNu = coefficientNu * Math.pow(10, powPA);
@@ -101,15 +103,19 @@ public class SimulationGlobals {
          * Вычисление характеристической скорости при растяжении
          */
         SimulationGlobals.characteristicsSpeedStretching =
-                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() -
-                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity());
+                Math.sqrt(
+                        (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() -
+                                2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                );
 
         /* (\lambda + 2 * \mu + 2 * \nu) / (\rho)
          * Вычисление характеристической скорости при сжатии
          */
         SimulationGlobals.characteristicsSpeedCompression =
-                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() +
-                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity());
+                Math.sqrt(
+                        (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() +
+                                2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                );
     }
 
     public static void setCurrentWavePicture(ArrayList<LayerDescription> currentWavePicture) {
