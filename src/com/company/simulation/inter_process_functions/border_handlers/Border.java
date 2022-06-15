@@ -1,5 +1,6 @@
 package com.company.simulation.inter_process_functions.border_handlers;
 
+import com.company.ProgramGlobals;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
@@ -37,9 +38,11 @@ public class Border {
             //То есть k = (endU(endT) - currentU(currentT)) / (endT - currentT)
             double k = (endU - currentU) / (endT - currentT);
 
-            System.out.println("Time = " + currentT);
-            System.out.println("k = " + k);
-            System.out.println("b = " + currentU);
+            if (ProgramGlobals.getLogLevel() == 1) {
+                System.out.println("Time = " + currentT);
+                System.out.println("k = " + k);
+                System.out.println("b = " + currentU);
+            }
 
             borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
         }
@@ -127,15 +130,17 @@ public class Border {
             if (newWavePicture.size() != 0) {
                 waveFrontWrapper.add(newWavePicture.peek());
 
-                System.out.println("PEEEEEEEEEEk");
-                System.out.println("A0 = " + newWavePicture.peek().getA0());
-                System.out.println("A1 = " + newWavePicture.peek().getA1());
-                System.out.println("A2 = " + newWavePicture.peek().getA2());
-                System.out.println("V = " + newWavePicture.peek().getSpeed());
-                System.out.println("X = " + newWavePicture.peek().getCurrentX());
-                System.out.println("U = " + newWavePicture.peek().calculateDisplacement());
-                System.out.println("T = " + newWavePicture.peek().getStartTime());
-                System.out.println("^^^^^^^^^^^^^");
+                if (ProgramGlobals.getLogLevel() == 1) {
+                    System.out.println("PEEEEEEEEEEK");
+                    System.out.println("A0 = " + newWavePicture.peek().getA0());
+                    System.out.println("A1 = " + newWavePicture.peek().getA1());
+                    System.out.println("A2 = " + newWavePicture.peek().getA2());
+                    System.out.println("V = " + newWavePicture.peek().getSpeed());
+                    System.out.println("X = " + newWavePicture.peek().getCurrentX());
+                    System.out.println("U = " + newWavePicture.peek().calculateDisplacement());
+                    System.out.println("T = " + newWavePicture.peek().getStartTime());
+                    System.out.println("^^^^^^^^^^^^^");
+                }
             }
 
             //Создаём на основе пары волновых фронтов новый волновой фронт
@@ -158,17 +163,19 @@ public class Border {
             newWavePicture.push(newLayerDescription);
         }
 
-        for (var waveFront: newWavePicture) {
-            System.out.println("A0 = " + waveFront.getA0());
-            System.out.println("A1 = " + waveFront.getA1());
-            System.out.println("A2 = " + waveFront.getA2());
-            System.out.println("V = " + waveFront.getSpeed());
-            System.out.println("X = " + waveFront.getCurrentX());
-            System.out.println("U = " + waveFront.calculateDisplacement());
-            System.out.println("T = " + waveFront.getStartTime());
-            System.out.println("---");
+        if (ProgramGlobals.getLogLevel() == 1) {
+            for (var waveFront : newWavePicture) {
+                System.out.println("A0 = " + waveFront.getA0());
+                System.out.println("A1 = " + waveFront.getA1());
+                System.out.println("A2 = " + waveFront.getA2());
+                System.out.println("V = " + waveFront.getSpeed());
+                System.out.println("X = " + waveFront.getCurrentX());
+                System.out.println("U = " + waveFront.calculateDisplacement());
+                System.out.println("T = " + waveFront.getStartTime());
+                System.out.println("---");
+            }
+            System.out.println("--------------------------------");
         }
-        System.out.println("--------------------------------");
 
         return new ArrayList<>(newWavePicture);
     }

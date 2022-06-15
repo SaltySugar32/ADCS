@@ -68,7 +68,7 @@ public class ProgramGlobals {
     static volatile int operationsPerSecond;
 
     static {
-        operationsPerSecond = 50;
+        operationsPerSecond = 25;
     }
 
     public static int getOperationsPerSecond() {
@@ -81,6 +81,7 @@ public class ProgramGlobals {
 
     //-------------------------------------------------------------------------
 
+    //--------------------------ТОЧНОСТЬ ВЫЧИСЛЕНИЙ----------------------------
     static double epsilon;
 
     static {
@@ -90,4 +91,21 @@ public class ProgramGlobals {
     public static double getEpsilon() {
         return epsilon;
     }
+
+    //-------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * 0: Без логов
+     * 1: border_handlers
+     * 2: collision_handlers
+     */
+    final static double logLevel = 0;
+
+    public static double getLogLevel() {
+        return logLevel;
+    }
+
+    //-------------------------------------------------------------------------
 }

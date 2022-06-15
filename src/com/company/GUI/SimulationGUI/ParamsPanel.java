@@ -25,7 +25,7 @@ public class ParamsPanel extends JPanel {
 
     // Ползунок FPS
     static final int FPS_MIN = 0;
-    static final int FPS_MAX = 25;
+    static final int FPS_MAX = 50;
     static final int FPS_INIT =ProgramGlobals.getFramesPerSecond();
     JSlider FPS_slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
@@ -51,8 +51,8 @@ public class ParamsPanel extends JPanel {
     ParamsPanel(SimulationSynchronizerThread ServerThread, SimulationFrame parent){
 
         //Отрисовка панели
-        FPS_slider.setMajorTickSpacing(5);
-        FPS_slider.setMinorTickSpacing(1);
+        FPS_slider.setMajorTickSpacing(25);
+        FPS_slider.setMinorTickSpacing(5);
         FPS_slider.setPaintTicks(true);
         FPS_slider.setPaintLabels(true);
 
