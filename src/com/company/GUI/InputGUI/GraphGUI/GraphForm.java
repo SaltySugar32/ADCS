@@ -218,11 +218,24 @@ public class GraphForm extends JFrame {
                 if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
 
                 if(isLinApproxGraph) {
-                    series2.add(chartX, chartY);
-                    // обновление точки стопа
-                    if(stopState){
-                        removeStopPoint();
-                        addStopPoint();
+                    // попытка найти точку на первом графике
+                    try{
+                        double [] xDouble = series1.toArray()[0];
+                        double [] yDouble = series1.toArray()[1];
+
+                        SplineInterpolator si = new SplineInterpolator();
+                        PolynomialSplineFunction psf = si.interpolate(xDouble, yDouble);
+
+                        series2.add(chartX, (double) psf.value(chartX));
+                    }
+                    // произвольная точка
+                    catch (Exception ex) {
+                        series2.add(chartX, chartY);
+                        // обновление точки стопа
+                        if (stopState) {
+                            removeStopPoint();
+                            addStopPoint();
+                        }
                     }
                 }
                 else
