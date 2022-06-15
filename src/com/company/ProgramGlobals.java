@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.user_clients.UserClient;
 import com.company.user_clients.UserClient_v2;
@@ -33,7 +34,7 @@ public class ProgramGlobals {
     static volatile int framesPerSecond;
 
     static {
-        framesPerSecond = 5;
+        framesPerSecond = 25;
     }
 
     public static int getFramesPerSecond() {
@@ -46,13 +47,28 @@ public class ProgramGlobals {
 
     //-------------------------------------------------------------------------
 
+    //----------------------МНОЖИТЕЛЬ ВРЕМЕНИ СИМУЛЯЦИИ------------------------
+
+    static double simulationTimeMultiplier = 0.2;
+
+    public static double getSimulationTimeMultiplier() {
+        return simulationTimeMultiplier;
+    }
+
+    public static void setSimulationTimeMultiplier(double simulationTimeMultiplier) {
+        ProgramGlobals.simulationTimeMultiplier = simulationTimeMultiplier;
+        SimulationTime.setSimulationTimeDelta(simulationTimeMultiplier);
+    }
+
+    //-------------------------------------------------------------------------
+
 
     //----------------------КОЛИЧЕСТВО ОПЕРАЦИЙ В СЕКУНДУ----------------------
 
     static volatile int operationsPerSecond;
 
     static {
-        operationsPerSecond = 10;
+        operationsPerSecond = 25;
     }
 
     public static int getOperationsPerSecond() {
@@ -65,6 +81,7 @@ public class ProgramGlobals {
 
     //-------------------------------------------------------------------------
 
+    //--------------------------ТОЧНОСТЬ ВЫЧИСЛЕНИЙ----------------------------
     static double epsilon;
 
     static {
@@ -74,4 +91,21 @@ public class ProgramGlobals {
     public static double getEpsilon() {
         return epsilon;
     }
+
+    //-------------------------------------------------------------------------
+
+    //-------------------------------------------------------------------------
+
+    /**
+     * 0: Без логов
+     * 1: border_handlers
+     * 2: collision_handlers
+     */
+    final static double logLevel = 0;
+
+    public static double getLogLevel() {
+        return logLevel;
+    }
+
+    //-------------------------------------------------------------------------
 }

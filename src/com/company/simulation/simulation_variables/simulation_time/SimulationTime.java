@@ -1,5 +1,7 @@
 package com.company.simulation.simulation_variables.simulation_time;
 
+import com.company.ProgramGlobals;
+
 public class SimulationTime {
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------
 
@@ -51,16 +53,6 @@ public class SimulationTime {
 
     //-------------------------------------------------------------------------
 
-    //----------------------МНОЖИТЕЛЬ ВРЕМЕНИ СИМУЛЯЦИИ------------------------
-
-    static double simulationTimeMultiplier = 0.5;
-
-    public static double getSimulationTimeMultiplier() {
-        return simulationTimeMultiplier;
-    }
-
-    //-------------------------------------------------------------------------
-
     //------------------------ИЗМЕНЕНИЕ ВРЕМЕНИ ЗА ЦИКЛ------------------------
 
     /**
@@ -69,7 +61,7 @@ public class SimulationTime {
     static double simulationTimeDelta;
 
     static {
-        simulationTimeDelta = simulationTimeMultiplier * simulationTimePow.getPow();
+        simulationTimeDelta = ProgramGlobals.getSimulationTimeMultiplier() * simulationTimePow.getPow();
     }
 
     /**
@@ -88,7 +80,6 @@ public class SimulationTime {
      */
     public static void setSimulationTimeDelta(double simulationTimeMultiplier) {
         SimulationTime.simulationTimeDelta = simulationTimeMultiplier * simulationTimePow.getPow();
-        SimulationTime.simulationTimeMultiplier = simulationTimeMultiplier;
     }
 
     //-------------------------------------------------------------------------

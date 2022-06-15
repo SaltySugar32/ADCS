@@ -41,13 +41,16 @@ public class BorderSwitcher {
 
         } else {
             if (layerDescriptions.size() == 1) {
-                System.out.println(nullCase);
+                if (ProgramGlobals.getLogLevel() == 1)
+                    System.out.println(nullCase);
+
                 return nullCase.generateNewWaveFront(layerDescriptions, 0.0);
             } else {
 
                 //Если изменение смещения на создаваемом волновом фронте равно нулю,
                 // и количество существующих волновых фронтов больше одного, то обрабатываем как стоп
-                System.out.println(stopCase);
+                if (ProgramGlobals.getLogLevel() == 1)
+                    System.out.println(stopCase);
 
                 //Если у нас было впереди растяжение, то стоп воздействует как сжатие
                 if (layerDescriptions.get(1).getA2() > ProgramGlobals.getEpsilon()) {
@@ -68,18 +71,23 @@ public class BorderSwitcher {
         
         //Если нет первого волнового фронта, то создаём первый волновой фронт
         if (layerDescriptions.size() == 1) {
-            System.out.println(edgeCase);
+            if (ProgramGlobals.getLogLevel() == 1)
+                System.out.println(edgeCase);
+
             return edgeCase.generateNewWaveFront(layerDescriptions, currentSpeed);
         }
 
         //Если произведение изменений перемещений двух волновых фронтов меньше нуля,
         // то мы работаем с противоположными волновыми фронтами (нуль к этому моменту мы уже отфильтровали)
         if (layerDescriptions.get(0).getA2() * layerDescriptions.get(1).getA2() < 0.0) {
-            System.out.println(oppositesCase);
+            if (ProgramGlobals.getLogLevel() == 1)
+                System.out.println(oppositesCase);
+
             return oppositesCase.generateNewWaveFront(layerDescriptions, 0.0);
         }
 
-        System.out.println(equalsCase);
+        if (ProgramGlobals.getLogLevel() == 1)
+            System.out.println(equalsCase);
         //Ну а иначе обработчик сходных волновых фронтов
         return equalsCase.generateNewWaveFront(layerDescriptions, currentSpeed);
     }
