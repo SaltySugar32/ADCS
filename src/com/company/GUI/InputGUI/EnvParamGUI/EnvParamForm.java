@@ -45,7 +45,7 @@ public class EnvParamForm extends JFrame{
 
         // Загрузка иконки - мусорки для кнопки Удалить
         try {
-            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash.png"));
+            BufferedImage deleteIcon = ImageIO.read(new File(DBHandler.resourcesPath + "trash.png"));
             DeleteButton.setIcon(new ImageIcon(deleteIcon));
         }
         catch (IOException ex){}

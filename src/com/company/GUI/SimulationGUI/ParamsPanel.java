@@ -1,5 +1,6 @@
 package com.company.GUI.SimulationGUI;
 
+import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
@@ -102,8 +103,8 @@ public class ParamsPanel extends JPanel {
 
         // Загрузка иконки для кнопок
         try {
-            BufferedImage pauseIcon = ImageIO.read(new File("resources/images/play-pause.png"));
-            BufferedImage stopIcon = ImageIO.read(new File("resources/images/stop.png"));
+            BufferedImage pauseIcon = ImageIO.read(new File(DBHandler.resourcesPath + "play-pause.png"));
+            BufferedImage stopIcon = ImageIO.read(new File(DBHandler.resourcesPath + "stop.png"));
             pauseButton.setIcon(new ImageIcon(pauseIcon));
             stopButton.setIcon(new ImageIcon(stopIcon));
         }
@@ -115,11 +116,7 @@ public class ParamsPanel extends JPanel {
         JLabel timeDelta_label = new JLabel("Дельта времени, " + SimulationTime.getSimulationTimePow().getName()
                 + " ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
 
-        JLabel simulationTimeLabel = new JLabel("Текущее время симуляции:");
-        simulationTime = new JLabel("0 c.");
-        JPanel simPanel = new JPanel();
-        simPanel.add(simulationTimeLabel);
-        simPanel.add(simulationTime);
+        simulationTime = new JLabel("Текущее время симуляции: 0 c.", SwingConstants.CENTER);
 
         slider_panel.add(FPS_label);
         slider_panel.add(OPS_label);
@@ -138,7 +135,7 @@ public class ParamsPanel extends JPanel {
 
         this.setLayout(new BorderLayout());
 
-        this.add(simPanel, BorderLayout.NORTH);
+        this.add(simulationTime, BorderLayout.NORTH);
         this.add(slider_panel, BorderLayout.SOUTH);
 
         this.setBorder(BorderFactory.createEmptyBorder(0,10,5,10));

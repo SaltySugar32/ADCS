@@ -198,4 +198,8 @@ public class LayerDescription {
 
         this.currentX = A0;
     }
+
+    public WaveType getWaveType() {
+        return waveType;
+    }
 }

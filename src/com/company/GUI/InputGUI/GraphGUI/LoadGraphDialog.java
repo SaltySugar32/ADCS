@@ -29,7 +29,7 @@ public class LoadGraphDialog extends JDialog {
 
         // Загрузка иконки для кнопки
         try {
-            BufferedImage deleteIcon = ImageIO.read(new File("resources/images/trash.png"));
+            BufferedImage deleteIcon = ImageIO.read(new File(DBHandler.resourcesPath + "trash.png"));
             deleteButton.setIcon(new ImageIcon(deleteIcon));
         }
         catch(IOException ex){}

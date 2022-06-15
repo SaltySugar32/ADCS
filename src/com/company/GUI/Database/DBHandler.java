@@ -9,9 +9,12 @@ import java.util.*;
 public class DBHandler {
 
     public static String materialPath = "data/materialDB/";
-    public static List<Material> materials;
-
     public static String graphPath = "data/graphDB/";
+    public static String inputImgsPath = "data/inputImages/";
+    public static String outputImgsPath = "data/outputImages/";
+    public static String resourcesPath = "resources/images/";
+
+    public static List<Material> materials;
 
     // заполнение списка материалов
     public static void getAllMaterials() {

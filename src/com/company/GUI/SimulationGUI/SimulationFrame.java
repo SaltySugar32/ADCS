@@ -8,8 +8,10 @@ import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.thread_organization.SimulationSynchronizerThread;
+import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Crosshair;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -21,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -109,7 +112,7 @@ public class SimulationFrame extends JFrame {
         List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
         graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
 
-        List<ValueMarker> markers = new ArrayList<ValueMarker>();
+        graphsPanel.resetMarkers(graphsPanel.chart1, graphsPanel.series1);
 
         for (int index = 0; index < layerDescriptions.size(); index++) {
 
@@ -117,9 +120,13 @@ public class SimulationFrame extends JFrame {
             graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateDisplacement());
 
             // добавление маркера
-            ValueMarker marker = new ValueMarker(layerDescriptions.get(index).getCurrentX());
-            //marker.setPaint();
-            marker.setStroke(new BasicStroke(1.0f));
+            graphsPanel.setMarker(
+                    graphsPanel.chart1,
+                    layerDescriptions.get(index).getWaveType().getColor(),
+                    layerDescriptions.get(index).getCurrentX(),
+                    Integer.MIN_VALUE,
+                    layerDescriptions.get(index).calculateDisplacement()
+            );
 
             // график деформаций
             if (index > 0)
@@ -137,6 +144,7 @@ public class SimulationFrame extends JFrame {
         graphsPanel.updateGraphAxis(graphsPanel.chart1, graphsPanel.series1);
         graphsPanel.updateGraphAxis(graphsPanel.chart2, graphsPanel.series2);
 
+
         // вывод времени симуляции
         String time = Double.toString(
                 BigDecimal.valueOf(
@@ -144,7 +152,7 @@ public class SimulationFrame extends JFrame {
                         .setScale(6, RoundingMode.HALF_DOWN)
                         .doubleValue()
         );
-        paramsPanel.simulationTime.setText(time + " c.");
+        paramsPanel.simulationTime.setText("Текущее время симуляции: " + time + " c.");
     }
 
     /**
@@ -166,8 +174,8 @@ public class SimulationFrame extends JFrame {
         quickSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                quickSaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, "_деформации");
-                quickSaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, "_перемещения");
+                quickSaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, "_смещения");
+                quickSaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, "_деформации");
             }
         });
 
@@ -175,19 +183,25 @@ public class SimulationFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file_name = getImageName();
-                DBHandler.SaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_деформации.png");
-                DBHandler.SaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_перемещения.png");
+                DBHandler.SaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_смещения.png");
+                DBHandler.SaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_деформации.png");
             }
         });
 
         return  fileMenu;
     }
 
+    /**
+     * Создание меню "Вид"
+     * @return
+     */
     public JMenu createViewMenu(){
         JMenu viewMenu = new JMenu("Вид");
         JMenuItem showPoints = new JMenuItem("Показать/скрыть точки");
+        JMenuItem showCrosshair = new JMenuItem("Показать/скрыть оверлей");
 
         viewMenu.add(showPoints);
+        viewMenu.add(showCrosshair);
 
         showPoints.addActionListener(new ActionListener() {
             @Override
@@ -205,6 +219,13 @@ public class SimulationFrame extends JFrame {
                     r1.setSeriesShapesVisible(0, true);
                     r2.setSeriesShapesVisible(0, true);
                 }
+            }
+        });
+
+        showCrosshair.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graphsPanel.toggleCrosshair();
             }
         });
 
@@ -244,7 +265,7 @@ public class SimulationFrame extends JFrame {
      * @param panel
      */
     private void quickSaveChart(JFreeChart chart, ChartPanel panel, String chart_type){
-        String path = "data/outputImages/";
+        String path = DBHandler.outputImgsPath;
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String file_path = path + timeStamp  + chart_type + ".png";
 
