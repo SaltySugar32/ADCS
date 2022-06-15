@@ -10,6 +10,9 @@ import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,11 +22,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.TimerTask;
-import java.util.Timer;
+import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 
 /**
@@ -60,6 +64,7 @@ public class SimulationFrame extends JFrame {
         // Меню
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu());
+        menuBar.add(createViewMenu());
         this.setJMenuBar(menuBar);
 
         // Панель с графиками
@@ -104,12 +109,19 @@ public class SimulationFrame extends JFrame {
         List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
         graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
 
+        List<ValueMarker> markers = new ArrayList<ValueMarker>();
+
         for (int index = 0; index < layerDescriptions.size(); index++) {
 
-            // график деформаций
+            // график смещений
             graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateDisplacement());
 
-            // график перемещений
+            // добавление маркера
+            ValueMarker marker = new ValueMarker(layerDescriptions.get(index).getCurrentX());
+            //marker.setPaint();
+            marker.setStroke(new BasicStroke(1.0f));
+
+            // график деформаций
             if (index > 0)
                 graphsPanel.series2.add(layerDescriptions.get(index - 1).getCurrentX(), layerDescriptions.get(index).getA2());
             else
@@ -126,8 +138,13 @@ public class SimulationFrame extends JFrame {
         graphsPanel.updateGraphAxis(graphsPanel.chart2, graphsPanel.series2);
 
         // вывод времени симуляции
-        String time = Double.toString(SimulationTime.getSimulationTime());
-        paramsPanel.simulationTime.setText(time);
+        String time = Double.toString(
+                BigDecimal.valueOf(
+                        SimulationTime.getSimulationTime())
+                        .setScale(6, RoundingMode.HALF_DOWN)
+                        .doubleValue()
+        );
+        paramsPanel.simulationTime.setText(time + " c.");
     }
 
     /**
@@ -164,6 +181,34 @@ public class SimulationFrame extends JFrame {
         });
 
         return  fileMenu;
+    }
+
+    public JMenu createViewMenu(){
+        JMenu viewMenu = new JMenu("Вид");
+        JMenuItem showPoints = new JMenuItem("Показать/скрыть точки");
+
+        viewMenu.add(showPoints);
+
+        showPoints.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XYPlot plot1 = (XYPlot) graphsPanel.chart1.getPlot();
+                XYPlot plot2 = (XYPlot) graphsPanel.chart2.getPlot();
+                XYLineAndShapeRenderer r1 = (XYLineAndShapeRenderer) plot1.getRenderer();
+                XYLineAndShapeRenderer r2 = (XYLineAndShapeRenderer) plot2.getRenderer();
+
+                if(r1.getSeriesShapesVisible(0).booleanValue()){
+                    r1.setSeriesShapesVisible(0,false);
+                    r2.setSeriesShapesVisible(0,false);
+                }
+                else{
+                    r1.setSeriesShapesVisible(0, true);
+                    r2.setSeriesShapesVisible(0, true);
+                }
+            }
+        });
+
+        return viewMenu;
     }
 
     /**

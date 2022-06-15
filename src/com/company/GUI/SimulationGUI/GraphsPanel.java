@@ -26,8 +26,8 @@ import java.awt.event.MouseMotionListener;
  */
 public class GraphsPanel extends JPanel {
 
-    public XYSeries series1 = createSeries("series1");
-    public XYSeries series2 = createSeries("series2");
+    public XYSeries series1 = new XYSeries("series1");
+    public XYSeries series2 = new XYSeries("series2");
 
     public JFreeChart chart1 = createChart(series1, "График смещений", "x", "u(x)");
     public JFreeChart chart2 = createChart(series2, "График деформаций", "x", "u");
@@ -87,6 +87,7 @@ public class GraphsPanel extends JPanel {
         // Ширина линий
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plot.getRenderer();
         renderer.setSeriesStroke(0, new BasicStroke(2));
+        renderer.setSeriesShapesVisible(0,false);
 
         updateGraphAxis(chart, series);
 
@@ -145,18 +146,6 @@ public class GraphsPanel extends JPanel {
         chartPanel.setPopupMenu(null);
 
         return chartPanel;
-    }
-
-    /**
-     * Создание series (мн-ва) с точками
-     * @param name
-     * @return
-     */
-    public XYSeries createSeries(String name){
-        XYSeries series = new XYSeries(name);
-        //series.add(0,0);
-
-        return series;
     }
 
     /**

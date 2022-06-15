@@ -4,6 +4,10 @@ import com.company.GUI.DataHandler;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.thread_organization.SimulationSynchronizerThread;
+import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator;
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
@@ -509,6 +513,15 @@ public class GraphForm extends JFrame {
             }
         }
 
+
+        series1.add(100,2);
+        series1.add(200,2.2);
+        series1.add(300,-3);
+        series1.add(400,2);
+
+
+
+
         dataset.addSeries(series1);
 
         return dataset;
@@ -529,6 +542,19 @@ public class GraphForm extends JFrame {
             for (int i=1; i<array[0].length; i++)
                 series2.add(array[0][i], array[1][i]);
         }
+
+        double [] xDouble = new double [] {0, 100, 200, 300,400};
+        double [] yDouble = new double [] {0, 2, 2.2, -3, 2};
+        SplineInterpolator asi = new SplineInterpolator();
+        PolynomialSplineFunction psf = asi.interpolate(xDouble, yDouble);
+        double t=0;
+        try {
+            for (t = 0; t < 500; t += 10) {
+
+                series2.add(t, (double) psf.value(t));
+            }
+        }
+        catch (Exception ex){ series2.add(t+=10, t/100);}
 
         dataset.addSeries(series2);
 

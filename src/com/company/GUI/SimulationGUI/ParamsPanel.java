@@ -1,6 +1,8 @@
 package com.company.GUI.SimulationGUI;
 
+import com.company.GUI.GUIGlobals;
 import com.company.ProgramGlobals;
+import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
@@ -8,6 +10,8 @@ import com.company.thread_organization.thread_states.NextThreadState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -41,7 +45,7 @@ public class ParamsPanel extends JPanel {
     static final int timeDelta_INIT = (int) (SimulationTime.getSimulationTimeMultiplier() * 10);
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
-    public JLabel simulationTime = new JLabel("0");
+    public JLabel simulationTime;
 
     /**
      * Панель изменения парамеров отображения
@@ -111,25 +115,33 @@ public class ParamsPanel extends JPanel {
         JLabel timeDelta_label = new JLabel("Дельта времени, " + SimulationTime.getSimulationTimePow().getName()
                 + " ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
 
-        JLabel simulationTimeLabel = new JLabel("Текущее время симуляции");
+        JLabel simulationTimeLabel = new JLabel("Текущее время симуляции:");
+        simulationTime = new JLabel("0 c.");
+        JPanel simPanel = new JPanel();
+        simPanel.add(simulationTimeLabel);
+        simPanel.add(simulationTime);
 
-        slider_panel.add(simulationTimeLabel);
         slider_panel.add(FPS_label);
         slider_panel.add(OPS_label);
         slider_panel.add(timeDelta_label);
         slider_panel.add(pauseButton);
 
-        slider_panel.add(simulationTime);
         slider_panel.add(FPS_slider);
         slider_panel.add(OPS_slider);
         slider_panel.add(timeDelta_slider);
         slider_panel.add(stopButton);
 
-        GridLayout layout = new GridLayout(2,0, 50, 10);
-
+        GridLayout layout = new GridLayout(2,0, 50, 5);
         slider_panel.setLayout(layout);
 
-        this.add(slider_panel);
+        this.setPreferredSize(new Dimension(GUIGlobals.graph_frame_width-50,110));
+
+        this.setLayout(new BorderLayout());
+
+        this.add(simPanel, BorderLayout.NORTH);
+        this.add(slider_panel, BorderLayout.SOUTH);
+
+        this.setBorder(BorderFactory.createEmptyBorder(0,10,5,10));
 
         /**
          * Обработчики событий изменения ползунка FPS

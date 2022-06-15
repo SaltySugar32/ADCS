@@ -145,3 +145,4 @@ replay_pid*
 
 data/inputImages
 data/outputImages
+data/graphDB/temp*.txt

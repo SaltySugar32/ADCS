@@ -60,6 +60,7 @@ public class MainForm extends JFrame {
         simulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                SimulationFrame sf = new SimulationFrame(ServerThread);
                 if(DataHandler.graph_input_status && DataHandler.env_param_input_status) {
                     SimulationGlobals.setSimulationGlobals(
                             DataHandler.lameMu,
