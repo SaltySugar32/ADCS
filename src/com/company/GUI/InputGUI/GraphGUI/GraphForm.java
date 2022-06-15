@@ -228,14 +228,16 @@ public class GraphForm extends JFrame {
 
                         series2.add(chartX, (double) psf.value(chartX));
                     }
+                    
                     // произвольная точка
                     catch (Exception ex) {
                         series2.add(chartX, chartY);
-                        // обновление точки стопа
-                        if (stopState) {
-                            removeStopPoint();
-                            addStopPoint();
-                        }
+                    }
+
+                    // обновление точки стопа
+                    if (stopState) {
+                        removeStopPoint();
+                        addStopPoint();
                     }
                 }
                 else
