@@ -1,6 +1,7 @@
 package com.company.simulation.inter_process_functions;
 
 import com.company.simulation.inter_process_functions.border_handlers.Border;
+import com.company.simulation.inter_process_functions.collision_handlers.Collision;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
@@ -26,11 +27,11 @@ public class InterProcessComputations {
         //Создание множества новых волновых фронтов на границе полупространства
         wavePicture = Border.createBorderWaveFronts(wavePicture);
 
-        //А нужно ли?
-        WavePictureComputations.sortCurrentWavePicture(wavePicture);
+        //Вообще говоря, сортировка мне тут не нужна
+        //WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
         WavePictureComputations.moveWaveFronts(wavePicture);
-        WavePictureComputations.checkCollisions(wavePicture);
+        Collision.checkCollisions(wavePicture);
 
         WavePictureComputations.sortCurrentWavePicture(wavePicture);
 

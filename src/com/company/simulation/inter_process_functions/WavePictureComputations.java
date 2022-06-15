@@ -10,31 +10,21 @@ public class WavePictureComputations {
 
     static Comparator<LayerDescription> comparator = Comparator.comparingDouble(LayerDescription::getCurrentX);
 
+    /**
+     * Функция сортировки всего массива волновых фронтов по координате x
+     */
     public static void sortCurrentWavePicture(ArrayList<LayerDescription> currentWavePicture) {
         currentWavePicture.sort(comparator);
     }
 
+    /**
+     * Функция, передвигающая все волновые фронты вперёд на расстояние,
+     * которое прошёл бы каждый из них за текущую дельту времени
+     */
     public static void moveWaveFronts(ArrayList<LayerDescription> currentWavePicture) {
         for (LayerDescription layerDescription : currentWavePicture) {
             layerDescription.moveWaveFront(SimulationTime.getSimulationTimeDelta());
         }
-    }
-
-    public static void checkCollisions(ArrayList<LayerDescription> currentWavePicture) {
-
-        if (currentWavePicture.size() > 1) {
-            for (int index = 0; index < currentWavePicture.size() - 1; index++) {
-                if (WaveFrontComputations
-                        .checkIfTwoWavesCollided(currentWavePicture.get(index),
-                                currentWavePicture.get(index + 1))) {
-
-                    Double collisionTime = WaveFrontComputations
-                            .calculatePreciseTime(currentWavePicture.get(index),
-                                    currentWavePicture.get(index + 1));
-                }
-            }
-        }
-
     }
 
 }

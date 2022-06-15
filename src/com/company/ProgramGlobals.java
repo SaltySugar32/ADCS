@@ -33,7 +33,7 @@ public class ProgramGlobals {
     static volatile int framesPerSecond;
 
     static {
-        framesPerSecond = 5;
+        framesPerSecond = 10;
     }
 
     public static int getFramesPerSecond() {

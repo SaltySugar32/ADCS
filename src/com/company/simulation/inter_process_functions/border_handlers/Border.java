@@ -8,6 +8,7 @@ import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -87,23 +88,33 @@ public class Border {
     }
 
     /**
-     * Функция, добавляющая новый волновой фронт в волновую картину,
-     * если за такт времени должно было произойти его появление
+     * Функция, добавляющая множество новых волновых фронтов в волновую картину,
+     * если за такт времени должно было произойти их появление
      * на границе волновой картины.
      *
      * @return WaveFront новый волновой фронт
      */
     public static ArrayList<LayerDescription> createBorderWaveFronts(ArrayList<LayerDescription> currentWavePicture) {
+        //Получаем список всех возможных новых волновых фронтов,
+        // которые должны появиться на границе за прошедшую дельту времени
         var linearFunctions = getJumpDiscontinuityFunctions();
 
+        //Если новых волновых фронтов нет, то возвращаем предыдущую волновую картину
         if (linearFunctions.size() == 0)
             return currentWavePicture;
 
+        //Создаём новую волновую картину на основе данных из старой
         var newWavePicture = new LinkedList<>(currentWavePicture);
 
+        //Проходимся по всем волновым фронтам, которые мы должны были получить
         for (var linearFunction : linearFunctions) {
+            //Оболочка пары волновых фронтов - граничное воздействие и ближайший к границе полупространства
             var waveFrontWrapper = new ArrayList<LayerDescription>();
 
+            /*
+             * Добавляем граничное воздействие
+             * Здесь A2 = -k для определения знака деформации
+             */
             waveFrontWrapper.add(new LayerDescription(
                     linearFunction.b(),
                     linearFunction.k(),
@@ -112,8 +123,10 @@ public class Border {
                     WaveType.NULL
             ));
 
+            //Если волновая картина не пуста, то добавляем в оболочку ближайший к границе полупространства
             if (newWavePicture.size() != 0) {
                 waveFrontWrapper.add(newWavePicture.peek());
+
                 System.out.println("PEEEEEEEEEEk");
                 System.out.println("A0 = " + newWavePicture.peek().getA0());
                 System.out.println("A1 = " + newWavePicture.peek().getA1());
@@ -125,8 +138,10 @@ public class Border {
                 System.out.println("^^^^^^^^^^^^^");
             }
 
+            //Создаём на основе пары волновых фронтов новый волновой фронт
             var newLayerDescription = BorderSwitcher.generateNewWaveFront(waveFrontWrapper);
 
+            //Если не создан, то повторяем цикл
             if (newLayerDescription == null)
                 continue;
 
@@ -136,9 +151,11 @@ public class Border {
             double deltaTime = linearFunction.startTime() -
                     (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
 
+            //Вычисляем координату волнового фронта до текущего шага времени
             newLayerDescription.setCurrentX(newLayerDescription.getCurrentX() - newLayerDescription.getSpeed() * deltaTime);
 
-            newWavePicture.add(newLayerDescription);
+            //Добавляем новый волновой фронт в картину мира
+            newWavePicture.push(newLayerDescription);
         }
 
         for (var waveFront: newWavePicture) {
