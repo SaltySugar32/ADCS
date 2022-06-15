@@ -25,7 +25,7 @@ public class ParamsPanel extends JPanel {
 
     // Ползунок FPS
     static final int FPS_MIN = 0;
-    static final int FPS_MAX = 15;
+    static final int FPS_MAX = 25;
     static final int FPS_INIT =ProgramGlobals.getFramesPerSecond();
     JSlider FPS_slider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
@@ -38,7 +38,7 @@ public class ParamsPanel extends JPanel {
     // Ползунок дельты времени
     static final int timeDelta_MIN = 0;
     static final int timeDelta_MAX = 10;
-    static final int timeDelta_INIT = (int) (SimulationTime.getSimulationTimeMultiplier() * 10);
+    static final int timeDelta_INIT = (int) (ProgramGlobals.getSimulationTimeMultiplier() * 10);
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
     public JLabel simulationTime = new JLabel("0");
@@ -67,7 +67,7 @@ public class ParamsPanel extends JPanel {
         timeDelta_slider.setPaintLabels(true);
 
         Hashtable labelTable = new Hashtable();
-        labelTable.put(0, new JLabel("0.0") );
+        labelTable.put(0, new JLabel("0.1") );
         labelTable.put(5, new JLabel("0.5") );
         labelTable.put(10, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
@@ -166,7 +166,7 @@ public class ParamsPanel extends JPanel {
             public void stateChanged(ChangeEvent e) {
                 // Изменение дельты времени
                 double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
-                SimulationTime.setSimulationTimeDelta(value);
+                ProgramGlobals.setSimulationTimeMultiplier(value);
                 timeDelta_label.setText("Дельта времени, мс ("+value+")");
             }
         });
