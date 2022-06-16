@@ -19,10 +19,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.math.BigDecimal;
@@ -61,6 +58,16 @@ public class SimulationFrame extends JFrame {
             public void windowClosing(WindowEvent e) {
                 ServerThread.setNextJobSTOP();
                 super.windowClosing(e);
+            }
+        });
+
+        JFrame parent = this;
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                graphsPanel.updateChartSize(graphsPanel.chartPanel1, parent.getWidth(), parent.getHeight());
+                graphsPanel.updateChartSize(graphsPanel.chartPanel2, parent.getWidth(), parent.getHeight());
+                super.componentResized(e);
             }
         });
 

@@ -218,15 +218,8 @@ public class GraphsPanel extends JPanel {
      */
     public ChartPanel createChartPanel(JFreeChart chart, Crosshair chx, Crosshair chy){
 
-        // Размеры панели графика
-        int width = (GUIGlobals.graph_frame_width - 50) / 2;
-        int height = GUIGlobals.graph_frame_height - 180;
-
-        ChartPanel chartPanel = new ChartPanel(chart){
-            public Dimension getPreferredSize(){
-                return new Dimension(width,height);
-            }
-        };
+        ChartPanel chartPanel = new ChartPanel(chart);
+        updateChartSize(chartPanel, GUIGlobals.graph_frame_width, GUIGlobals.graph_frame_height);
 
         // Отключение (скрытие) зума при зажатии кнопки
         chartPanel.setZoomTriggerDistance(Integer.MAX_VALUE);
@@ -254,6 +247,19 @@ public class GraphsPanel extends JPanel {
         });
 
         return chartPanel;
+    }
+
+    /**
+     * Обновление размеров панели с графиком
+     * @param chartPanel
+     * @param frame_width
+     * @param frame_height
+     */
+    public void updateChartSize(ChartPanel chartPanel, int frame_width, int frame_height){
+        // Размеры панели графика
+        int width = (frame_width - 30) / 2;
+        int height = frame_height - 180;
+        chartPanel.setPreferredSize(new Dimension(width, height));
     }
 
     /**
