@@ -132,7 +132,7 @@ public class SimulationFrame extends JFrame {
                     layerDescriptions.get(index).getWaveType().getColor(),
                     layerDescriptions.get(index).getCurrentX(),
                     Integer.MIN_VALUE,
-                    layerDescriptions.get(index).calculateDisplacement()
+                    Integer.MAX_VALUE
             );
 
             // график деформаций

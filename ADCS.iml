@@ -12,5 +12,6 @@
     <orderEntry type="library" name="MathParser.org-mXparser-4.4.2" level="project" />
     <orderEntry type="library" name="mXparser" level="project" />
     <orderEntry type="library" name="commons-math3-3.6.11" level="project" />
+    <orderEntry type="library" name="commons" level="project" />
   </component>
 </module>

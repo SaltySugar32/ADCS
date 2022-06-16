@@ -11,11 +11,11 @@ public class InterProcessComputations {
 
     /**
      * Основная функция для выполнения операций, происходящих внутри симуляции
-     * <li>Добавление нового волнового фронта</li>
-     * <li>Обновление координат</li>
      * <li>Изменение текущего времени</li>
+     * <li>Добавление нового волнового фронта на границе</li>
+     * <li>Смещение координат</li>
      * <li>Проверка столкновений (вычисление в случае такового)</li>
-     * <li>Обновление координат</li>
+     * <li>Сортировка волновых фронтов по координатам</li>
      */
     public static ArrayList<LayerDescription> getResult(ArrayList<LayerDescription> prevWavePicture) {
 
@@ -30,9 +30,13 @@ public class InterProcessComputations {
         //Вообще говоря, сортировка мне тут не нужна
         //WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
+        //Двигаем волновые фронты
         WavePictureComputations.moveWaveFronts(wavePicture);
-        Collision.checkCollisions(wavePicture);
 
+        //Вычисляем столкновения в волновой картине
+        wavePicture = Collision.calculateCollisions(wavePicture);
+
+        //Сортируем волновые фронты по их координатам
         WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
         return wavePicture;

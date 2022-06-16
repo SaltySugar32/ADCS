@@ -29,8 +29,7 @@ public class OppositesCase implements IBorderHandler {
     @Override
     public LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double unused) {
 
-        double speed = DenoteFactor.METERS.toMillis(computeSpeed());
-        double speedR = prevLayerDescriptions.get(1).getSpeed();
+        double speedR = DenoteFactor.METERS.toMillis(computeSpeed());
 
         double A0L = prevLayerDescriptions.get(0).getA0();
         double A1L = prevLayerDescriptions.get(0).getA1();
@@ -40,7 +39,7 @@ public class OppositesCase implements IBorderHandler {
         double A0R = prevLayerDescriptions.get(1).getA0();
         double A1R = prevLayerDescriptions.get(1).getA1();
         double A2R = prevLayerDescriptions.get(1).getA2();
-        double startTR = prevLayerDescriptions.get(0).getStartTime();
+        double startTR = prevLayerDescriptions.get(1).getStartTime();
 
         //Частный случай при CL = 0, xL = 0, Xi = 0
         double A2i = (A1R + A2R * speedR - A1L) / (speedR);
@@ -49,7 +48,7 @@ public class OppositesCase implements IBorderHandler {
 
         LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL, WaveType.RED);
 
-        newLayerDescription.setSpeed(speed);
+        newLayerDescription.setSpeed(speedR);
 
         return newLayerDescription;
     }

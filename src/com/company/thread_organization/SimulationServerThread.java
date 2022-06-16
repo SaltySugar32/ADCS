@@ -1,19 +1,19 @@
 package com.company.thread_organization;
 
 import com.company.ProgramGlobals;
+import com.company.LastError;
 import com.company.simulation.inter_process_functions.InterProcessComputations;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.thread_states.SimulationState;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 //Сервер НЕ ДОЛЖЕН содержать переменные, отличные от статуса работы самого сервера
 public class SimulationServerThread extends Thread {
 
     /**
-     * Инициализация стекса статусов симуляции
+     * Инициализация стека статусов симуляции
      * <br> Если попытаться привести его потенциальный внешний вид,
      * образуемый в результате выполнения функций ниже, то выглядеть он будет так:
      * <p>
@@ -68,8 +68,11 @@ public class SimulationServerThread extends Thread {
      * с очисткой переменных симуляции.
      */
     public void simStop() {
+        if (SimulationState.INTERPROCESS == simulationStateStack.peek())
+            simulationStateStack.push(SimulationState.PAUSED);
         SimulationGlobals.getCurrentWavePicture().clear();
         SimulationTime.setSimulationTime(0.0);
+        ProgramGlobals.setLastErrorType(LastError.NULL);
     }
 
     /**
@@ -105,7 +108,8 @@ public class SimulationServerThread extends Thread {
             //System.out.println(debug_numOfOperations++ + " " + SimulationGlobals.getSimulationTime());
 
             //Если симуляция на паузе, то ждем ...
-            while (SimulationState.INTERPROCESS != simulationStateStack.peek()) {
+            while (SimulationState.INTERPROCESS != simulationStateStack.peek() ||
+                ProgramGlobals.getLastErrorType() != LastError.NULL) {
                 try {
                     sleep(1000 / (10L * ProgramGlobals.getOperationsPerSecond()));
                 } catch (InterruptedException e) {

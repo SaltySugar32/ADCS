@@ -94,7 +94,7 @@ public class ProgramGlobals {
 
     //-------------------------------------------------------------------------
 
-    //-------------------------------------------------------------------------
+    //--------------------------УРОВЕНЬ ЛОГИРОВАНИЯ----------------------------
 
     /**
      * 0: Без логов
@@ -105,6 +105,24 @@ public class ProgramGlobals {
 
     public static double getLogLevel() {
         return logLevel;
+    }
+
+    //-------------------------------------------------------------------------
+
+    //-----------------------ПОСЛЕДНЯЯ ВОЗНИКШАЯ ОШИБКА------------------------
+
+    static volatile LastError lastErrorType = LastError.NULL;
+
+    /**
+     * Получение последней произошедшей ошибки
+     * @return LastError код ошибки
+     */
+    public static LastError getLastErrorType() {
+        return lastErrorType;
+    }
+
+    public static void setLastErrorType(LastError lastErrorType) {
+        ProgramGlobals.lastErrorType = lastErrorType;
     }
 
     //-------------------------------------------------------------------------

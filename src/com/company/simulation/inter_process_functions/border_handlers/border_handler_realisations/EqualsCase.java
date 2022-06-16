@@ -30,7 +30,7 @@ public class EqualsCase implements IBorderHandler {
 
         LayerDescription newLayerDescription = new LayerDescription(A0i, A1i, A2i, startTL, WaveType.GREEN);
 
-        newLayerDescription.setSpeed(speed);
+        newLayerDescription.setSpeed(speedR);
 
         return newLayerDescription;
     }

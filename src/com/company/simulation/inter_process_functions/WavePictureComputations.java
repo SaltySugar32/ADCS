@@ -18,8 +18,7 @@ public class WavePictureComputations {
     }
 
     /**
-     * Функция, передвигающая все волновые фронты вперёд на расстояние,
-     * которое прошёл бы каждый из них за текущую дельту времени
+     * Функция, передвигающая все волновые фронты вперёд на скорость, помноженную на изменение времени
      */
     public static void moveWaveFronts(ArrayList<LayerDescription> currentWavePicture) {
         for (LayerDescription layerDescription : currentWavePicture) {
