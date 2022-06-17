@@ -9,7 +9,7 @@ import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
-import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
+import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;
@@ -74,7 +74,7 @@ public class MainForm extends JFrame {
                         default -> SimulationTime.setSimulationTimePow(SimulationTimePow.MILLISECONDS);
                     }
 
-                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI, SimulationTime.getSimulationTimePow());
+                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
                     SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
                 }
                 else{

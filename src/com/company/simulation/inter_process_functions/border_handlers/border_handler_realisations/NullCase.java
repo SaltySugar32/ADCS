@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class NullCase implements IBorderHandler {
 
     @Override
-    public LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed) {
+    public ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed) {
         return null;
     }
 }

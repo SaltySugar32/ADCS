@@ -64,9 +64,11 @@ public class Collision {
                     );
 
                     //Если один из волновых фронтов был создан позже,
-                    // чем они могли столкнуться, то отменяем все изменения
+                    // чем они могли столкнуться, или у них равное время создания,
+                    // то отменяем все изменения
                     if (collidedPair.getFirstLayer().getStartTime() > collidedPair.getCollisionTime()
-                            || collidedPair.getSecondLayer().getStartTime() > collidedPair.getCollisionTime()) {
+                            || collidedPair.getSecondLayer().getStartTime() > collidedPair.getCollisionTime()
+                            || collidedPair.getFirstLayer().getStartTime() == collidedPair.getSecondLayer().getStartTime()) {
                         collidedPairs.remove(collidedPair);
                         continue;
                     }
@@ -75,7 +77,7 @@ public class Collision {
                     //X = X+ - V+ * dT
                     double collisionX = collidedPair.getFirstLayer().getCurrentX()
                             - collidedPair.getFirstLayer().getSpeed()
-                            * (collidedPair.getCollisionTime());
+                            * (collisionDeltaTime);
 
                     collidedPair.setCollisionX(collisionX);
 

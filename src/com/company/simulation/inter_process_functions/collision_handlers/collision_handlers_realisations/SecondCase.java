@@ -6,7 +6,22 @@ import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 
-public class EdgeCase implements ICollisionHandler {
+public class SecondCase implements ICollisionHandler {
+    @Override
+    public String shortDescription() {
+        return null;
+    }
+
+    @Override
+    public String longDescription() {
+        return null;
+    }
+
+    @Override
+    public boolean isCorrectCase(CollidedPairDescription collidedPair) {
+        return false;
+    }
+
     @Override
     public ArrayList<LayerDescription> calculateWaveFronts(CollidedPairDescription collidedPair) {
         return new ArrayList<>();

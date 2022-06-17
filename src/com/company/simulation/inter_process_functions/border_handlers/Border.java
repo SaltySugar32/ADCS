@@ -5,14 +5,12 @@ import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
-import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
+import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class Border {
     /**
@@ -20,7 +18,7 @@ public class Border {
      *
      * @param coordinates Множество координат, где coordinates[0] = x = t, coordinates[1] = y = u
      */
-    public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactorU, SimulationTimePow simulationTimePow) {
+    public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactorU) {
         ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
 
         //Берём каждый следующий после нулевого индекса индекс и на их основе генерируем последовательность
@@ -28,9 +26,9 @@ public class Border {
         //coordinates[0][index] = x = currentT
         //coordinates[1][index] = y = currentU
         for (int index = 0; index < coordinates[0].length - 1; index++) {
-            double currentT = coordinates[0][index] * simulationTimePow.getPow();
+            double currentT = coordinates[0][index] * SimulationTime.getSimulationTimePow().getPow();
             double currentU = denoteFactorU.toMillis(coordinates[1][index]);
-            double endT = coordinates[0][index + 1] * simulationTimePow.getPow();
+            double endT = coordinates[0][index + 1] * SimulationTime.getSimulationTimePow().getPow();
             double endU = denoteFactorU.toMillis(coordinates[1][index + 1]);
 
             //k = следующее значение перемещения минус значение перемещения в момент разрыва,
@@ -156,11 +154,24 @@ public class Border {
             double deltaTime = linearFunction.startTime() -
                     (SimulationTime.getSimulationTime() - SimulationTime.getSimulationTimeDelta());
 
+            //Если создалось больше одного волнового фронта, то сначала вычисляем и пушим более быстрый
+            if (newLayerDescription.size() == 2) {
+                //Вычисляем координату волнового фронта до текущего шага времени
+                newLayerDescription.get(1)
+                        .setCurrentX(newLayerDescription.get(1).getCurrentX()
+                                - newLayerDescription.get(1).getSpeed() * deltaTime);
+
+                //Добавляем новый волновой фронт в картину мира
+                newWavePicture.push(newLayerDescription.get(1));
+            }
+
             //Вычисляем координату волнового фронта до текущего шага времени
-            newLayerDescription.setCurrentX(newLayerDescription.getCurrentX() - newLayerDescription.getSpeed() * deltaTime);
+            newLayerDescription.get(0)
+                    .setCurrentX(newLayerDescription.get(0).getCurrentX()
+                            - newLayerDescription.get(0).getSpeed() * deltaTime);
 
             //Добавляем новый волновой фронт в картину мира
-            newWavePicture.push(newLayerDescription);
+            newWavePicture.push(newLayerDescription.get(0));
         }
 
         if (ProgramGlobals.getLogLevel() == 1) {

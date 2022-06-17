@@ -14,7 +14,7 @@ public enum WaveType {
             return color;
         }
     },
-    RED {
+    SHOCK_WAVE {
         final Color color = new Color(240, 75, 75);
 
         @Override
@@ -22,7 +22,7 @@ public enum WaveType {
             return color;
         }
     },
-    GREEN {
+    SIGNOTON {
         final Color color = new Color(75, 240, 75);
 
         @Override
@@ -30,7 +30,7 @@ public enum WaveType {
             return color;
         }
     },
-    BLUE {
+    HALF_SIGNOTON {
         final Color color = new Color(75, 75, 240);
 
         @Override

@@ -1,4 +1,4 @@
-package com.company.simulation.simulation_variables.wave_front;
+package com.company.simulation.simulation_variables;
 
 /**
  * Для обеспечения однозначной безопасности ввода новых данных в решатель,

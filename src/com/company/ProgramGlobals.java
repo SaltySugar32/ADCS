@@ -101,7 +101,7 @@ public class ProgramGlobals {
      * 1: border_handlers
      * 2: collision_handlers
      */
-    final static double logLevel = 0;
+    final static double logLevel = 1;
 
     public static double getLogLevel() {
         return logLevel;

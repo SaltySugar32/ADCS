@@ -5,5 +5,5 @@ import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import java.util.ArrayList;
 
 public interface IBorderHandler {
-    LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed);
+    ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed);
 }

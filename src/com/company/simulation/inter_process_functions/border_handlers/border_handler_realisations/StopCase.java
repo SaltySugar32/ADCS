@@ -9,9 +9,14 @@ import java.util.ArrayList;
 public class StopCase implements IBorderHandler {
 
     @Override
-    public LayerDescription generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed) {
-        var layerDescription = new LayerDescription(prevLayerDescriptions.get(0).getA0(), 0.0, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.GREEN);
-        layerDescription.setSpeed(speed);
-        return layerDescription;
+    public ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double speed) {
+        var newLayerDescription = new LayerDescription(prevLayerDescriptions.get(0).getA0(), 0.0, 0.0,
+                prevLayerDescriptions.get(0).getStartTime(), WaveType.HALF_SIGNOTON);
+        newLayerDescription.setSpeed(speed);
+
+        var newLayers = new ArrayList<LayerDescription>();
+        newLayers.add(newLayerDescription);
+
+        return newLayers;
     }
 }

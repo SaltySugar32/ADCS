@@ -3,7 +3,7 @@ package com.company.simulation.inter_process_functions.border_handlers;
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations.*;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.wave_front.DenoteFactor;
+import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class BorderSwitcher {
     static IBorderHandler equalsCase = new EqualsCase();
     static IBorderHandler edgeCase = new EdgeCase();
-    static IBorderHandler oppositesCase = new OppositesCase();
+    static IBorderHandler shockWaveCase = new ShockWaveCase();
+
+    static IBorderHandler layerCase = new LayerCase();
     static IBorderHandler stopCase = new StopCase();
     static IBorderHandler nullCase = new NullCase();
 
@@ -20,7 +22,7 @@ public class BorderSwitcher {
      * @param layerDescriptions Один или два воздействия - параметры границы и первый волновой фронт в волновой картине
      * @return Тип создаваемого волнового фронта
      */
-    public static LayerDescription generateNewWaveFront(ArrayList<LayerDescription> layerDescriptions) {
+    public static ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> layerDescriptions) {
 
         double currentSpeed;
 
@@ -55,12 +57,12 @@ public class BorderSwitcher {
                 //Если у нас было впереди растяжение, то стоп воздействует как сжатие
                 if (layerDescriptions.get(1).getA2() > ProgramGlobals.getEpsilon()) {
                     currentSpeed = DenoteFactor.METERS.toMillis(
-                            SimulationGlobals.getCharacteristicsSpeedCompression()
+                            SimulationGlobals.getCharacteristicsSpeedStretching()
                     );
                 } else {
                     //Если у нас впереди было сжатие, то стоп воздействует как растяжение
                     currentSpeed = DenoteFactor.METERS.toMillis(
-                            SimulationGlobals.getCharacteristicsSpeedStretching()
+                            SimulationGlobals.getCharacteristicsSpeedCompression()
                     );
                 }
 
@@ -81,9 +83,15 @@ public class BorderSwitcher {
         // то мы работаем с противоположными волновыми фронтами (нуль к этому моменту мы уже отфильтровали)
         if (layerDescriptions.get(0).getA2() * layerDescriptions.get(1).getA2() < 0.0) {
             if (ProgramGlobals.getLogLevel() == 1)
-                System.out.println(oppositesCase);
+                System.out.println(shockWaveCase);
 
-            return oppositesCase.generateNewWaveFront(layerDescriptions, 0.0);
+            //Если e- < 0, то образуется ударная волна
+            if (layerDescriptions.get(0).getA2() < 0.0)
+                return shockWaveCase.generateNewWaveFront(layerDescriptions, 0.0);
+
+            //если же e- > 0, то образуется недеформируемый слой
+            if (layerDescriptions.get(0).getA2() > 0.0)
+                return layerCase.generateNewWaveFront(layerDescriptions, 0.0);
         }
 
         if (ProgramGlobals.getLogLevel() == 1)
