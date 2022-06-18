@@ -1,11 +1,18 @@
 package com.company.simulation.simulation_variables.wave_front;
 
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-
+/**
+ * firstLayer - состояние среды левее места столкновения
+ * <br>
+ * secondLayer - состояние среды внутри места столкновения
+ * <br>
+ * thirdLayer - состояние среды правее места столкновения
+ */
 public class CollidedPairDescription {
     private LayerDescription firstLayer;
 
     private LayerDescription secondLayer;
+
+    private LayerDescription thirdLayer;
 
     private double collisionX;
 
@@ -16,6 +23,10 @@ public class CollidedPairDescription {
     }
 
     public LayerDescription getSecondLayer() {
+        return secondLayer;
+    }
+
+    public LayerDescription getThirdLayer() {
         return secondLayer;
     }
 
@@ -32,6 +43,10 @@ public class CollidedPairDescription {
     }
 
     public void setSecondLayer(LayerDescription secondLayer) {
+        this.secondLayer = secondLayer;
+    }
+
+    public void setThirdLayer(LayerDescription secondLayer) {
         this.secondLayer = secondLayer;
     }
 

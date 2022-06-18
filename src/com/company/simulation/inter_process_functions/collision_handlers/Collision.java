@@ -1,10 +1,11 @@
 package com.company.simulation.inter_process_functions.collision_handlers;
 
-import com.company.ProgramGlobals;
 import com.company.LastError;
+import com.company.ProgramGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -52,6 +53,14 @@ public class Collision {
                     collidedPair.setFirstLayer(currentWavePicture.get(index));
                     collidedPair.setSecondLayer(currentWavePicture.get(index + 1));
 
+                    //Если речь про столкновение с самым дальним волновым фронтом, то добавляем нулевое описание среды справа
+                    if (index == currentWavePicture.size() - 2) {
+                        collidedPair.setThirdLayer(new LayerDescription(0.0, 0.0, 0.0, 0.0, WaveType.HALF_SIGNOTON));
+                    } else {
+                        //Иначе используем существующее описание среды справа
+                        collidedPair.setThirdLayer(currentWavePicture.get(index + 2));
+                    }
+
                     //Вычисляем время произошедшего столкновения
                     //dT = (X+ - X-) / (V+ - V-)
                     double collisionDeltaTime = (collidedPair.getFirstLayer().getCurrentX()
@@ -78,6 +87,12 @@ public class Collision {
                     double collisionX = collidedPair.getFirstLayer().getCurrentX()
                             - collidedPair.getFirstLayer().getSpeed()
                             * (collisionDeltaTime);
+
+                    //Если место столкновение двух волновых фронтов находится в отрицательной области, то игнорируем
+                    if (collisionX < 0.0) {
+                        collidedPairs.remove(collidedPair);
+                        continue;
+                    }
 
                     collidedPair.setCollisionX(collisionX);
 

@@ -103,18 +103,22 @@ public class SimulationGlobals {
          * Вычисление характеристической скорости при растяжении
          */
         SimulationGlobals.characteristicsSpeedStretching =
-                Math.sqrt(
-                        (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() -
-                                2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                DenoteFactor.METERS.toMillis(
+                        Math.sqrt(
+                                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() -
+                                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                        )
                 );
 
         /* (\lambda + 2 * \mu + 2 * \nu) / (\rho)
          * Вычисление характеристической скорости при сжатии
          */
         SimulationGlobals.characteristicsSpeedCompression =
-                Math.sqrt(
-                        (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() +
-                                2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                DenoteFactor.METERS.toMillis(
+                        Math.sqrt(
+                                (SimulationGlobals.getLameLambda() + 2 * SimulationGlobals.getLameMu() +
+                                        2 * SimulationGlobals.getCoefficientNu()) / (SimulationGlobals.getMaterialDensity())
+                        )
                 );
     }
 

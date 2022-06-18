@@ -1,11 +1,10 @@
 package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
+import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
-import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
 

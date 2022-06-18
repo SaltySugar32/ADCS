@@ -1,6 +1,9 @@
 package com.company.simulation.inter_process_functions.collision_handlers;
 
-import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.*;
+import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.CaseFirst;
+import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.CaseSecond;
+import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.CaseThird;
+import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.ICollisionHandler;
 import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
 
 import java.util.ArrayList;
@@ -11,9 +14,9 @@ public class CollisionSwitcher {
 
     public static void initCollisionHandlers() {
         collisionHandlers.clear();
-        collisionHandlers.add(new FirstCase());
-        collisionHandlers.add(new SecondCase());
-        collisionHandlers.add(new ThirdCase());
+        collisionHandlers.add(new CaseFirst());
+        collisionHandlers.add(new CaseSecond());
+        collisionHandlers.add(new CaseThird());
     }
 
     /**

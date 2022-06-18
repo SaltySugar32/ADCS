@@ -1,12 +1,11 @@
 package com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations;
 
-import com.company.simulation.inter_process_functions.collision_handlers.ICollisionHandler;
 import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
 import java.util.ArrayList;
 
-public class SecondCase implements ICollisionHandler {
+public class CaseSecond implements ICollisionHandler {
     @Override
     public String shortDescription() {
         return null;

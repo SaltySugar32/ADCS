@@ -1,17 +1,15 @@
 package com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations;
 
-import com.company.simulation.inter_process_functions.border_handlers.IBorderHandler;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.DenoteFactor;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
 
-public class ShockWaveCase implements IBorderHandler {
+public class CaseShockWave implements IBorderHandler {
 
-    double a = DenoteFactor.METERS.toMillis(SimulationGlobals.getCharacteristicsSpeedCompression());
-    double b = DenoteFactor.METERS.toMillis(SimulationGlobals.getCharacteristicsSpeedStretching());
+    double a = SimulationGlobals.getCharacteristicsSpeedCompression();
+    double b = SimulationGlobals.getCharacteristicsSpeedStretching();
 
     /**
      * Вычисление скорости
