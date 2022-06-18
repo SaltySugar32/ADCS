@@ -1,4 +1,4 @@
-package com.company.simulation.inter_process_functions.layer_generators.signoton;
+package com.company.simulation.inter_process_functions.layer_generators;
 
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
