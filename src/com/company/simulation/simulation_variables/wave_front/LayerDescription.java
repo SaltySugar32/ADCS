@@ -1,6 +1,7 @@
 package com.company.simulation.simulation_variables.wave_front;
 
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 /**
  * Описание линейной аппроксимации процесса, происходящего слева от волнового фронта
@@ -178,6 +179,14 @@ public class LayerDescription {
         return (right - left) / 10;
     }
 
+    /**
+     * Функция, задающая A2 - деформацию слоя
+     * @param A2 Деформация слоя
+     */
+    public void setA2(double A2) {
+        this.A2 = A2;
+    }
+
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
 
     /**
@@ -193,10 +202,10 @@ public class LayerDescription {
         this.A2 = A2;
         this.A0 = A0;
         this.startTime = startTime;
-        this.speed = 0.0;
         this.waveType = waveType;
 
-        this.currentX = A0;
+        this.speed = 0.0;
+        this.currentX = 0.0;
     }
 
     public WaveType getWaveType() {

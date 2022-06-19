@@ -1,7 +1,7 @@
 package com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations;
 
 import com.company.ProgramGlobals;
-import com.company.simulation.inter_process_functions.layer_generators.Signoton;
+import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
@@ -18,9 +18,9 @@ public class CaseEquals implements IBorderHandler {
 
         if (Math.abs(Math.abs(speed) - Math.abs(SimulationGlobals.getCharacteristicsSpeedCompression()))
                 < ProgramGlobals.getEpsilon()) {
-            newLayer = Signoton.generateFastPositive(prevLayerDescriptions, WaveType.SIGNOTON);
+            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, WaveType.SIGNOTON);
         } else {
-            newLayer = Signoton.generateSlowPositive(prevLayerDescriptions, WaveType.SIGNOTON);
+            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, WaveType.SIGNOTON);
         }
 
         newLayers.add(newLayer);

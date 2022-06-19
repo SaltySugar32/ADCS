@@ -8,13 +8,14 @@ import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import java.util.ArrayList;
 
 public class BorderSwitcher {
-    static IBorderHandler equalsCase = new CaseEquals();
-    static IBorderHandler edgeCase = new CaseEdge();
-    static IBorderHandler shockWaveCase = new CaseShockWave();
+    static IBorderHandler caseEquals = new CaseEquals();
+    static IBorderHandler caseEdge = new CaseEdge();
 
-    static IBorderHandler layerCase = new CaseLayer();
-    static IBorderHandler stopCase = new CaseStop();
-    static IBorderHandler nullCase = new CaseNull();
+    static IBorderHandler caseShockWave = new CaseShockWave();
+    static IBorderHandler caseLayer = new CaseLayer();
+
+    static IBorderHandler caseStop = new CaseStop();
+    static IBorderHandler caseNull = new CaseNull();
 
     /**
      * Функция, выбирающая вид создаваемого волнового фронта
@@ -37,17 +38,20 @@ public class BorderSwitcher {
             currentSpeed = SimulationGlobals.getCharacteristicsSpeedCompression();
 
         } else {
+            //Если деформация околонулевая, то...
+
             if (layerDescriptions.size() == 1) {
                 if (ProgramGlobals.getLogLevel() == 1)
-                    System.out.println(nullCase);
+                    System.out.println(caseNull);
 
-                return nullCase.generateNewWaveFront(layerDescriptions, 0.0);
+                //Если ещё не были созданы волновые фронты, то ничего не создаём
+                return caseNull.generateNewWaveFront(layerDescriptions, 0.0);
             } else {
 
                 //Если изменение смещения на создаваемом волновом фронте равно нулю,
                 // и количество существующих волновых фронтов больше одного, то обрабатываем как стоп
                 if (ProgramGlobals.getLogLevel() == 1)
-                    System.out.println(stopCase);
+                    System.out.println(caseStop);
 
                 //Если у нас было впереди растяжение, то стоп воздействует как сжатие
                 if (layerDescriptions.get(1).getA2() > ProgramGlobals.getEpsilon()) {
@@ -57,37 +61,41 @@ public class BorderSwitcher {
                     currentSpeed = SimulationGlobals.getCharacteristicsSpeedCompression();
                 }
 
-                return stopCase.generateNewWaveFront(layerDescriptions, currentSpeed);
+                return caseStop.generateNewWaveFront(layerDescriptions, currentSpeed);
             }
         }
+
+        //Задаём корректное значение деформации волнового фронта слева
+        //Впрочем, оно всё равно игнорируется, но для галочки пусть тут будет
+        layerDescriptions.get(0).setA2(0.0 - layerDescriptions.get(0).getA1() / currentSpeed);
 
         
         //Если нет первого волнового фронта, то создаём первый волновой фронт
         if (layerDescriptions.size() == 1) {
             if (ProgramGlobals.getLogLevel() == 1)
-                System.out.println(edgeCase);
+                System.out.println(caseEdge);
 
-            return edgeCase.generateNewWaveFront(layerDescriptions, currentSpeed);
+            return caseEdge.generateNewWaveFront(layerDescriptions, currentSpeed);
         }
 
         //Если произведение изменений перемещений двух волновых фронтов меньше нуля,
         // то мы работаем с противоположными волновыми фронтами (нуль к этому моменту мы уже отфильтровали)
         if (layerDescriptions.get(0).getA2() * layerDescriptions.get(1).getA2() < 0.0) {
             if (ProgramGlobals.getLogLevel() == 1)
-                System.out.println(shockWaveCase);
+                System.out.println(caseShockWave);
 
             //Если e- < 0, то образуется ударная волна
             if (layerDescriptions.get(0).getA2() < 0.0)
-                return shockWaveCase.generateNewWaveFront(layerDescriptions, 0.0);
+                return caseShockWave.generateNewWaveFront(layerDescriptions, 0.0);
 
             //если же e- > 0, то образуется недеформируемый слой
             if (layerDescriptions.get(0).getA2() > 0.0)
-                return layerCase.generateNewWaveFront(layerDescriptions, 0.0);
+                return caseLayer.generateNewWaveFront(layerDescriptions, 0.0);
         }
 
         if (ProgramGlobals.getLogLevel() == 1)
-            System.out.println(equalsCase);
+            System.out.println(caseEquals);
         //Ну а иначе обработчик сходных волновых фронтов
-        return equalsCase.generateNewWaveFront(layerDescriptions, currentSpeed);
+        return caseEquals.generateNewWaveFront(layerDescriptions, currentSpeed);
     }
 }

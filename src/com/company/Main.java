@@ -35,57 +35,8 @@ public class Main {
 
 //TODO: алгоритмы генерации волновых фронтов при столкновении
 //TODO: проверка столкновения с границей полупространства
+//TODO: создание ударной волны на границе
 
-//TODO: создание нового волнового фронта в случае противоположных по типу деформации волновых фронтов - проблема со скоростью
-//TODO: EqualsCase в хендлере границы - speedR вызывает вопросы
-//TODO: Если скорость отрицательная, то и уравнение на границе меняется?
-//TODO: Если скорость отрицательная, то и du/dx изменяется?
-
-//TODO: обработка исключения - при вводе графика функции не должно быть более одного располагающегося на одной координате x значения U
-
-//TODO: DOFIGA
-//Вычисление системы уравнений из четырех элементов
-//Предыдущий = новый;
-//Новый = следующий.
-//Преобразуем два уравнения в системе так, чтобы они приняли следующий вид:
-//Предыдущий = новый:
-//  Равенство членов 0-й степени производной
-//  Равенство членов 1-й степени производной
-//Новый = следующий:
-//  Равенство членов 0-й степени производной
-//  Равенство членов 1-й степени производной
-
-//В данных системах имеем четыре неизвестные: A1_i, A2_i, A0_i, V_i
-//Выражаем из формулы поиска скорости волнового фронта U-,x === A1_i
-//Подставляем на соответствующее место выраженное уравнение (ручками нужно предварительно всё подготовить)
-//Таким образом получаем все четыре неизвестные
-
+//сильный разрыв = полусигнотон, простой разрыв, ударная волна
 //Не обработана ситуация, когда оба волновых фронтов идеально совпали по координате при следующем шаге времени
 //Не обработана ситуация, когда последовательно идут друг за другом два идентичных волновых фронта
-
-
-/*
-        double speedL = DenoteFactor.MILLI.toMillimeters(computeCharSpeed());
-        double A0L = prevWaveFronts.get(0).getA0();
-        double A1L = prevWaveFronts.get(0).getA1();
-        double A2L = 0.0 - prevWaveFronts.get(0).getA1() / speedL;
-        double startTL = prevWaveFronts.get(0).getStartTime();
-
-        double speedR = prevWaveFronts.get(1).getSpeed();
-        double A0R = prevWaveFronts.get(1).getA0();
-        double A1R = prevWaveFronts.get(1).getA1();
-        double A2R = prevWaveFronts.get(1).getA2();
-        double startTR = prevWaveFronts.get(0).getStartTime();
-
-        double startCoordinate = 0.0; //Сдвиг координаты
-
-        double A2i = (A1R + A2R * speedR - A1L + A2L * speedL) / (speedR - speedL);
-        double A1i = (A1L + A2L * speedL - A2i * speedL);
-        double A0i = A0R + A1R * (startTL - startTR) - A2i * startCoordinate;
-
-        WaveFront newWaveFront = new WaveFront(A0i, A1i, A2i, startTL, DenoteFactor.MILLI);
-
-        newWaveFront.setSpeed(speedL);
-
-        return newWaveFront;
- */

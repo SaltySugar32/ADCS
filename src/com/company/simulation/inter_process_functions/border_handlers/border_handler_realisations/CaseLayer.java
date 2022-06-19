@@ -1,6 +1,6 @@
 package com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations;
 
-import com.company.simulation.inter_process_functions.layer_generators.Signoton;
+import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
@@ -30,7 +30,7 @@ public class CaseLayer implements IBorderHandler {
         layerWrapper.add(secondLayerDescription);
 
         LayerDescription firstLayerDescription
-                = Signoton.generateSlowPositive(layerWrapper, WaveType.HALF_SIGNOTON);
+                = SimpleFracture.generateSlowPositive(layerWrapper, 0.0, WaveType.HALF_SIGNOTON);
 
         //----------------------------------------------------ФИНАЛ-----------------------------------------------------
 

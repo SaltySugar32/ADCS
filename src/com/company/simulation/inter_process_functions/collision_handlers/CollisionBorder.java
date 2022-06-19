@@ -18,6 +18,7 @@ public class CollisionBorder {
 
             if (layerDescription.getCurrentX() < 0.0) {
                 //Напрямую изменяем параметры данного волнового фронта
+
             }
         }
     }

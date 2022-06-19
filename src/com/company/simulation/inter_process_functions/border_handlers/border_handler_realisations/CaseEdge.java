@@ -1,7 +1,7 @@
 package com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations;
 
 import com.company.ProgramGlobals;
-import com.company.simulation.inter_process_functions.layer_generators.Signoton;
+import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
@@ -20,10 +20,9 @@ public class CaseEdge implements IBorderHandler {
 
         if (Math.abs(Math.abs(speed) - Math.abs(SimulationGlobals.getCharacteristicsSpeedCompression()))
                 < ProgramGlobals.getEpsilon()) {
-            newLayer = Signoton.generateFastPositive(prevLayerDescriptions, WaveType.HALF_SIGNOTON);
-            System.out.println("FAST");
+            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, WaveType.HALF_SIGNOTON);
         } else {
-            newLayer = Signoton.generateSlowPositive(prevLayerDescriptions, WaveType.HALF_SIGNOTON);
+            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, WaveType.HALF_SIGNOTON);
         }
 
         var newLayers = new ArrayList<LayerDescription>();
