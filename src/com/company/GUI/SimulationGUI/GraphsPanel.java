@@ -33,8 +33,8 @@ public class GraphsPanel extends JPanel {
     public XYSeries series1 = new XYSeries("series1");
     public XYSeries series2 = new XYSeries("series2");
 
-    public JFreeChart chart1 = createChart(series1, "График смещений", "x", "u(x)");
-    public JFreeChart chart2 = createChart(series2, "График деформаций", "x", "u");
+    public JFreeChart chart1 = createChart(series1, "График смещений", "x", "U(x,t)");
+    public JFreeChart chart2 = createChart(series2, "График деформаций", "x", "e(x,t)");
 
     Crosshair crosshairX1 = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));
     Crosshair crosshairY1 = new Crosshair(Double.NaN, Color.GRAY, new BasicStroke(0f));

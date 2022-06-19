@@ -20,7 +20,6 @@ public class SetFormulaDialog extends JDialog {
     private JLabel formulaLabel;
     private JTextField precisionField;
     private JLabel precisionLabel;
-    private JButton defaultButton;
     private JButton setButton;
     private JLabel statusLabel;
     private JCheckBox splineCheckBox;
@@ -28,13 +27,14 @@ public class SetFormulaDialog extends JDialog {
 
     public SetFormulaDialog(JFreeChart chart, XYSeries series) {
         add(contentPane);
-        setTitle("Параметры");
+        setTitle("Задание формулы");
         setSize(400, 200);
 
         setVisible(true);
         this.setAlwaysOnTop(true);
 
         statusLabel.setText("");
+        precisionField.setText("1");
 
         setButton.addActionListener(new ActionListener() {
             @Override
@@ -50,27 +50,17 @@ public class SetFormulaDialog extends JDialog {
             }
         });
 
-        defaultButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                reset(series);
-            }
-        });
-
         splineCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 XYPlot plot = chart.getXYPlot();
                 XYSplineRenderer r = (XYSplineRenderer) plot.getRenderer(0);
+                // точность сплайна
                 if(e.getStateChange() == ItemEvent.DESELECTED)
                     r.setPrecision(1);
                 else
                     r.setPrecision(DataHandler.spline_precision);
             }
         });
-    }
-    private void reset(XYSeries series){
-        series.clear();
-        series.add(0,0);
     }
 }

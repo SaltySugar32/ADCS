@@ -8,11 +8,8 @@ import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.thread_organization.SimulationSynchronizerThread;
-import org.jfree.chart.ChartMouseEvent;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Crosshair;
-import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 
@@ -20,7 +17,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,7 +29,7 @@ import java.util.Timer;
 /**
  * Окно симуляции
  */
-public class SimulationFrame extends JFrame {
+public class SimulationForm extends JFrame {
 
     GraphsPanel graphsPanel = new GraphsPanel();
     ParamsPanel paramsPanel;
@@ -46,7 +42,7 @@ public class SimulationFrame extends JFrame {
      *
      * @param ServerThread Поток
      */
-    public SimulationFrame(SimulationSynchronizerThread ServerThread){
+    public SimulationForm(SimulationSynchronizerThread ServerThread){
 
         this.setTitle("ADCS - Симуляция");
         this.setSize(GUIGlobals.graph_frame_width,GUIGlobals.graph_frame_height);
@@ -190,8 +186,8 @@ public class SimulationFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file_name = getImageName();
-                DBHandler.SaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_смещения.png");
-                DBHandler.SaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_деформации.png");
+                DBHandler.saveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_смещения.png");
+                DBHandler.saveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_деформации.png");
             }
         });
 
@@ -276,37 +272,6 @@ public class SimulationFrame extends JFrame {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String file_path = path + timeStamp  + chart_type + ".png";
 
-        DBHandler.SaveChart(chart, panel, file_path);
+        DBHandler.saveChart(chart, panel, file_path);
     }
-
-    /**
-     * Сохранение изображения как png файл
-     * @param chart
-     * @param panel
-     */
-    private void saveChartAsPNG(JFreeChart chart, ChartPanel panel){
-        JFrame parentFrame = new JFrame();
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Выберите файл для сохранения");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Folder", ""));
-
-        // Окно выбора файла
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-        File folderToSave = null;
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            folderToSave = fileChooser.getSelectedFile();
-        }
-
-        // сохранение графика как PNG файл
-        if(folderToSave!=null) {
-            String file_path = folderToSave.getAbsolutePath().toString();
-
-            if(!file_path.endsWith(".png"))
-                file_path += ".png";
-
-            DBHandler.SaveChart(chart, panel, file_path);
-        }
-    }
-
 }

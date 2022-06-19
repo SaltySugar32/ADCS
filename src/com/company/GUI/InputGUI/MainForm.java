@@ -4,7 +4,7 @@ import com.company.GUI.DataHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.GUI.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.GUI.InputGUI.GraphGUI.GraphForm;
-import com.company.GUI.SimulationGUI.SimulationFrame;
+import com.company.GUI.SimulationGUI.SimulationForm;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
@@ -75,7 +75,7 @@ public class MainForm extends JFrame {
                     }
 
                     Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
-                    SimulationFrame simulationFrame = new SimulationFrame(ServerThread);
+                    SimulationForm simulationForm = new SimulationForm(ServerThread);
                 }
                 else{
                     // Вывод сообщения об ошибке

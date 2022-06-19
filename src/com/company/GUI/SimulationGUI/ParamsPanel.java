@@ -3,16 +3,12 @@ package com.company.GUI.SimulationGUI;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.ProgramGlobals;
-import com.company.simulation.inter_process_functions.border_handlers.Border;
-import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.thread_organization.thread_states.NextThreadState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -53,7 +49,7 @@ public class ParamsPanel extends JPanel {
      *
      * @param ServerThread Поток
      */
-    ParamsPanel(SimulationSynchronizerThread ServerThread, SimulationFrame parent){
+    ParamsPanel(SimulationSynchronizerThread ServerThread, SimulationForm parent){
 
         //Отрисовка панели
         FPS_slider.setMajorTickSpacing(25);

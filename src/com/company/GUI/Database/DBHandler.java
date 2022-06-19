@@ -330,7 +330,7 @@ public class DBHandler {
     }
 
     // Сохранение графика в файл
-    public static void SaveChart(JFreeChart chart, ChartPanel panel, String file){
+    public static void saveChart(JFreeChart chart, ChartPanel panel, String file){
         // Удаление названия графика в изображении
         String title = chart.getTitle().getText();
         chart.getTitle().setText("");

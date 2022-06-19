@@ -4,9 +4,7 @@ import com.company.GUI.DataHandler;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.thread_organization.SimulationSynchronizerThread;
-import org.apache.commons.math3.analysis.interpolation.AkimaSplineInterpolator;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
-import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.jfree.chart.*;
 import org.jfree.chart.axis.NumberAxis;
@@ -30,7 +28,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -381,21 +378,11 @@ public class GraphForm extends JFrame {
     private JMenu createFileMenu(){
         JMenu fileSettings = new JMenu("Файл");
 
-        JMenuItem setFormula = new JMenuItem("Задать формулу");
         JMenuItem quickSavePNG = new JMenuItem("Сохранить изображение");
         JMenuItem savePNG = new JMenuItem("Сохранить изображение как...");
 
-        fileSettings.add(setFormula);
         fileSettings.add(quickSavePNG);
         fileSettings.add(savePNG);
-
-
-        setFormula.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
-            }
-        });
 
         quickSavePNG.addActionListener(new ActionListener() {
             @Override
@@ -426,6 +413,7 @@ public class GraphForm extends JFrame {
         JMenu inputMenu = new JMenu("Ввод");
         JMenuItem changeGraph = new JMenuItem("Сменить задаваемый график");
         JMenuItem loadGraph = new JMenuItem("Загрузить график");
+        JMenuItem setFormula = new JMenuItem("Задать формулу");
 
         JMenu clearGraph = new JMenu("Очистить график");
         JMenuItem clearRed = new JMenuItem("Гладкая функция граничного воздействия");
@@ -439,6 +427,7 @@ public class GraphForm extends JFrame {
 
         inputMenu.add(changeGraph);
         inputMenu.add(loadGraph);
+        inputMenu.add(setFormula);
         inputMenu.add(clearGraph);
         inputMenu.add(setStopState);
 
@@ -469,6 +458,13 @@ public class GraphForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoadGraphDialog dialog = new LoadGraphDialog(series2, stopState);
+            }
+        });
+
+        setFormula.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SetFormulaDialog dialog = new SetFormulaDialog(xyLineChart, series1);
             }
         });
 
@@ -580,7 +576,7 @@ public class GraphForm extends JFrame {
             if(!file_path.endsWith(".png"))
                 file_path += ".png";
 
-            DBHandler.SaveChart(chart, panel, file_path);
+            DBHandler.saveChart(chart, panel, file_path);
         }
     }
 
@@ -594,7 +590,7 @@ public class GraphForm extends JFrame {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
         String file_path = path + timeStamp + ".png";
 
-        DBHandler.SaveChart(chart, panel, file_path);
+        DBHandler.saveChart(chart, panel, file_path);
     }
 
     /**
