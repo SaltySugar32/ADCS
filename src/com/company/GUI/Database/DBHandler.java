@@ -254,6 +254,11 @@ public class DBHandler {
                     array[1][i] = Double.parseDouble(parts[1]);
                 }
                 catch (Exception ex){return null;}
+
+                // отмена, если точка с координатой X существует
+                for(int j = 0; j < i; j++)
+                    if(array[0][j] == array[0][i])
+                        return null;
                 i++;
             }
         }
@@ -277,10 +282,12 @@ public class DBHandler {
 
                 // проверка на числа
                 try{
-                    Double.parseDouble(parts[0]);
-                    Double.parseDouble(parts[1]);
+                    if((Double.parseDouble(parts[0]) > Integer.MAX_VALUE) ||
+                            (Double.parseDouble(parts[1]) > Integer.MAX_VALUE))
+                        return -1;
                 }
                 catch (Exception ex){return -1;}
+
             }
         }
         catch (Exception ex){return -1;}

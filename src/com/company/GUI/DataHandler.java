@@ -13,6 +13,9 @@ public class DataHandler {
     public static boolean env_param_input_status = false;
     public static boolean graph_input_status = false;
 
+    // Статус точки стоп
+    public static boolean stop_state = false;
+
     // Параметры среды
     // У Толи в SimulationGlobals с ними сразу идут манипуляции, а мне нужны именно те данные, которые ввели
     public static double lameMu = 0;

@@ -46,7 +46,6 @@ public class GraphForm extends JFrame {
     private Crosshair crosshairy;
 
     private boolean isLinApproxGraph;
-    private boolean stopState;
 
     public GraphForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
         this.setTitle("ADCS - Ввод графика");
@@ -77,9 +76,6 @@ public class GraphForm extends JFrame {
 
         // флажок текущего задаваемого графика
         isLinApproxGraph = false;
-
-        // флажок создания точки стопа
-        stopState = false;
     }
 
     /**
@@ -187,7 +183,7 @@ public class GraphForm extends JFrame {
                     if(isLinApproxGraph) {
                         series2.remove(i);
                         // обновление точки стопа
-                        if(stopState){
+                        if(DataHandler.stop_state){
                             removeStopPoint();
                             addStopPoint();
                         }
@@ -215,6 +211,10 @@ public class GraphForm extends JFrame {
                 if(chartY < DataHandler.ymin || chartY > DataHandler.ymax) return;
 
                 if(isLinApproxGraph) {
+                    // отмена, если точка с координатой X существует
+                    for(int i = 0; i < series2.getItemCount(); i++)
+                        if((double) series2.getX(i) == chartX) return;
+
                     // попытка найти точку на первом графике
                     try{
                         double [] xDouble = series1.toArray()[0];
@@ -232,13 +232,17 @@ public class GraphForm extends JFrame {
                     }
 
                     // обновление точки стопа
-                    if (stopState) {
+                    if (DataHandler.stop_state) {
                         removeStopPoint();
                         addStopPoint();
                     }
                 }
-                else
+                else {
+                    // отмена, если точка с координатой X существует
+                    for(int i = 0; i < series1.getItemCount(); i++)
+                        if((double) series1.getX(i) == chartX) return;
                     series1.add(chartX, chartY);
+                }
             }
 
             @Override
@@ -419,7 +423,7 @@ public class GraphForm extends JFrame {
         JMenuItem clearRed = new JMenuItem("Гладкая функция граничного воздействия");
         JMenuItem clearBlue = new JMenuItem("График линейной аппроксимации");
 
-        String stopStateString = stopState? "Удалить стоп" : "Создать стоп";
+        String stopStateString = DataHandler.stop_state? "Удалить стоп" : "Создать стоп";
         JMenuItem setStopState = new JMenuItem(stopStateString);
 
         clearGraph.add(clearRed);
@@ -457,7 +461,7 @@ public class GraphForm extends JFrame {
         loadGraph.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LoadGraphDialog dialog = new LoadGraphDialog(series2, stopState);
+                LoadGraphDialog dialog = new LoadGraphDialog(series2);
             }
         });
 
@@ -488,16 +492,16 @@ public class GraphForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //stopState = !stopState;
-                if (stopState) {
-                    stopState = false;
+                if (DataHandler.stop_state) {
+                    DataHandler.stop_state = false;
                     removeStopPoint();
                 }
                 else {
-                    stopState = true;
+                    DataHandler.stop_state = true;
                     addStopPoint();
                 }
 
-                String stopStateString = stopState? "Удалить стоп" : "Создать стоп";
+                String stopStateString = DataHandler.stop_state? "Удалить стоп" : "Создать стоп";
                 setStopState.setText(stopStateString);
             }
         });

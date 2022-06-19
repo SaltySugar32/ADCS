@@ -1,5 +1,6 @@
 package com.company.GUI.InputGUI.GraphGUI;
 
+import com.company.GUI.DataHandler;
 import com.company.GUI.Database.DBHandler;
 import org.jfree.data.xy.XYSeries;
 
@@ -22,7 +23,7 @@ public class LoadGraphDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
 
-    public LoadGraphDialog(XYSeries series, boolean stopState) {
+    public LoadGraphDialog(XYSeries series) {
         setContentPane(contentPane);
         setTitle("Загрузка графика");
         setSize(400, 220);
@@ -49,8 +50,23 @@ public class LoadGraphDialog extends JDialog {
                     for (int i = 0; i < array[0].length; i++)
                         series.add(array[0][i], array[1][i]);
 
-                    if(stopState)
-                        series.add(Integer.MAX_VALUE, series.getY(series.getItemCount()-1));
+                    int last_index = series.getItemCount() - 1;
+
+                    if((double) series.getX(last_index) == (double) Integer.MAX_VALUE) {
+                        if (!DataHandler.stop_state)
+                            series.remove(last_index);
+                    }
+                    else if (DataHandler.stop_state)
+                        series.add(Integer.MAX_VALUE, series.getY(last_index));
+                }
+                else {
+                    String error_message = "Ошибка чтения '"+ comboBox1.getSelectedItem() + "'.\n\n" +
+                            "Координаты должны быть записаны в формате: 'X;Y'\n" +
+                            "Допустимы только числа\n" +
+                            "Максимальное значение = 2.147483647E9" +
+                            "Значения X не должны повторяться";
+                    JFrame frame = new JFrame();
+                    JOptionPane.showMessageDialog(frame, error_message, "Ошибка", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -107,17 +123,17 @@ public class LoadGraphDialog extends JDialog {
                 else {
                     int index = series.getItemCount()-1;
                     double y = (double) series.getY(index);
-                    if (stopState)
+
+                    if(DataHandler.stop_state)
                         series.remove(index);
 
                     DBHandler.addGraphFile(dialogResult, series.toArray());
 
-                    if(stopState)
+                    if(DataHandler.stop_state)
                         series.add(Integer.MAX_VALUE, y);
 
                     loadComboBox(comboBox1);
                 }
-
             }
         });
     }
