@@ -63,7 +63,7 @@ public class LoadGraphDialog extends JDialog {
                     String error_message = "Ошибка чтения '"+ comboBox1.getSelectedItem() + "'.\n\n" +
                             "Координаты должны быть записаны в формате: 'X;Y'\n" +
                             "Допустимы только числа\n" +
-                            "Максимальное значение = 2.147483647E9" +
+                            "Максимальное значение = 2.147483647E9\n" +
                             "Значения X не должны повторяться";
                     JFrame frame = new JFrame();
                     JOptionPane.showMessageDialog(frame, error_message, "Ошибка", JOptionPane.WARNING_MESSAGE);
