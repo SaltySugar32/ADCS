@@ -12,7 +12,7 @@ public enum LastError {
 
         @Override
         public void setAdditionalText(String additionalText) {
-            currentText += defaultText + additionalText;
+            currentText = defaultText + additionalText;
         }
     },
     ERROR_COLLISION_1 {
@@ -26,7 +26,7 @@ public enum LastError {
 
         @Override
         public void setAdditionalText(String additionalText) {
-            currentText += defaultText + additionalText;
+            currentText = defaultText + additionalText;
         }
     };
 

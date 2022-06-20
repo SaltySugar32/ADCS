@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.simulation.inter_process_functions.collision_handlers.CollisionSwitcher;
 import com.company.thread_organization.SimulationServerThread;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.user_clients.UserClient;
@@ -30,12 +31,15 @@ public class Main {
         ServerThread.start();
         SynchroThread.start();
         ClientThread.start();
+
+        //Вообще говоря, костыль
+        CollisionSwitcher.initCollisionHandlers();
     }
 }
 
 //TODO: алгоритмы генерации волновых фронтов при столкновении
 //TODO: проверка столкновения с границей полупространства
-//TODO: создание ударной волны на границе
+//TODO: костыль - брать среднее арифметическое b и скорости ударной волны
 
 //сильный разрыв = полусигнотон, простой разрыв, ударная волна
 //Не обработана ситуация, когда оба волновых фронтов идеально совпали по координате при следующем шаге времени

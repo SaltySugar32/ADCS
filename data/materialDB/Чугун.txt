@@ -1,0 +1,5 @@
+name=Чугун
+lambda=19.8
+nu=15.3
+mu=26.9
+density=7600.0

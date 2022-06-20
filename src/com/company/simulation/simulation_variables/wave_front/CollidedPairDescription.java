@@ -27,7 +27,7 @@ public class CollidedPairDescription {
     }
 
     public LayerDescription getThirdLayer() {
-        return secondLayer;
+        return thirdLayer;
     }
 
     public double getCollisionX() {
@@ -46,8 +46,8 @@ public class CollidedPairDescription {
         this.secondLayer = secondLayer;
     }
 
-    public void setThirdLayer(LayerDescription secondLayer) {
-        this.secondLayer = secondLayer;
+    public void setThirdLayer(LayerDescription thirdLayer) {
+        this.thirdLayer = thirdLayer;
     }
 
     public void setCollisionX(double collisionX) {

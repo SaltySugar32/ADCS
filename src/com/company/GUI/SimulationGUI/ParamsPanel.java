@@ -38,8 +38,8 @@ public class ParamsPanel extends JPanel {
 
     // Ползунок дельты времени
     static final int timeDelta_MIN = 0;
-    static final int timeDelta_MAX = 10;
-    static final int timeDelta_INIT = (int) (ProgramGlobals.getSimulationTimeMultiplier() * 10);
+    static final int timeDelta_MAX = 1000;
+    static final int timeDelta_INIT = (int) (ProgramGlobals.getSimulationTimeMultiplier() * 1000);
     JSlider timeDelta_slider = new JSlider(JSlider.HORIZONTAL, timeDelta_MIN, timeDelta_MAX, timeDelta_INIT);
 
     public JLabel simulationTime;
@@ -62,15 +62,15 @@ public class ParamsPanel extends JPanel {
         OPS_slider.setPaintTicks(true);
         OPS_slider.setPaintLabels(true);
 
-        timeDelta_slider.setMajorTickSpacing(5);
-        timeDelta_slider.setMinorTickSpacing(1);
+        timeDelta_slider.setMajorTickSpacing(500);
+        timeDelta_slider.setMinorTickSpacing(100);
         timeDelta_slider.setPaintTicks(true);
         timeDelta_slider.setPaintLabels(true);
 
         Hashtable labelTable = new Hashtable();
-        labelTable.put(0, new JLabel("0.1") );
-        labelTable.put(5, new JLabel("0.5") );
-        labelTable.put(10, new JLabel("1.0") );
+        labelTable.put(0, new JLabel("0.001") );
+        labelTable.put(500, new JLabel("0.5") );
+        labelTable.put(1000, new JLabel("1.0") );
         timeDelta_slider.setLabelTable( labelTable );
 
         JButton pauseButton = new JButton("START");
@@ -110,7 +110,7 @@ public class ParamsPanel extends JPanel {
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel timeDelta_label = new JLabel("Дельта времени, " + SimulationTime.getSimulationTimePow().getName()
-                + " ("+(double)timeDelta_slider.getValue()/10+")", SwingConstants.CENTER);
+                + " ("+(double)timeDelta_slider.getValue()/1000+")", SwingConstants.CENTER);
 
         simulationTime = new JLabel("Текущее время симуляции: 0 c.", SwingConstants.CENTER);
 
@@ -170,7 +170,7 @@ public class ParamsPanel extends JPanel {
             @Override
             public void stateChanged(ChangeEvent e) {
                 // Изменение дельты времени
-                double value = timeDelta_slider.getValue()==0? 0.1:(double)timeDelta_slider.getValue()/10;
+                double value = timeDelta_slider.getValue()==0? 0.001:(double)timeDelta_slider.getValue()/1000;
                 ProgramGlobals.setSimulationTimeMultiplier(value);
                 timeDelta_label.setText("Дельта времени, мс ("+value+")");
             }

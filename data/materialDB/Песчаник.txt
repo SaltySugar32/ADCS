@@ -1,0 +1,5 @@
+name=Песчаник
+lambda=1.78
+nu=1.35
+mu=8.7
+density=2400.0

@@ -18,9 +18,9 @@ public class CaseEquals implements IBorderHandler {
 
         if (Math.abs(Math.abs(speed) - Math.abs(SimulationGlobals.getCharacteristicsSpeedCompression()))
                 < ProgramGlobals.getEpsilon()) {
-            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, WaveType.SIGNOTON);
+            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.SIGNOTON);
         } else {
-            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, WaveType.SIGNOTON);
+            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.SIGNOTON);
         }
 
         newLayers.add(newLayer);

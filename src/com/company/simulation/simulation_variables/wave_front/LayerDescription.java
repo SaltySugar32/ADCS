@@ -165,6 +165,16 @@ public class LayerDescription {
     }
 
     /**
+     * Функция, вычисляющая смещение на границе волнового фронта
+     * <br>
+     * U(x,t) = A1 * t + A2 * x + A0
+     * @return double
+     */
+    public double calculateZeroDisplacement() {
+        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - startTime));
+    }
+
+    /**
      * Функция, подсчитывающая скорость изменения перемещения в слое
      * @return double Значение изменения перемещения в слое
      */

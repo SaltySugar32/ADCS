@@ -38,67 +38,63 @@ public class Collision {
         // располагающихся в массиве, по порядку соответствующему предыдущей волновой картине,
         // имеют координаты такие, что координата левого волнового фронта выше координаты
         // правого волнового фронта, то такие волновые фронты можно считать пересёкшимися
-        if (currentWavePicture.size() > 1) {
-            for (int index = 0; index < currentWavePicture.size() - 1; index++) {
+        for (int index = 0; index < currentWavePicture.size() - 1; index++) {
 
-                //Если два волновых фронта столкнулись, то...
-                if (checkIfTwoWavesCollided(currentWavePicture.get(index),
-                        currentWavePicture.get(index + 1))) {
+            //Если два волновых фронта столкнулись, то...
+            if (checkIfTwoWavesCollided(currentWavePicture.get(index),
+                    currentWavePicture.get(index + 1))) {
 
-                    //Добавляем новую оболочку для пары волновых фронтов
-                    collidedPairs.add(new CollidedPairDescription());
+                //Добавляем новую оболочку для пары волновых фронтов
+                collidedPairs.add(new CollidedPairDescription());
 
-                    //Добавляем пару волновых фронтов в оболочку
-                    var collidedPair = collidedPairs.get(collidedPairs.size() - 1);
-                    collidedPair.setFirstLayer(currentWavePicture.get(index));
-                    collidedPair.setSecondLayer(currentWavePicture.get(index + 1));
+                //Добавляем пару волновых фронтов в оболочку
+                var collidedPair = collidedPairs.get(collidedPairs.size() - 1);
+                collidedPair.setFirstLayer(currentWavePicture.get(index));
+                collidedPair.setSecondLayer(currentWavePicture.get(index + 1));
 
-                    //Если речь про столкновение с самым дальним волновым фронтом, то добавляем нулевое описание среды справа
-                    if (index == currentWavePicture.size() - 2) {
-                        collidedPair.setThirdLayer(new LayerDescription(0.0, 0.0, 0.0, 0.0, WaveType.HALF_SIGNOTON));
-                    } else {
-                        //Иначе используем существующее описание среды справа
-                        collidedPair.setThirdLayer(currentWavePicture.get(index + 2));
-                    }
-
-                    //Вычисляем время произошедшего столкновения
-                    //dT = (X+ - X-) / (V+ - V-)
-                    double collisionDeltaTime = (collidedPair.getFirstLayer().getCurrentX()
-                            - collidedPair.getSecondLayer().getCurrentX())
-                            / (collidedPair.getFirstLayer().getSpeed()
-                            - collidedPair.getSecondLayer().getSpeed());
-
-                    collidedPair.setCollisionTime(
-                            SimulationTime.getSimulationTime() - collisionDeltaTime
-                    );
-
-                    //Если один из волновых фронтов был создан позже,
-                    // чем они могли столкнуться, или у них равное время создания,
-                    // то отменяем все изменения
-                    if (collidedPair.getFirstLayer().getStartTime() > collidedPair.getCollisionTime()
-                            || collidedPair.getSecondLayer().getStartTime() > collidedPair.getCollisionTime()
-                            || collidedPair.getFirstLayer().getStartTime() == collidedPair.getSecondLayer().getStartTime()) {
-                        collidedPairs.remove(collidedPair);
-                        continue;
-                    }
-
-                    //Вычисляем координату произошедшего столкновения
-                    //X = X+ - V+ * dT
-                    double collisionX = collidedPair.getFirstLayer().getCurrentX()
-                            - collidedPair.getFirstLayer().getSpeed()
-                            * (collisionDeltaTime);
-
-                    //Если место столкновение двух волновых фронтов находится в отрицательной области, то игнорируем
-                    if (collisionX < 0.0) {
-                        collidedPairs.remove(collidedPair);
-                        continue;
-                    }
-
-                    collidedPair.setCollisionX(collisionX);
-
+                //Если речь про столкновение с самым дальним волновым фронтом, то добавляем нулевое описание среды справа
+                if (index == currentWavePicture.size() - 2) {
+                    collidedPair.setThirdLayer(new LayerDescription(0.0, 0.0, 0.0, 0.0, WaveType.HALF_SIGNOTON));
+                } else {
+                    //Иначе используем существующее описание среды справа
+                    collidedPair.setThirdLayer(currentWavePicture.get(index + 2));
                 }
 
+                //Вычисляем время произошедшего столкновения
+                //dT = (X+ - X-) / (V- - V+)
+                double collisionDeltaTime = (collidedPair.getFirstLayer().getCurrentX()
+                        - collidedPair.getSecondLayer().getCurrentX())
+                        / (collidedPair.getFirstLayer().getSpeed()
+                        - collidedPair.getSecondLayer().getSpeed());
+
+                collidedPair.setCollisionTime(
+                        SimulationTime.getSimulationTime() - collisionDeltaTime
+                );
+
+                //Если один из волновых фронтов был создан позже,
+                // чем они могли столкнуться, то отменяем все изменения
+                if (collidedPair.getFirstLayer().getStartTime() >= collidedPair.getCollisionTime()
+                        || collidedPair.getSecondLayer().getStartTime() >= collidedPair.getCollisionTime()) {
+                    collidedPairs.remove(collidedPair);
+                    continue;
+                }
+
+                //Вычисляем координату произошедшего столкновения
+                //X = X+ - V+ * dT
+                double collisionX = collidedPair.getFirstLayer().getCurrentX()
+                        - collidedPair.getFirstLayer().getSpeed()
+                        * (collisionDeltaTime);
+
+                //Если место столкновение двух волновых фронтов находится в отрицательной области, то игнорируем
+                if (collisionX < 0.0) {
+                    collidedPairs.remove(collidedPair);
+                    continue;
+                }
+
+                collidedPair.setCollisionX(collisionX);
+
             }
+
         }
 
         return collidedPairs;
@@ -125,6 +121,7 @@ public class Collision {
 
         //Пока не находятся пары, которые могли бы столкнуться
         while (collisionPairs.size() != 0) {
+            System.out.println(trashWaves.size());
 
             //Сортируем в порядке возрастания времени столкновения
             collisionPairs.sort(comparator);
@@ -132,6 +129,7 @@ public class Collision {
             var newWavePicture = new ArrayList<LayerDescription>();
 
             for (var collisionPair : collisionPairs) {
+
                 if (trashWaves.contains(collisionPair.getFirstLayer())
                         || trashWaves.contains(collisionPair.getSecondLayer()))
                     continue;
@@ -159,6 +157,7 @@ public class Collision {
 
             //Добавляем старые не удалённые волновые фронты и новые в одну волновую картину
             for (var newWave : newWaves) {
+
                 while (currentWavePicture.get(index).getCurrentX() < newWave.getCurrentX()) {
 
                     //Если волновой фронт из удалённых, то не добавляем

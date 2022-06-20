@@ -68,13 +68,15 @@ public class MainForm extends JFrame {
                             DataHandler.coefficientNu
                     );
 
+                    SimulationTimePow simulationTimePow;
+
                     switch (DataHandler.unitOfTime){
-                        case "мкс" -> SimulationTime.setSimulationTimePow(SimulationTimePow.MICROSECONDS);
-                        case "нс" -> SimulationTime.setSimulationTimePow(SimulationTimePow.NANOSECONDS);
-                        default -> SimulationTime.setSimulationTimePow(SimulationTimePow.MILLISECONDS);
+                        case "мкс" -> simulationTimePow = SimulationTimePow.MICROSECONDS;
+                        case "нс" -> simulationTimePow = SimulationTimePow.NANOSECONDS;
+                        default -> simulationTimePow = SimulationTimePow.MILLISECONDS;
                     }
 
-                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI);
+                    Border.initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI, simulationTimePow);
                     SimulationForm simulationForm = new SimulationForm(ServerThread);
                 }
                 else{

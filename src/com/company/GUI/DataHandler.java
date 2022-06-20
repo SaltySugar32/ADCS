@@ -157,19 +157,19 @@ public class DataHandler {
         double d1, d2, d3, d4;
         try{
             d1 = Double.parseDouble(p1);
-            if (d1<=0) throw new Exception();
+            if (d1==0) throw new Exception();
         }
         catch (Exception e){return "Параметр Ламе μ введен неверно";}
 
         try{
             d2 = Double.parseDouble(p2);
-            if (d2<=0) throw new Exception();
+            if (d2==0) throw new Exception();
         }
         catch (Exception e){return "Параметр Ламе λ введен неверно";}
 
         try{
             d3 = Double.parseDouble(p3);
-            if (d3<=0) throw new Exception();
+            if (d3==0) throw new Exception();
         }
         catch (Exception e){return "Параметр плотность материала ρ введен неверно";}
 

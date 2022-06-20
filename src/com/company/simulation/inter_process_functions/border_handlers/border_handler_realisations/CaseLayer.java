@@ -30,7 +30,7 @@ public class CaseLayer implements IBorderHandler {
         layerWrapper.add(secondLayerDescription);
 
         LayerDescription firstLayerDescription
-                = SimpleFracture.generateSlowPositive(layerWrapper, 0.0, WaveType.HALF_SIGNOTON);
+                = SimpleFracture.generateSlowPositive(layerWrapper, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.HALF_SIGNOTON);
 
         //----------------------------------------------------ФИНАЛ-----------------------------------------------------
 
