@@ -44,6 +44,11 @@ public class Collision {
             if (checkIfTwoWavesCollided(currentWavePicture.get(index),
                     currentWavePicture.get(index + 1))) {
 
+                if (currentWavePicture.get(index).getStartTime() == currentWavePicture.get(index + 1).getStartTime() &&
+                        currentWavePicture.get(index).getStartTime() != 0.0) {
+                    continue;
+                }
+
                 //Добавляем новую оболочку для пары волновых фронтов
                 collidedPairs.add(new CollidedPairDescription());
 
@@ -121,7 +126,6 @@ public class Collision {
 
         //Пока не находятся пары, которые могли бы столкнуться
         while (collisionPairs.size() != 0) {
-            System.out.println(trashWaves.size());
 
             //Сортируем в порядке возрастания времени столкновения
             collisionPairs.sort(comparator);
@@ -174,8 +178,35 @@ public class Collision {
                 newWavePicture.add(newWave);
             }
 
+            //Добавляем оставшиеся волновые фронты
+            while (index < currentWavePicture.size()) {
+                //Если волновой фронт из удалённых, то не добавляем
+                if (trashWaves.contains(currentWavePicture.get(index))) {
+                    index++;
+                    continue;
+                }
+
+                //Добавляем старый волновой фронт
+                newWavePicture.add(currentWavePicture.get(index));
+                index++;
+            }
+
+            if (ProgramGlobals.getLogLevel() == 2) {
+                for (var waveFront : newWavePicture) {
+                    System.out.println("A0 = " + waveFront.getA0());
+                    System.out.println("A1 = " + waveFront.getA1());
+                    System.out.println("A2 = " + waveFront.getA2());
+                    System.out.println("V = " + waveFront.getSpeed());
+                    System.out.println("X = " + waveFront.getCurrentX());
+                    System.out.println("U = " + waveFront.calculateDisplacement());
+                    System.out.println("T = " + waveFront.getStartTime());
+                    System.out.println("---");
+                }
+                System.out.println("--------------------------------");
+            }
+
             currentWavePicture = newWavePicture;
-            collisionPairs = searchForCollisions(prevWavePicture);
+            collisionPairs = searchForCollisions(currentWavePicture);
         }
 
         return currentWavePicture;

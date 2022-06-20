@@ -22,7 +22,7 @@ public enum WaveType {
             return color;
         }
     },
-    SIGNOTON {
+    SIMPLE_FRACTURE {
         final Color color = new Color(75, 240, 75);
 
         @Override

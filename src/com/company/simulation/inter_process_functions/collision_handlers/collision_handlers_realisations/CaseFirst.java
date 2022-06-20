@@ -30,12 +30,11 @@ public class CaseFirst implements ICollisionHandler {
 
         var layerWrapper = new ArrayList<LayerDescription>();
         //Добавляем основные две характеристики пространств слева и справа
+        //Добавляем характеристику для костыля
         layerWrapper.add(collidedPair.getFirstLayer());
         layerWrapper.add(collidedPair.getThirdLayer());
-        //Добавляем характеристику для костыля
-        layerWrapper.add(collidedPair.getSecondLayer());
 
-        var rightLayer = ShockWavePositive.generatePositiveShockWave(layerWrapper, collidedPair.getCollisionX(), collidedPair.getCollisionTime(), WaveType.SHOCK_WAVE);
+        var rightLayer = ShockWavePositive.generatePositiveShockWave(layerWrapper, collidedPair.getCollisionX(), collidedPair.getCollisionTime(), collidedPair.getFirstLayer().getSpeed(), WaveType.SHOCK_WAVE);
 
         newLayers.add(collidedPair.getFirstLayer());
         newLayers.get(0).setSpeed(0.0 - SimulationGlobals.getCharacteristicsSpeedCompression());

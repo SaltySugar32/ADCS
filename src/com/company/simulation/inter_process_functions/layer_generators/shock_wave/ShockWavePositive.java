@@ -7,10 +7,9 @@ import com.company.simulation.simulation_variables.wave_front.WaveType;
 import java.util.ArrayList;
 
 public class ShockWavePositive {
-    public static LayerDescription generatePositiveShockWave(ArrayList<LayerDescription> prevLayerDescriptions, double currentX, double currentTime, WaveType waveType) {
+    public static LayerDescription generatePositiveShockWave(ArrayList<LayerDescription> prevLayerDescriptions, double currentX, double currentTime, double speed, WaveType waveType) {
         //!!!!КОСТЫЛЬ!!!!
-        double speedR = (prevLayerDescriptions.get(2).getSpeed()
-                + SimulationGlobals.getCharacteristicsSpeedStretching()) / 2;
+        double speedR = (speed + SimulationGlobals.getCharacteristicsSpeedStretching()) / 2;
 
         return generateNewLayer(prevLayerDescriptions, currentX, currentTime, speedR, waveType);
     }
@@ -28,13 +27,6 @@ public class ShockWavePositive {
         double A0R = prevLayerDescriptions.get(1).getA0();
         double A1R = prevLayerDescriptions.get(1).getA1();
         double A2R = prevLayerDescriptions.get(1).getA2();
-
-        /*
-        //Частный случай при CL = 0, Xi = 0, speedL = 0
-        double A2i = (A1R + A2R * speedR - A1L) / (speedR);
-        double A1i = (A1L + 0.0);
-        double A0i = A0R + A1R * (startTL - startTR);
-         */
 
         double A2i = (A1R + A2R * speedR - A1L + A2L * speedL) / (speedR - speedL);
         double A1i = (A1L + A2L * speedL - A2i * speedL);
