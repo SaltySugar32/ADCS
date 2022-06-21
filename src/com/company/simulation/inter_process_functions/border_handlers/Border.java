@@ -143,8 +143,8 @@ public class Border {
                     System.out.println("A2 = " + newWavePicture.peek().getA2());
                     System.out.println("V = " + newWavePicture.peek().getSpeed());
                     System.out.println("X = " + newWavePicture.peek().getCurrentX());
-                    System.out.println("U = " + newWavePicture.peek().calculateDisplacement());
-                    System.out.println("T = " + newWavePicture.peek().getStartTime());
+                    System.out.println("U = " + newWavePicture.peek().calculateLayerDisplacement());
+                    System.out.println("T = " + newWavePicture.peek().getLayerStartTime());
                     System.out.println("^^^^^^^^^^^^^");
                 }
             }
@@ -182,18 +182,19 @@ public class Border {
             newWavePicture.push(newLayerDescription.get(0));
         }
 
-        if (ProgramGlobals.getLogLevel() == 1) {
+        if (ProgramGlobals.getLogLevel() == 1 || ProgramGlobals.getLogLevel() == 99) {
+            System.out.println("------Created new on border------");
             for (var waveFront : newWavePicture) {
                 System.out.println("A0 = " + waveFront.getA0());
                 System.out.println("A1 = " + waveFront.getA1());
                 System.out.println("A2 = " + waveFront.getA2());
                 System.out.println("V = " + waveFront.getSpeed());
                 System.out.println("X = " + waveFront.getCurrentX());
-                System.out.println("U = " + waveFront.calculateDisplacement());
-                System.out.println("T = " + waveFront.getStartTime());
+                System.out.println("U = " + waveFront.calculateLayerDisplacement());
+                System.out.println("T = " + waveFront.getLayerStartTime());
                 System.out.println("---");
             }
-            System.out.println("--------------------------------");
+            System.out.println("---------------------------------");
         }
 
         return new ArrayList<>(newWavePicture);

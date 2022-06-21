@@ -1,7 +1,6 @@
 package com.company.simulation.simulation_variables.wave_front;
 
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 /**
  * Описание линейной аппроксимации процесса, происходящего слева от волнового фронта
@@ -25,14 +24,14 @@ public class LayerDescription {
     double speed;
 
     /**
-     * Время появления волнового фронта
-     */
-    double startTime;
-
-    /**
      * Тип волнового фронта
      */
     WaveType waveType;
+
+    /**
+     * Время появления волнового фронта
+     */
+    double waveFrontStartTime;
 
     //-------------------------------SETTERS--------------------------------
 
@@ -53,14 +52,6 @@ public class LayerDescription {
     }
 
     /**
-     * Изменение времени появления волнового фронта
-     * @param startTime Новое время появления волнового фронта
-     */
-    public void setStartTime(double startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
      * Функция, смещающая волновой фронт на расстояние, преодолеваемое им за timeDelta
      * @param timeDelta Изменение времени
      */
@@ -68,6 +59,22 @@ public class LayerDescription {
         //Устанавливаем смещение относительно текущей координаты +
         // скорость волнового фронта, умноженную на рассматриваемую дельту времени
         currentX += speed * timeDelta;
+    }
+
+    /**
+     * Функция, задающая время появления волнового фронта
+     * @param waveFrontStartTime время появления волнового фронта
+     */
+    public void setWaveFrontStartTime(double waveFrontStartTime) {
+        this.waveFrontStartTime = waveFrontStartTime;
+    }
+
+    /**
+     * Функция, устанавливающая цветовое описание волнового фронта
+     * @param waveType цветовое описание волнового фронта
+     */
+    public void setWaveType(WaveType waveType) {
+        this.waveType = waveType;
     }
 
     //-------------------------------GETTERS--------------------------------
@@ -92,11 +99,17 @@ public class LayerDescription {
      * Функция, возвращающая время появления волнового фронта
      * @return double время появления волнового фронта
      */
-    public double getStartTime() {
-        return startTime;
+    public double getWaveFrontStartTime() {
+        return waveFrontStartTime;
     }
 
     //---------------------------------------------ПАРАМЕТРЫ СЛОЯ ДЕФОРМАЦИИ--------------------------------------------
+
+
+    /**
+     * Время появления слоя деформации
+     */
+    double layerStartTime;
 
     /**
      * Зависимость смещения на границе волнового фронта от координаты x
@@ -152,6 +165,14 @@ public class LayerDescription {
         return A0;
     }
 
+    /**
+     * Функция, возвращающая время появления слоя деформации
+     * @return double время появления слоя деформации
+     */
+    public double getLayerStartTime() {
+        return layerStartTime;
+    }
+
     //-------------------------------ФУНКЦИИ--------------------------------
 
     /**
@@ -160,8 +181,8 @@ public class LayerDescription {
      * U(x,t) = A1 * t + A2 * x + A0
      * @return double
      */
-    public double calculateDisplacement() {
-        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - startTime) + getA2() * currentX);
+    public double calculateLayerDisplacement() {
+        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - layerStartTime) + getA2() * currentX);
     }
 
     /**
@@ -171,7 +192,7 @@ public class LayerDescription {
      * @return double
      */
     public double calculateZeroDisplacement() {
-        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - startTime));
+        return (getA0() + getA1() * (SimulationTime.getSimulationTime() - layerStartTime));
     }
 
     /**
@@ -180,10 +201,10 @@ public class LayerDescription {
      */
     public double calculateDeformations() {
         double left = getA0() +
-                getA1() * (SimulationTime.getSimulationTime() - startTime) +
+                getA1() * (SimulationTime.getSimulationTime() - layerStartTime) +
                 getA2() * currentX;
         double right = getA0() +
-                getA1() * (SimulationTime.getSimulationTime() - startTime) +
+                getA1() * (SimulationTime.getSimulationTime() - layerStartTime) +
                 getA2() * (currentX + 10);
 
         return (right - left) / 10;
@@ -197,6 +218,14 @@ public class LayerDescription {
         this.A2 = A2;
     }
 
+    /**
+     * Изменение времени появления волнового фронта
+     * @param layerStartTime Новое время появления волнового фронта
+     */
+    public void setLayerStartTime(double layerStartTime) {
+        this.layerStartTime = layerStartTime;
+    }
+
     //----------------------------ИНИЦИАЛИЗАТОР-----------------------------
 
     /**
@@ -207,11 +236,12 @@ public class LayerDescription {
      * @param A1 зависимость смещения на границе волнового фронта от времени t - du/dt
      * @param A2 зависимость смещения на границе волнового фронта от координаты x - du/dx
      */
-    public LayerDescription(double A0, double A1, double A2, double startTime, WaveType waveType) {
+    public LayerDescription(double A0, double A1, double A2, double layerStartTime, WaveType waveType) {
         this.A1 = A1;
         this.A2 = A2;
         this.A0 = A0;
-        this.startTime = startTime;
+        this.layerStartTime = layerStartTime;
+        this.waveFrontStartTime = layerStartTime;
         this.waveType = waveType;
 
         this.speed = 0.0;

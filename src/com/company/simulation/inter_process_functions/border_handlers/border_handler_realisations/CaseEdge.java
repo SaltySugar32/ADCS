@@ -20,9 +20,9 @@ public class CaseEdge implements IBorderHandler {
 
         if (Math.abs(Math.abs(speed) - Math.abs(SimulationGlobals.getCharacteristicsSpeedCompression()))
                 < ProgramGlobals.getEpsilon()) {
-            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.HALF_SIGNOTON);
+            newLayer = SimpleFracture.generateFastPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getLayerStartTime(), WaveType.HALF_SIGNOTON);
         } else {
-            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.HALF_SIGNOTON);
+            newLayer = SimpleFracture.generateSlowPositive(prevLayerDescriptions, 0.0, prevLayerDescriptions.get(0).getLayerStartTime(), WaveType.HALF_SIGNOTON);
         }
 
         var newLayers = new ArrayList<LayerDescription>();

@@ -120,7 +120,7 @@ public class SimulationForm extends JFrame {
         for (int index = 0; index < layerDescriptions.size(); index++) {
 
             // график смещений
-            graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateDisplacement());
+            graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateLayerDisplacement());
 
             // добавление маркера
             graphsPanel.setMarker(

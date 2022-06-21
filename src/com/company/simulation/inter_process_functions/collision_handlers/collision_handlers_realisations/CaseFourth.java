@@ -9,34 +9,38 @@ import com.company.simulation.simulation_variables.wave_front.WaveType;
 
 import java.util.ArrayList;
 
-public class CaseThird implements ICollisionHandler {
+public class CaseFourth implements ICollisionHandler {
     @Override
     public String shortDescription() {
-        return "xiA- -> xiA+ => xiA- -> xiA+";
+        return "Sigma+ -> gammaB+ => xiA- -> gammaA+";
     }
 
     @Override
     public String longDescription() {
-        return "xiA- -> xiA+ => xiA- -> xiA+";
+        return "Sigma+ -> gammaB+ => xiA- -> gammaA+";
     }
 
     @Override
     public boolean isCorrectCase(CollidedPairDescription collidedPair) {
-        //Если слева - быстрый волновой фронт, то продолжаем
-        if (collidedPair.getFirstLayer().getSpeed() != SimulationGlobals.getCharacteristicsSpeedCompression())
+        //Если слева - не быстрый волновой фронт, то продолжаем
+        if (collidedPair.getFirstLayer().getSpeed() == SimulationGlobals.getCharacteristicsSpeedCompression())
             return false;
 
-        //Если слева - деформируемый слой, то продолжаем
-        if (collidedPair.getFirstLayer().getA1() + collidedPair.getFirstLayer().getA2() == 0.0)
+        //Если слева - не медленный волновой фронт, то продолжаем
+        if (collidedPair.getFirstLayer().getSpeed() == SimulationGlobals.getCharacteristicsSpeedStretching())
+            return false;
+
+        //Если слева скорость положительная, то продолжаем
+        if (collidedPair.getFirstLayer().getSpeed() <= 0.0)
             return false;
 
         //Если скорость правого волнового фронта == скорости растяжения (быстрый волновой фронт), то продолжаем
         //Косвенно - если она положительная
-        if (collidedPair.getSecondLayer().getSpeed() != 0.0 - SimulationGlobals.getCharacteristicsSpeedCompression())
+        if (collidedPair.getSecondLayer().getSpeed() != SimulationGlobals.getCharacteristicsSpeedStretching())
             return false;
 
-        //Если справа - деформируемый слой, то продолжаем
-        if (collidedPair.getThirdLayer().getA1() + collidedPair.getThirdLayer().getA2() == 0.0)
+        //Если справа - недеформируемый слой, то продолжаем
+        if (collidedPair.getThirdLayer().getA1() + collidedPair.getThirdLayer().getA2() != 0.0)
             return false;
 
         return true;
@@ -68,7 +72,7 @@ public class CaseThird implements ICollisionHandler {
                 layerWrapper,
                 collidedPair.getCollisionX(),
                 collidedPair.getCollisionTime(),
-                WaveType.SIMPLE_FRACTURE
+                WaveType.HALF_SIGNOTON
         );
 
         newLayers.add(rightLayer);

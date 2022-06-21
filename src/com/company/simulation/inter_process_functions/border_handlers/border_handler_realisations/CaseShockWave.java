@@ -1,6 +1,5 @@
 package com.company.simulation.inter_process_functions.border_handlers.border_handler_realisations;
 
-import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 import com.company.simulation.simulation_variables.wave_front.WaveType;
@@ -38,8 +37,8 @@ public class CaseShockWave implements IBorderHandler {
 
     public ArrayList<LayerDescription> generateNewWaveFrontOld(ArrayList<LayerDescription> prevLayerDescriptions, double unused) {
 
-        double startTL = prevLayerDescriptions.get(0).getStartTime();
-        double startTR = prevLayerDescriptions.get(1).getStartTime();
+        double startTL = prevLayerDescriptions.get(0).getLayerStartTime();
+        double startTR = prevLayerDescriptions.get(1).getLayerStartTime();
 
         double A0R = prevLayerDescriptions.get(1).getA0();
         double A1R = prevLayerDescriptions.get(1).getA1();
@@ -90,8 +89,8 @@ public class CaseShockWave implements IBorderHandler {
     @Override
     public ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> prevLayerDescriptions, double unused) {
 
-        double startTL = prevLayerDescriptions.get(0).getStartTime();
-        double startTR = prevLayerDescriptions.get(1).getStartTime();
+        double startTL = prevLayerDescriptions.get(0).getLayerStartTime();
+        double startTR = prevLayerDescriptions.get(1).getLayerStartTime();
 
         double A0L = prevLayerDescriptions.get(0).getA0();
         double A1L = prevLayerDescriptions.get(0).getA1();

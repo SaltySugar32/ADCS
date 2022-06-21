@@ -15,7 +15,7 @@ public class CaseLayer implements IBorderHandler {
 
         //------------------------------СОЗДАЁМ БЫСТРЫЙ ВОЛНОВОЙ ФРОНТ - ФРОНТ СЖАТИЯ-----------------------------------
 
-        double startTL = prevLayerDescriptions.get(0).getStartTime();
+        double startTL = prevLayerDescriptions.get(0).getLayerStartTime();
         double speedR = SimulationGlobals.getCharacteristicsSpeedCompression();
         double A0i = prevLayerDescriptions.get(0).getA0();
 
@@ -30,7 +30,7 @@ public class CaseLayer implements IBorderHandler {
         layerWrapper.add(secondLayerDescription);
 
         LayerDescription firstLayerDescription
-                = SimpleFracture.generateSlowPositive(layerWrapper, 0.0, prevLayerDescriptions.get(0).getStartTime(), WaveType.HALF_SIGNOTON);
+                = SimpleFracture.generateSlowPositive(layerWrapper, 0.0, prevLayerDescriptions.get(0).getLayerStartTime(), WaveType.HALF_SIGNOTON);
 
         //----------------------------------------------------ФИНАЛ-----------------------------------------------------
 

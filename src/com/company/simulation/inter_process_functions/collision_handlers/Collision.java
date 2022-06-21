@@ -44,8 +44,7 @@ public class Collision {
             if (checkIfTwoWavesCollided(currentWavePicture.get(index),
                     currentWavePicture.get(index + 1))) {
 
-                if (currentWavePicture.get(index).getStartTime() == currentWavePicture.get(index + 1).getStartTime() &&
-                        currentWavePicture.get(index).getStartTime() != 0.0) {
+                if (currentWavePicture.get(index).getWaveFrontStartTime() == currentWavePicture.get(index + 1).getWaveFrontStartTime()) {
                     continue;
                 }
 
@@ -78,8 +77,8 @@ public class Collision {
 
                 //Если один из волновых фронтов был создан позже,
                 // чем они могли столкнуться, то отменяем все изменения
-                if (collidedPair.getFirstLayer().getStartTime() >= collidedPair.getCollisionTime()
-                        || collidedPair.getSecondLayer().getStartTime() >= collidedPair.getCollisionTime()) {
+                if (collidedPair.getFirstLayer().getLayerStartTime() >= collidedPair.getCollisionTime()
+                        || collidedPair.getSecondLayer().getLayerStartTime() >= collidedPair.getCollisionTime()) {
                     collidedPairs.remove(collidedPair);
                     continue;
                 }
@@ -191,18 +190,19 @@ public class Collision {
                 index++;
             }
 
-            if (ProgramGlobals.getLogLevel() == 2) {
+            if (ProgramGlobals.getLogLevel() == 2 || ProgramGlobals.getLogLevel() == 99) {
+                System.out.println("-----Created with collision------");
                 for (var waveFront : newWavePicture) {
                     System.out.println("A0 = " + waveFront.getA0());
                     System.out.println("A1 = " + waveFront.getA1());
                     System.out.println("A2 = " + waveFront.getA2());
                     System.out.println("V = " + waveFront.getSpeed());
                     System.out.println("X = " + waveFront.getCurrentX());
-                    System.out.println("U = " + waveFront.calculateDisplacement());
-                    System.out.println("T = " + waveFront.getStartTime());
+                    System.out.println("U = " + waveFront.calculateLayerDisplacement());
+                    System.out.println("T = " + waveFront.getLayerStartTime());
                     System.out.println("---");
                 }
-                System.out.println("--------------------------------");
+                System.out.println("---------------------------------");
             }
 
             currentWavePicture = newWavePicture;

@@ -100,8 +100,9 @@ public class ProgramGlobals {
      * 0: Без логов
      * 1: border_handlers
      * 2: collision_handlers
+     * 99: Все основные логи
      */
-    final static double logLevel = 2;
+    final static double logLevel = 99;
 
     public static double getLogLevel() {
         return logLevel;
