@@ -44,7 +44,7 @@ public class SimulationForm extends JFrame {
      */
     public SimulationForm(SimulationSynchronizerThread ServerThread){
 
-        this.setTitle("ADCS - Симуляция");
+        this.setTitle(GUIGlobals.program_title + " - Симуляция");
         this.setSize(GUIGlobals.graph_frame_width,GUIGlobals.graph_frame_height);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

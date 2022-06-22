@@ -29,7 +29,7 @@ public class MainForm extends JFrame {
     private JTextArea projectDescriptionArea;
 
     public MainForm(SimulationSynchronizerThread ServerThread) {
-        this.setTitle("ADCS");
+        this.setTitle(GUIGlobals.program_title);
         this.setSize(GUIGlobals.main_frame_width, GUIGlobals.main_frame_height);
         this.setVisible(true);
 
@@ -41,6 +41,8 @@ public class MainForm extends JFrame {
 
         // Главная панель со всеми кнопками
         this.add(mainPanel);
+
+        projectNameLabel.setText(GUIGlobals.program_title);
 
         envParamButton.addActionListener(new ActionListener() {
             @Override

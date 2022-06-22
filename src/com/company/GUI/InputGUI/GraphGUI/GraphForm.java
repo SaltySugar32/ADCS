@@ -48,7 +48,7 @@ public class GraphForm extends JFrame {
     private boolean isLinApproxGraph;
 
     public GraphForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
-        this.setTitle("ADCS - Ввод графика");
+        this.setTitle(GUIGlobals.program_title + " - Ввод графика");
         this.setSize(GUIGlobals.graph_frame_width, GUIGlobals.graph_frame_height);
         this.setVisible(true);
 

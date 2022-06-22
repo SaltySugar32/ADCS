@@ -30,7 +30,7 @@ public class EnvParamForm extends JFrame{
     private JButton DeleteButton;
 
     public EnvParamForm(JLabel mainFrameLabel, SimulationSynchronizerThread ServerThread) {
-        this.setTitle("ADCS - Ввод параметров среды");
+        this.setTitle(GUIGlobals.program_title + " - Ввод параметров среды");
         this.setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
         this.setVisible(true);
 

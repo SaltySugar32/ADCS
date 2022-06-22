@@ -1,6 +1,7 @@
 package com.company.GUI.InputGUI.EnvParamGUI;
 
 import com.company.GUI.Database.DBHandler;
+import com.company.GUI.GUIGlobals;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,7 @@ public class DeleteMaterialDialog extends JDialog {
         setVisible(true);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
-        setTitle("ADCS - Удаление материала");
+        setTitle("Удаление материала");
         setSize(400, 200);
         label1.setText("Удалить материал: "+frame.comboBox1.getItemAt(index).toString()+"?");
 

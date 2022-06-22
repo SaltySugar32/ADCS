@@ -18,7 +18,7 @@ public class AddMaterialDialog extends JDialog {
         setVisible(true);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
-        setTitle("ADCS - Добавление материала");
+        setTitle("Добавление материала");
         setSize(400, 200);
 
         SubmitButton.addActionListener(new ActionListener() {

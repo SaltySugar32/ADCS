@@ -22,4 +22,7 @@ public class GUIGlobals {
     // Цвет бекграунда
     public static Color background_color = Color.decode("#A9CADC");
 
+    // Название ПС
+    public static String program_title = "BiM Dynamics";
+
 }
