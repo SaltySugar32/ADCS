@@ -103,6 +103,10 @@ public class LayerDescription {
         return waveFrontStartTime;
     }
 
+    public WaveType getWaveType() {
+        return waveType;
+    }
+
     //---------------------------------------------ПАРАМЕТРЫ СЛОЯ ДЕФОРМАЦИИ--------------------------------------------
 
 
@@ -246,9 +250,5 @@ public class LayerDescription {
 
         this.speed = 0.0;
         this.currentX = 0.0;
-    }
-
-    public WaveType getWaveType() {
-        return waveType;
     }
 }

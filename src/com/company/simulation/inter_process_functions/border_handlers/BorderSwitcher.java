@@ -18,9 +18,9 @@ public class BorderSwitcher {
     static IBorderHandler caseNull = new CaseNull();
 
     /**
-     * Функция, выбирающая вид создаваемого волнового фронта
-     * @param layerDescriptions Один или два воздействия - параметры границы и первый волновой фронт в волновой картине
-     * @return Тип создаваемого волнового фронта
+     * Функция, возвращающая обработчик создания нового слоя деформации на границе
+     * @param layerDescriptions Один или два воздействия - параметры границы и первый слой деформации в волновой картине
+     * @return Обработчик создания нового слоя деформации
      */
     public static ArrayList<LayerDescription> generateNewWaveFront(ArrayList<LayerDescription> layerDescriptions) {
 

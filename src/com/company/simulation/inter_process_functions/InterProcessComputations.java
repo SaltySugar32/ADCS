@@ -1,9 +1,8 @@
 package com.company.simulation.inter_process_functions;
 
-import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.inter_process_functions.collision_handlers.Collision;
-import com.company.simulation.inter_process_functions.collision_handlers.CollisionBorder;
+import com.company.simulation.inter_process_functions.border_handlers.CollisionBorder;
 import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
 import com.company.simulation.simulation_variables.wave_front.LayerDescription;
 
@@ -16,7 +15,8 @@ public class InterProcessComputations {
      * <li>Изменение текущего времени</li>
      * <li>Добавление нового волнового фронта на границе</li>
      * <li>Смещение координат</li>
-     * <li>Проверка столкновений (вычисление в случае такового)</li>
+     * <li>Обработка столкновений пар волновых фронтов</li>
+     * <li>Обработка столкновений с границей полупространства</li>
      * <li>Сортировка волновых фронтов по координатам</li>
      */
     public static ArrayList<LayerDescription> getResult(ArrayList<LayerDescription> prevWavePicture) {

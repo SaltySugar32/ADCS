@@ -1,10 +1,10 @@
 package com.company.thread_organization.thread_states;
 
+/**
+ * Список все возможных состояний сервера
+ * <br>На данный момент DISABLED, INTERPROCESS, PAUSED
+ */
 public enum SimulationState {
-    /**
-     * Список все возможных состояний сервера
-     * <br>На данный момент DISABLED, INTERPROCESS, PAUSED
-     */
     DISABLED,
     PAUSED,
     INTERPROCESS

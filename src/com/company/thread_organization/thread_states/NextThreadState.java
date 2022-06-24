@@ -4,6 +4,7 @@ import com.company.thread_organization.SimulationServerThread;
 
 /**
  * Перечисление всех указаний для сервера, что нужно выполнить следующим
+ * <br>RESUME, PAUSE, DISABLE
  */
 public enum NextThreadState {
     RESUME {

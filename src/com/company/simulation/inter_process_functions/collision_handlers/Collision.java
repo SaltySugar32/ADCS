@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Collision {
+    /**
+     * Функция, сравнивающая пару слоёв деформации на основе времени их появления.
+     */
     static Comparator<CollidedPairDescription> comparator = Comparator.comparingDouble(CollidedPairDescription::getCollisionTime);
 
     /**
@@ -27,7 +30,7 @@ public class Collision {
     }
 
     /**
-     * Функция, проверяющая, что в волновой картине произошло столкновение.
+     * Функция, вычисляющая, какие пары волновых фронтов столкнулись друг с другом.
      *
      * @param currentWavePicture Текущая волновая картина
      */
@@ -110,7 +113,7 @@ public class Collision {
      * и происходит возврат последней волновой картины.
      *
      * @param prevWavePicture набор характеристик слоёв деформации
-     * @return ArrayList<WaveFront> Набор волновых фронтов
+     * @return ArrayList новая волновая картина
      */
     public static ArrayList<LayerDescription> calculateCollisions(ArrayList<LayerDescription> prevWavePicture) {
         var collisionPairs = searchForCollisions(prevWavePicture);

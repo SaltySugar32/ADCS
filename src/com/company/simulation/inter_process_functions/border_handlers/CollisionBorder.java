@@ -1,4 +1,4 @@
-package com.company.simulation.inter_process_functions.collision_handlers;
+package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;

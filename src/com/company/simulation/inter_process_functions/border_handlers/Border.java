@@ -65,6 +65,10 @@ public class Border {
         return 0;
     }
 
+    /**
+     * Функция, возвращающая текущее граничное воздействие на материал
+     * @return double значение текущего граничного воздействия
+     */
     public static double getCurrentBorderDisplacement() {
         if (SimulationGlobals.getCurrentWavePicture().size() == 0) {
             return 0;

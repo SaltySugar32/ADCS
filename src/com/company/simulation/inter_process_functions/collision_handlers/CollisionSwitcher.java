@@ -9,6 +9,7 @@ public class CollisionSwitcher {
 
     static ArrayList<ICollisionHandler> collisionHandlers = new ArrayList<>();
 
+    //К.О.С.Т.Ы.Л.И. - Креативно Основанная Система Творческого вЫхлопа в виде Ленивой Инициализации
     public static void initCollisionHandlers() {
         collisionHandlers.clear();
         collisionHandlers.add(new CaseFirst());
@@ -18,7 +19,8 @@ public class CollisionSwitcher {
     }
 
     /**
-     * Функция, производящая выбор, каким образом обработать точку пересечения двух слоёв деформации
+     * Функция, производящая выбор, каким образом обработать точку пересечения двух слоёв деформации,
+     * методом перебора всех обработчиков столкновений.
      * @param collidedPair пара столкнувшихся волновых фронтов
      * @return ICollisionHandler обработчик места перехода слоёв деформации
      */

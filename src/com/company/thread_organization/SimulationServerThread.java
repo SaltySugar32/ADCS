@@ -64,8 +64,8 @@ public class SimulationServerThread extends Thread {
     }
 
     /**
-     * Остановка симуляции без выключения потока симуляции
-     * с очисткой переменных симуляции.
+     * Остановка симуляции без выключения потока
+     * с очисткой переменных.
      */
     public void simStop() {
         if (SimulationState.INTERPROCESS == simulationStateStack.peek())

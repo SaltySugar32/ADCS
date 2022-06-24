@@ -62,7 +62,7 @@ public class SimulationSynchronizerThread extends Thread {
     }
 
     /**
-     * GETTER, что должно выполняться следующим
+     * GETTER, возвращающий, что должно выполняться следующим
      */
     public NextThreadState getNextJob() {
         return nextThreadState;
