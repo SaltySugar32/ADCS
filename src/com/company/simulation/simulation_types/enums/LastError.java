@@ -1,4 +1,4 @@
-package com.company;
+package com.company.simulation.simulation_types.enums;
 
 public enum LastError {
     NULL {

@@ -1,8 +1,8 @@
 package com.company.simulation.inter_process_functions.layer_generators;
 
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,10 @@
 package com.company.thread_organization;
 
 import com.company.ProgramGlobals;
-import com.company.LastError;
+import com.company.simulation.simulation_types.enums.LastError;
 import com.company.simulation.inter_process_functions.InterProcessComputations;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.SimulationTime;
 import com.company.thread_organization.thread_states.SimulationState;
 
 import java.util.Stack;
@@ -111,7 +111,7 @@ public class SimulationServerThread extends Thread {
             while (SimulationState.INTERPROCESS != simulationStateStack.peek() ||
                 ProgramGlobals.getLastErrorType() != LastError.NULL) {
                 try {
-                    sleep(1000 / (10L * ProgramGlobals.getOperationsPerSecond()));
+                    sleep(1000 / (5L * ProgramGlobals.getOperationsPerSecond()));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

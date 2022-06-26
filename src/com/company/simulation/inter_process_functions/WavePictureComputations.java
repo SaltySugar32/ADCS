@@ -1,7 +1,7 @@
 package com.company.simulation.inter_process_functions;
 
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_variables.SimulationTime;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
 
 import java.util.ArrayList;
 import java.util.Comparator;

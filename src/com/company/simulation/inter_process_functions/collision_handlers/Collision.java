@@ -1,11 +1,11 @@
 package com.company.simulation.inter_process_functions.collision_handlers;
 
-import com.company.LastError;
+import com.company.simulation.simulation_types.enums.LastError;
 import com.company.ProgramGlobals;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_variables.SimulationTime;
+import com.company.simulation.simulation_types.layer_description.CollidedPairDescription;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
 import java.util.Comparator;

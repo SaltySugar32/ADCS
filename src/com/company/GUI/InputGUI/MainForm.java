@@ -7,9 +7,8 @@ import com.company.GUI.InputGUI.GraphGUI.GraphForm;
 import com.company.GUI.SimulationGUI.SimulationForm;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
-import com.company.simulation.simulation_variables.DenoteFactor;
+import com.company.simulation.simulation_types.enums.SimulationTimePow;
+import com.company.simulation.simulation_types.enums.DenoteFactor;
 import com.company.thread_organization.SimulationSynchronizerThread;
 
 import javax.swing.*;

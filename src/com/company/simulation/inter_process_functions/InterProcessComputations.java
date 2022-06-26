@@ -2,9 +2,9 @@ package com.company.simulation.inter_process_functions;
 
 import com.company.simulation.inter_process_functions.border_handlers.Border;
 import com.company.simulation.inter_process_functions.collision_handlers.Collision;
-import com.company.simulation.inter_process_functions.border_handlers.CollisionBorder;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.inter_process_functions.border_handlers.BorderCollision;
+import com.company.simulation.simulation_variables.SimulationTime;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class InterProcessComputations {
         //WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
         //Проверяем столкновения волновых фронтов с границей полупространства
-        wavePicture = CollisionBorder.checkBorderCollision(wavePicture);
+        wavePicture = BorderCollision.checkBorderCollision(wavePicture);
 
         return wavePicture;
     }

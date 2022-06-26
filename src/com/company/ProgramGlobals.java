@@ -1,6 +1,7 @@
 package com.company;
 
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_types.enums.LastError;
+import com.company.simulation.simulation_variables.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.user_clients.UserClient;
 import com.company.user_clients.UserClient_v2;
@@ -100,6 +101,7 @@ public class ProgramGlobals {
      * 0: Без логов
      * 1: border_handlers
      * 2: collision_handlers
+     * 3: отображение только столкновений
      * 99: Все основные логи
      */
     final static double logLevel = 99;

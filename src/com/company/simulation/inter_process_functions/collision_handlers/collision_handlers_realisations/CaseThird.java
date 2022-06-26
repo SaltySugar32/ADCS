@@ -1,11 +1,10 @@
 package com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations;
 
 import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
-import com.company.simulation.inter_process_functions.layer_generators.shock_wave.ShockWavePositive;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_types.layer_description.CollidedPairDescription;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
 
@@ -55,7 +54,7 @@ public class CaseThird implements ICollisionHandler {
         newLayers.add(collidedPair.getFirstLayer());
         newLayers.get(0).setSpeed(0.0 - SimulationGlobals.getCharacteristicsSpeedCompression());
         newLayers.get(0).setWaveFrontStartTime(collidedPair.getCollisionTime());
-        newLayers.get(0).setCurrentX(collidedPair.getCollisionX());
+        newLayers.get(0).setCurrentX(collidedPair.getCollisionX() + collidedPair.getDeltaTime() * newLayers.get(0).getSpeed());
         newLayers.get(0).setWaveType(WaveType.SIMPLE_FRACTURE);
 
         //--------ПРАВЫЙ ВОЛНОВОЙ ФРОНТ---------
@@ -70,6 +69,7 @@ public class CaseThird implements ICollisionHandler {
                 collidedPair.getCollisionTime(),
                 WaveType.SIMPLE_FRACTURE
         );
+        rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
 
         newLayers.add(rightLayer);
 

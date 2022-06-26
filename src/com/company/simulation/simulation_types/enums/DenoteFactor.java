@@ -1,4 +1,4 @@
-package com.company.simulation.simulation_variables;
+package com.company.simulation.simulation_types.enums;
 
 /**
  * Для обеспечения однозначной безопасности ввода новых данных в решатель,

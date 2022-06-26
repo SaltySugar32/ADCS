@@ -1,6 +1,7 @@
-package com.company.simulation.simulation_variables.simulation_time;
+package com.company.simulation.simulation_variables;
 
 import com.company.ProgramGlobals;
+import com.company.simulation.simulation_types.enums.SimulationTimePow;
 
 public class SimulationTime {
     //------------------------ТЕКУЩЕЕ ВРЕМЯ СИМУЛЯЦИИ--------------------------

@@ -3,7 +3,7 @@ package com.company.GUI.SimulationGUI;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.ProgramGlobals;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_variables.SimulationTime;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import com.company.thread_organization.thread_states.NextThreadState;
 

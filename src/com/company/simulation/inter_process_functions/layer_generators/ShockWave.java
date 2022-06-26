@@ -1,12 +1,12 @@
-package com.company.simulation.inter_process_functions.layer_generators.shock_wave;
+package com.company.simulation.inter_process_functions.layer_generators;
 
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
 
-public class ShockWavePositive {
+public class ShockWave {
     public static LayerDescription generatePositiveShockWave(ArrayList<LayerDescription> prevLayerDescriptions, double currentX, double currentTime, double speed, WaveType waveType) {
         //!!!!КОСТЫЛЬ!!!!
         double speedR = (speed + SimulationGlobals.getCharacteristicsSpeedStretching()) / 2;

@@ -1,7 +1,7 @@
 package com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations;
 
-import com.company.simulation.simulation_variables.wave_front.CollidedPairDescription;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_types.layer_description.CollidedPairDescription;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.company.simulation.simulation_variables.simulation_time;
+package com.company.simulation.simulation_types.enums;
 
 /**
  * Перечисление, предоставляющее выбор множителя времени (с, мс, мкс, нс).

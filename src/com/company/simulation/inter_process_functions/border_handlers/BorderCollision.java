@@ -2,15 +2,13 @@ package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
-import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_variables.SimulationTime;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
-public class CollisionBorder {
+public class BorderCollision {
     /**
      * Проходимся по каждому волновому фронту.
      * Если волновой фронт находится за границей материала после его перемещения, то обрабатываем
@@ -25,17 +23,36 @@ public class CollisionBorder {
                 break;
 
             if (newWavePicture.get(index).getCurrentX() <= 0.0) {
+                //Создаём оболочку столкновения
                 var layerWrapper = new ArrayList<LayerDescription>();
 
-                var speed = 0.0 - newWavePicture.get(index).getSpeed();
+                //Вычисляем время, в которое произошло столкновение с границей
+                double deltaT = newWavePicture.get(index).getCurrentX() / newWavePicture.get(index).getSpeed();
+                double collisionTime = SimulationTime.getSimulationTime() - deltaT;
 
+                //Резервируем новую скорость волнового фронта
+                var newSpeed = 0.0 - newWavePicture.get(index).getSpeed();
+
+                //Выставляем параметры так, чтобы это выглядело как граничное воздействие
                 newWavePicture.get(index).setSpeed(0.0);
                 newWavePicture.get(index).setA2(0.0);
 
+                //Добавляем в оболочку параметры среды левее и правее нового слоя деформации
                 layerWrapper.add(newWavePicture.get(index));
                 layerWrapper.add(newWavePicture.get(index + 1));
 
-                var newLayer = SimpleFracture.generateNewLayer(layerWrapper, 0.0, SimulationTime.getSimulationTime(), speed, WaveType.SIMPLE_FRACTURE);
+                //Создаём новый волновой фронт
+                var newLayer = SimpleFracture.generateNewLayer(
+                        layerWrapper,
+                        0.0,
+                        collisionTime,
+                        newSpeed,
+                        WaveType.SIMPLE_FRACTURE
+                );
+
+                //Устанавливаем текущую координату нового волнового фронта
+                newLayer.setCurrentX(deltaT * newLayer.getSpeed());
+
                 //Напрямую изменяем параметры данного волнового фронта
                 newWavePicture.set(index, newLayer);
 
@@ -58,5 +75,4 @@ public class CollisionBorder {
 
         return newWavePicture;
     }
-    //Пока примитивно
 }

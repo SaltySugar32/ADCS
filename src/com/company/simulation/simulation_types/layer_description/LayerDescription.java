@@ -1,6 +1,7 @@
-package com.company.simulation.simulation_variables.wave_front;
+package com.company.simulation.simulation_types.layer_description;
 
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
+import com.company.simulation.simulation_types.enums.WaveType;
+import com.company.simulation.simulation_variables.SimulationTime;
 
 /**
  * Описание линейной аппроксимации процесса, происходящего слева от волнового фронта

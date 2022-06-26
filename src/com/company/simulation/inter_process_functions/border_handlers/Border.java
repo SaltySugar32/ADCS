@@ -1,13 +1,13 @@
 package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
-import com.company.simulation.simulation_variables.DenoteFactor;
+import com.company.simulation.simulation_types.enums.DenoteFactor;
 import com.company.simulation.simulation_variables.SimulationGlobals;
-import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTime;
-import com.company.simulation.simulation_variables.simulation_time.SimulationTimePow;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
-import com.company.simulation.simulation_variables.wave_front.WaveType;
+import com.company.simulation.simulation_types.layer_description.BorderDescription;
+import com.company.simulation.simulation_variables.SimulationTime;
+import com.company.simulation.simulation_types.enums.SimulationTimePow;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.WaveType;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,7 +19,7 @@ public class Border {
      * @param coordinates Множество координат, где coordinates[0] = x = t, coordinates[1] = y = u
      */
     public static void initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactorU, SimulationTimePow simulationTimePow) {
-        ArrayList<LinearFunction> borderDisplacementFunctions = new ArrayList<>();
+        ArrayList<BorderDescription> borderDisplacementFunctions = new ArrayList<>();
 
         //Берём каждый следующий после нулевого индекса индекс и на их основе генерируем последовательность
         // коэффициентов линейных функций
@@ -42,7 +42,7 @@ public class Border {
                 System.out.println("b = " + currentU);
             }
 
-            borderDisplacementFunctions.add(new LinearFunction(k, currentU, currentT));
+            borderDisplacementFunctions.add(new BorderDescription(k, currentU, currentT));
         }
 
         SimulationGlobals.setBorderDisplacementFunctions(borderDisplacementFunctions);
@@ -82,8 +82,8 @@ public class Border {
      *
      * @return boolean true, если должен был, false, если не должен был
      */
-    public static ArrayList<LinearFunction> getJumpDiscontinuityFunctions() {
-        var linearFunctions = new ArrayList<LinearFunction>();
+    public static ArrayList<BorderDescription> getJumpDiscontinuityFunctions() {
+        var linearFunctions = new ArrayList<BorderDescription>();
 
         //Проходим по всем линейным функциям
         for (var linearFunction : SimulationGlobals.getBorderDisplacementFunctions()) {
@@ -142,6 +142,7 @@ public class Border {
 
                 if (ProgramGlobals.getLogLevel() == 1) {
                     System.out.println("PEEEEEEEEEEK");
+                    //WTF WITH THIS EXCEPTIONS!?
                     System.out.println("A0 = " + newWavePicture.peek().getA0());
                     System.out.println("A1 = " + newWavePicture.peek().getA1());
                     System.out.println("A2 = " + newWavePicture.peek().getA2());

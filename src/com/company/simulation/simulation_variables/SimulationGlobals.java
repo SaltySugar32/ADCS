@@ -1,7 +1,8 @@
 package com.company.simulation.simulation_variables;
 
-import com.company.simulation.simulation_variables.border_displacement.LinearFunction;
-import com.company.simulation.simulation_variables.wave_front.LayerDescription;
+import com.company.simulation.simulation_types.layer_description.BorderDescription;
+import com.company.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.simulation.simulation_types.enums.DenoteFactor;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class SimulationGlobals {
     /**
      * Воздействие на границу материала
      */
-    static ArrayList<LinearFunction> borderDisplacementFunctions;
+    static ArrayList<BorderDescription> borderDisplacementFunctions;
 
     static {
         currentWavePicture = new ArrayList<>();
@@ -126,7 +127,7 @@ public class SimulationGlobals {
         SimulationGlobals.currentWavePicture = currentWavePicture;
     }
 
-    public static void setBorderDisplacementFunctions(ArrayList<LinearFunction> borderDisplacementFunctions) {
+    public static void setBorderDisplacementFunctions(ArrayList<BorderDescription> borderDisplacementFunctions) {
         SimulationGlobals.borderDisplacementFunctions = borderDisplacementFunctions;
     }
 
@@ -154,7 +155,7 @@ public class SimulationGlobals {
         return currentWavePicture;
     }
 
-    public static ArrayList<LinearFunction> getBorderDisplacementFunctions() {
+    public static ArrayList<BorderDescription> getBorderDisplacementFunctions() {
         return borderDisplacementFunctions;
     }
 
