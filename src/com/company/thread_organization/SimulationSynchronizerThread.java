@@ -7,7 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SimulationSynchronizerThread extends Thread {
-    Timer synchronizationTimer = new Timer();
+
     /**
      * ссылка на поток сервера
      */
@@ -21,7 +21,7 @@ public class SimulationSynchronizerThread extends Thread {
     }
 
     /**
-     * переменная, указывающая, что делать следующим
+     * переменная, указывающая, что поток синхронизации должен выполнить следующим
      */
     private volatile NextThreadState nextThreadState;
 
@@ -70,19 +70,6 @@ public class SimulationSynchronizerThread extends Thread {
      */
     public NextThreadState getNextJob() {
         return nextThreadState;
-    }
-
-
-    public void sleepRun() {
-
-        while (simulationServerThread.isAlive()) {
-            try {
-                sleep(1000 / ProgramGlobals.getOperationsPerSecond());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            nextThreadState.nextJob(simulationServerThread);
-        }
     }
 
     /**

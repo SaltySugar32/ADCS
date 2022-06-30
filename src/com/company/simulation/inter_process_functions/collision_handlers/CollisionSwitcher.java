@@ -1,5 +1,6 @@
 package com.company.simulation.inter_process_functions.collision_handlers;
 
+import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.collision_handlers.collision_handlers_realisations.*;
 import com.company.simulation.simulation_types.layer_description.CollidedPairDescription;
 
@@ -28,7 +29,9 @@ public class CollisionSwitcher {
 
         for (var collisionHandler: collisionHandlers) {
             if (collisionHandler.isCorrectCase(collidedPair)) {
-                System.out.println(collisionHandler.shortDescription());
+                if (ProgramGlobals.getLogLevel() == 2 || ProgramGlobals.getLogLevel() == 3 || ProgramGlobals.getLogLevel() == 99) {
+                    System.out.println(collisionHandler.shortDescription());
+                }
                 return collisionHandler;
             }
         }

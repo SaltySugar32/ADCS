@@ -142,7 +142,7 @@ public class Border {
 
                 if (ProgramGlobals.getLogLevel() == 1) {
                     System.out.println("PEEEEEEEEEEK");
-                    //WTF WITH THIS EXCEPTIONS!?
+                    //WTF WITH THIS EXCEPTION HANDLER REQUIREMENTS!?
                     System.out.println("A0 = " + newWavePicture.peek().getA0());
                     System.out.println("A1 = " + newWavePicture.peek().getA1());
                     System.out.println("A2 = " + newWavePicture.peek().getA2());

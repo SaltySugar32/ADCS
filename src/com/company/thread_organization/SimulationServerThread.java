@@ -48,7 +48,7 @@ public class SimulationServerThread extends Thread {
     }
 
     /**
-     * Выход из приостановки потока симуляции
+     * Вход в возобновление потока симуляции.
      */
     public void simResume() {
         if (SimulationState.PAUSED == simulationStateStack.peek())
