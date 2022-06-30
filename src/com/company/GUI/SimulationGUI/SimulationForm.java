@@ -177,7 +177,7 @@ public class SimulationForm extends JFrame {
         quickSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                quickSaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, "_смещения");
+                quickSaveChart(graphsPanel.chart1, graphsPanel.chartPanel1, "_перемещения");
                 quickSaveChart(graphsPanel.chart2, graphsPanel.chartPanel2, "_деформации");
             }
         });
@@ -186,7 +186,7 @@ public class SimulationForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String file_name = getImageName();
-                DBHandler.saveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_смещения.png");
+                DBHandler.saveChart(graphsPanel.chart1, graphsPanel.chartPanel1, file_name + "_перемещения.png");
                 DBHandler.saveChart(graphsPanel.chart2, graphsPanel.chartPanel2, file_name + "_деформации.png");
             }
         });
