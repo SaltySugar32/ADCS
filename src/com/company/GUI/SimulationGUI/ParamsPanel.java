@@ -145,7 +145,7 @@ public class ParamsPanel extends JPanel {
                 // Изменение FPS
                 int value = (FPS_slider.getValue()==0)? 1:FPS_slider.getValue();
                 ProgramGlobals.setFramesPerSecond(value);
-                parent.updateTimer();
+                parent.updateTimer(ServerThread);
                 FPS_label.setText("Кадры в секунду ("+value+")");
             }
         });

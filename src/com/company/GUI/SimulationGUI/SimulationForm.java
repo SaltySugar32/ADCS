@@ -4,10 +4,12 @@ import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.border_handlers.Border;
+import com.company.simulation.simulation_types.enums.LastError;
 import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.SimulationTime;
 import com.company.simulation.simulation_types.layer_description.LayerDescription;
 import com.company.thread_organization.SimulationSynchronizerThread;
+import com.company.thread_organization.thread_states.NextThreadState;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
@@ -80,13 +82,13 @@ public class SimulationForm extends JFrame {
         paramsPanel = new ParamsPanel(ServerThread, this);
         this.add(paramsPanel, BorderLayout.SOUTH);
 
-        updateTimer();
+        updateTimer(ServerThread);
     }
 
     /**
      * Обновление таймера
      */
-    public void updateTimer(){
+    public void updateTimer(SimulationSynchronizerThread thread){
         timer.cancel();
 
         timer = new Timer();
@@ -94,7 +96,7 @@ public class SimulationForm extends JFrame {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                drawOutput();
+                drawOutput(thread);
             }
         };
 
@@ -105,57 +107,67 @@ public class SimulationForm extends JFrame {
     /**
      * Вывод графических данных
      */
-    public void drawOutput(){
+    public void drawOutput(SimulationSynchronizerThread thread){
+        // отрисовка при рабочем потоке
+        if(thread.getNextJob() == NextThreadState.RESUME)
+            // если нашлась ошибка
+            if(ProgramGlobals.getLastErrorType() != LastError.NULL){
+                thread.setNextJobPAUSE();
+                JFrame frame = new JFrame();
+                String error_text = ProgramGlobals.getLastErrorType().getErrorText();
+                JOptionPane.showMessageDialog(frame, error_text, "Ошибка", JOptionPane.ERROR_MESSAGE);
+            }
+        else {
+                // очистка графиков
+                graphsPanel.series1.clear();
+                graphsPanel.series2.clear();
 
-        // очистка графиков
-        graphsPanel.series1.clear();
-        graphsPanel.series2.clear();
+                // список фронтов из решателя
+                List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
+                graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
 
-        // список фронтов из решателя
-        List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
-        graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
+                graphsPanel.resetMarkers(graphsPanel.chart1, graphsPanel.series1);
 
-        graphsPanel.resetMarkers(graphsPanel.chart1, graphsPanel.series1);
+                for (int index = 0; index < layerDescriptions.size(); index++) {
 
-        for (int index = 0; index < layerDescriptions.size(); index++) {
+                    // график смещений
+                    graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX(), layerDescriptions.get(index).calculateLayerDisplacement());
 
-            // график смещений
-            graphsPanel.series1.add(layerDescriptions.get(index).getCurrentX() , layerDescriptions.get(index).calculateLayerDisplacement());
+                    // добавление маркера
+                    graphsPanel.setMarker(
+                            graphsPanel.chart1,
+                            layerDescriptions.get(index).getWaveType().getColor(),
+                            layerDescriptions.get(index).getCurrentX(),
+                            Integer.MIN_VALUE,
+                            Integer.MAX_VALUE
+                    );
 
-            // добавление маркера
-            graphsPanel.setMarker(
-                    graphsPanel.chart1,
-                    layerDescriptions.get(index).getWaveType().getColor(),
-                    layerDescriptions.get(index).getCurrentX(),
-                    Integer.MIN_VALUE,
-                    Integer.MAX_VALUE
-            );
+                    // график деформаций
+                    if (index > 0)
+                        graphsPanel.series2.add(layerDescriptions.get(index - 1).getCurrentX(), layerDescriptions.get(index).getA2());
+                    else
+                        graphsPanel.series2.add(0.0, layerDescriptions.get(index).getA2());
 
-            // график деформаций
-            if (index > 0)
-                graphsPanel.series2.add(layerDescriptions.get(index - 1).getCurrentX(), layerDescriptions.get(index).getA2());
-            else
-                graphsPanel.series2.add(0.0, layerDescriptions.get(index).getA2());
+                    graphsPanel.series2.add(layerDescriptions.get(index).getCurrentX(), layerDescriptions.get(index).getA2());
+                }
 
-            graphsPanel.series2.add(layerDescriptions.get(index).getCurrentX(), layerDescriptions.get(index).getA2());
-        }
+                if (layerDescriptions.size() > 0)
+                    graphsPanel.series2.add(layerDescriptions.get(layerDescriptions.size() - 1).getCurrentX(), 0.0);
 
-        if (layerDescriptions.size() > 0)
-            graphsPanel.series2.add(layerDescriptions.get(layerDescriptions.size() - 1).getCurrentX(), 0.0);
-
-        // обновление масштабов графиков
-        graphsPanel.updateGraphAxis(graphsPanel.chart1, graphsPanel.series1);
-        graphsPanel.updateGraphAxis(graphsPanel.chart2, graphsPanel.series2);
+                // обновление масштабов графиков
+                graphsPanel.updateGraphAxis(graphsPanel.chart1, graphsPanel.series1);
+                graphsPanel.updateGraphAxis(graphsPanel.chart2, graphsPanel.series2);
 
 
-        // вывод времени симуляции
-        String time = Double.toString(
-                BigDecimal.valueOf(
-                        SimulationTime.getSimulationTime())
-                        .setScale(6, RoundingMode.HALF_DOWN)
-                        .doubleValue()
-        );
-        paramsPanel.simulationTime.setText("Текущее время симуляции: " + time + " c.");
+                // вывод времени симуляции
+                String time = Double.toString(
+                        BigDecimal.valueOf(
+                                        SimulationTime.getSimulationTime())
+                                .setScale(6, RoundingMode.HALF_DOWN)
+                                .doubleValue()
+                );
+                paramsPanel.simulationTime.setText("Текущее время симуляции: " + time + " c.");
+            }
     }
 
     /**

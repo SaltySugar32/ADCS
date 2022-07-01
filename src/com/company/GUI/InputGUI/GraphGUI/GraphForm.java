@@ -3,6 +3,7 @@ package com.company.GUI.InputGUI.GraphGUI;
 import com.company.GUI.DataHandler;
 import com.company.GUI.Database.DBHandler;
 import com.company.GUI.GUIGlobals;
+import com.company.ProgramGlobals;
 import com.company.thread_organization.SimulationSynchronizerThread;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
@@ -340,6 +341,11 @@ public class GraphForm extends JFrame {
 
                 DataHandler.setGraphInput(series2.toArray());
                 mainFrameLabel.setText("<html><font color='green'>Задано</font></html>");
+
+                // сообщение о вводе
+                JFrame frame = new JFrame();
+                String message = "Координаты точек заданы";
+                JOptionPane.showMessageDialog(frame, message);
             }
         });
 
