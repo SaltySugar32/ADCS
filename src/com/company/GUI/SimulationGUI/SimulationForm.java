@@ -117,7 +117,7 @@ public class SimulationForm extends JFrame {
                 String error_text = ProgramGlobals.getLastErrorType().getErrorText();
                 JOptionPane.showMessageDialog(frame, error_text, "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
-        else {
+            else {
                 // очистка графиков
                 graphsPanel.series1.clear();
                 graphsPanel.series2.clear();

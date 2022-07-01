@@ -56,6 +56,9 @@ public class GraphForm extends JFrame {
         // позволяет появляться фрейму в центре экрана. (по дефолту - в верхнем левом углу)
         this.setLocationRelativeTo(null);
 
+        // флажок текущего задаваемого графика
+        isLinApproxGraph = true;
+
         // панель с графиком
         chartPanel = createChartPanel();
         add(chartPanel, BorderLayout.CENTER);
@@ -74,9 +77,6 @@ public class GraphForm extends JFrame {
         menuBar.add(viewMenu);
         menuBar.add(changeGraphMenu);
         setJMenuBar(menuBar);
-
-        // флажок текущего задаваемого графика
-        isLinApproxGraph = false;
     }
 
     /**
@@ -87,8 +87,9 @@ public class GraphForm extends JFrame {
         dataset1 = createDataset1();
         dataset2 = createDataset2();
 
+        String title = isLinApproxGraph? "График линейной аппроксимации":"Гладкая функция граничного воздействия";
         xyLineChart = ChartFactory.createXYLineChart(
-                "Гладкая функция граничного воздействия",
+                title,
                 "t, " + DataHandler.unitOfTime + "",
                 "φ(t), мм",
                 dataset1,
