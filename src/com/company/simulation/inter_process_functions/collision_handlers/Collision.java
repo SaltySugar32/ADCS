@@ -47,6 +47,7 @@ public class Collision {
             if (checkIfTwoWavesCollided(currentWavePicture.get(index),
                     currentWavePicture.get(index + 1))) {
 
+                //Если появились в один момент, то отклоняем
                 if (currentWavePicture.get(index).getWaveFrontStartTime() == currentWavePicture.get(index + 1).getWaveFrontStartTime()) {
                     continue;
                 }
@@ -123,14 +124,18 @@ public class Collision {
         }
 
         var currentWavePicture = new ArrayList<>(prevWavePicture);
-        var trashWaves = new ArrayList<LayerDescription>();
-        var newWaves = new ArrayList<LayerDescription>();
 
         //Пока не находятся пары, которые могли бы столкнуться
         while (collisionPairs.size() != 0) {
+            var trashWaves = new ArrayList<LayerDescription>();
+            var newWaves = new ArrayList<LayerDescription>();
 
             //Сортируем в порядке возрастания времени столкновения
             collisionPairs.sort(comparator);
+
+            for (var collisionPair: collisionPairs) {
+                System.out.println(collisionPair.getCollisionTime());
+            }
 
             var newWavePicture = new ArrayList<LayerDescription>();
 
@@ -201,14 +206,17 @@ public class Collision {
                     System.out.println("A2 = " + waveFront.getA2());
                     System.out.println("V = " + waveFront.getSpeed());
                     System.out.println("X = " + waveFront.getCurrentX());
-                    System.out.println("U = " + waveFront.calculateLayerDisplacement());
                     System.out.println("T = " + waveFront.getLayerStartTime());
+                    System.out.println("TW = " + waveFront.getWaveFrontStartTime());
                     System.out.println("---");
                 }
                 System.out.println("---------------------------------");
             }
 
+            //Сохраняем новую волновую картину как текущую
             currentWavePicture = newWavePicture;
+
+            //Ищем новые столкновения
             collisionPairs = searchForCollisions(currentWavePicture);
         }
 

@@ -104,7 +104,7 @@ public class ProgramGlobals {
      * 3: отображение только столкновений
      * 99: Все основные логи
      */
-    final static double logLevel = 3;
+    final static double logLevel = 2;
 
     public static double getLogLevel() {
         return logLevel;

@@ -49,32 +49,23 @@ public class Border {
     }
 
     /**
-     * Функция, возвращающая текущее смещение границы материала
-     *
-     * @return double Значение смещения границы материала
-     */
-    public static double getCurrentBorderDisplacementOld() {
-        for (int index = SimulationGlobals.getBorderDisplacementFunctions().size() - 1; index >= 0; index--) {
-            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).startTime()
-                    < SimulationTime.getSimulationTime()) {
-                return SimulationGlobals.getBorderDisplacementFunctions().get(index)
-                        .calculateBorderDisplacement(SimulationTime.getSimulationTime());
-            }
-        }
-
-        return 0;
-    }
-
-    /**
      * Функция, возвращающая текущее граничное воздействие на материал
      * @return double значение текущего граничного воздействия
      */
     public static double getCurrentBorderDisplacement() {
-        if (SimulationGlobals.getCurrentWavePicture().size() == 0) {
-            return 0;
+        //Проходим по всем линейным функциям
+        for (var index = 1; index < SimulationGlobals.getBorderDisplacementFunctions().size(); index++) {
+
+            //Если начальное время больше времени симуляции без дельты
+            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).startTime() >= SimulationTime.getSimulationTime()) {
+                return SimulationGlobals.getBorderDisplacementFunctions().get(index - 1).calculateBorderDisplacement(SimulationTime.getSimulationTime());
+            }
+            if (index == SimulationGlobals.getBorderDisplacementFunctions().size() - 1) {
+                return SimulationGlobals.getBorderDisplacementFunctions().get(index).calculateBorderDisplacement(SimulationTime.getSimulationTime());
+            }
         }
 
-        return SimulationGlobals.getCurrentWavePicture().get(0).calculateZeroDisplacement();
+        return 0;
     }
 
     /**
@@ -195,8 +186,8 @@ public class Border {
                 System.out.println("A2 = " + waveFront.getA2());
                 System.out.println("V = " + waveFront.getSpeed());
                 System.out.println("X = " + waveFront.getCurrentX());
-                System.out.println("U = " + waveFront.calculateLayerDisplacement());
                 System.out.println("T = " + waveFront.getLayerStartTime());
+                System.out.println("TW = " + waveFront.getWaveFrontStartTime());
                 System.out.println("---");
             }
             System.out.println("---------------------------------");

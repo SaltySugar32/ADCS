@@ -2,6 +2,8 @@ package com.company.simulation.inter_process_functions.border_handlers;
 
 import com.company.ProgramGlobals;
 import com.company.simulation.inter_process_functions.layer_generators.SimpleFracture;
+import com.company.simulation.simulation_types.layer_description.BorderDescription;
+import com.company.simulation.simulation_variables.SimulationGlobals;
 import com.company.simulation.simulation_variables.SimulationTime;
 import com.company.simulation.simulation_types.layer_description.LayerDescription;
 import com.company.simulation.simulation_types.enums.WaveType;
@@ -9,6 +11,26 @@ import com.company.simulation.simulation_types.enums.WaveType;
 import java.util.ArrayList;
 
 public class BorderCollision {
+
+    /**
+     * Функция, возвращающая текущее граничное воздействие на материал
+     * @return double значение текущего граничного воздействия
+     */
+    public static BorderDescription getCurrentBorderDescription() {
+        //Проходим по всем линейным функциям
+        for (var index = 1; index < SimulationGlobals.getBorderDisplacementFunctions().size(); index++) {
+
+            //Если начальное время больше времени симуляции без дельты
+            if (SimulationGlobals.getBorderDisplacementFunctions().get(index).startTime() >= SimulationTime.getSimulationTime()) {
+                return SimulationGlobals.getBorderDisplacementFunctions().get(index - 1);
+            }
+            if (index == SimulationGlobals.getBorderDisplacementFunctions().size() - 1) {
+                return SimulationGlobals.getBorderDisplacementFunctions().get(index);
+            }
+        }
+
+        return null;
+    }
     /**
      * Проходимся по каждому волновому фронту.
      * Если волновой фронт находится за границей материала после его перемещения, то обрабатываем
@@ -33,12 +55,23 @@ public class BorderCollision {
                 //Резервируем новую скорость волнового фронта
                 var newSpeed = 0.0 - newWavePicture.get(index).getSpeed();
 
-                //Выставляем параметры так, чтобы это выглядело как граничное воздействие
-                newWavePicture.get(index).setSpeed(0.0);
-                newWavePicture.get(index).setA2(0.0);
+                //Берём текущее граничное воздействие
+                BorderDescription currentBorderDescription = getCurrentBorderDescription();
+
+                if (currentBorderDescription == null) {
+                    return newWavePicture;
+                }
+
+                LayerDescription border = new LayerDescription(
+                        currentBorderDescription.b(),
+                        currentBorderDescription.k(),
+                        0.0,
+                        currentBorderDescription.startTime(),
+                        WaveType.NULL
+                );
 
                 //Добавляем в оболочку параметры среды левее и правее нового слоя деформации
-                layerWrapper.add(newWavePicture.get(index));
+                layerWrapper.add(border);
                 layerWrapper.add(newWavePicture.get(index + 1));
 
                 //Создаём новый волновой фронт
@@ -51,7 +84,7 @@ public class BorderCollision {
                 );
 
                 //Устанавливаем текущую координату нового волнового фронта
-                newLayer.setCurrentX(deltaT * newLayer.getSpeed());
+                newLayer.setCurrentX((SimulationTime.getSimulationTimeDelta() - deltaT) * newLayer.getSpeed());
 
                 //Напрямую изменяем параметры данного волнового фронта
                 newWavePicture.set(index, newLayer);
@@ -64,8 +97,8 @@ public class BorderCollision {
                         System.out.println("A2 = " + waveFront.getA2());
                         System.out.println("V = " + waveFront.getSpeed());
                         System.out.println("X = " + waveFront.getCurrentX());
-                        System.out.println("U = " + waveFront.calculateLayerDisplacement());
                         System.out.println("T = " + waveFront.getLayerStartTime());
+                        System.out.println("TW = " + waveFront.getWaveFrontStartTime());
                         System.out.println("---");
                     }
                     System.out.println("---------------------------------");
