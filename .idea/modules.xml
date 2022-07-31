@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ADCS.iml" filepath="$PROJECT_DIR$/ADCS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BiM-Dynamics.iml" filepath="$PROJECT_DIR$/BiM-Dynamics.iml" />
     </modules>
   </component>
 </project>

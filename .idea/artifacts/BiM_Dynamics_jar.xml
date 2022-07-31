@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BiM-Dynamics:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BiM_Dynamics_jar</output-path>
+    <root id="archive" name="BiM-Dynamics.jar">
+      <element id="module-output" name="BiM-Dynamics" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jfreechart-1.5.3/jfreechart-1.5.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/mXparser/MathParser.org-mXparser-4.4.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/commons/commons-math3-3.6.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
