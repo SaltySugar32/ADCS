@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="mXparser">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/libs/mXparser" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/mXparser" recursive="false" />
+  </library>
+</component>
