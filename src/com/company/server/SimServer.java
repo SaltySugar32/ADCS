@@ -2,10 +2,11 @@ package com.company.server;
 
 import com.company.ProgramGlobals;
 import com.company.server.enums.SimState;
-import com.company.server.simulation.inter_process_functions.InterProcessComputations;
-import com.company.server.simulation.simulation_types.enums.LastError;
-import com.company.server.simulation.simulation_variables.SimulationGlobals;
-import com.company.server.simulation.simulation_variables.SimulationTime;
+import com.company.server.functions.InterProcessComputations;
+import com.company.server.enums.LastError;
+import com.company.server.vars.SimGlobals;
+import com.company.server.vars.SimTicks;
+import com.company.server.vars.SimTime;
 
 public class SimServer extends Thread {
     /**
@@ -56,14 +57,14 @@ public class SimServer extends Thread {
 
         while (currentState != SimState.PAUSED) {
             try {
-                Thread.sleep(SimTime.getWaitTime());
+                Thread.sleep(SimTicks.getWaitTime());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        SimulationGlobals.getCurrentWavePicture().clear();
-        SimulationTime.setSimulationTime(0.0);
+        SimGlobals.getCurrentWavePicture().clear();
+        SimTime.setSimulationTime(0.0);
         ProgramGlobals.setLastErrorType(LastError.NULL);
     };
 
@@ -73,7 +74,7 @@ public class SimServer extends Thread {
      * Если по окончании цикла симуляция не ожидает паузы, то происходит разблокировка выполнения
      */
     Runnable nextTick = () -> {
-        SimulationGlobals.setCurrentWavePicture(InterProcessComputations.getResult(SimulationGlobals.getCurrentWavePicture()));
+        SimGlobals.setCurrentWavePicture(InterProcessComputations.getResult(SimGlobals.getCurrentWavePicture()));
 
         if (currentState == SimState.WORKING) {
             currentState = SimState.READY;
@@ -95,7 +96,7 @@ public class SimServer extends Thread {
                 }
 
                 try {
-                    Thread.sleep(SimTime.getWaitTime());
+                    Thread.sleep(SimTicks.getWaitTime());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

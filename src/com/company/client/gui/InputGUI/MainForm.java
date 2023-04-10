@@ -5,10 +5,10 @@ import com.company.client.gui.GUIGlobals;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
-import com.company.server.simulation.inter_process_functions.border_handlers.Border;
-import com.company.server.simulation.simulation_variables.SimulationGlobals;
-import com.company.server.simulation.simulation_types.enums.SimulationTimePow;
-import com.company.server.simulation.simulation_types.enums.DenoteFactor;
+import com.company.server.functions.border_handlers.Border;
+import com.company.server.vars.SimGlobals;
+import com.company.server.enums.SimulationTimePow;
+import com.company.server.enums.DenoteFactor;
 import com.company.server.SimServer;
 
 import javax.swing.*;
@@ -62,7 +62,7 @@ public class MainForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(DataHandler.graph_input_status && DataHandler.env_param_input_status) {
-                    SimulationGlobals.setSimulationGlobals(
+                    SimGlobals.setSimulationGlobals(
                             DataHandler.lameMu,
                             DataHandler.lameLambda,
                             DataHandler.materialDensity,

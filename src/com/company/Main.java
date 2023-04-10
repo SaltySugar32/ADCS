@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.server.simulation.inter_process_functions.collision_handlers.CollisionSwitcher;
+import com.company.server.functions.collision_handlers.CollisionSwitcher;
 import com.company.server.SimServer;
 import com.company.client.ui.UserClient;
 

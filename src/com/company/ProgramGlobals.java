@@ -1,8 +1,8 @@
 package com.company;
 
-import com.company.server.SimTime;
-import com.company.server.simulation.simulation_types.enums.LastError;
-import com.company.server.simulation.simulation_variables.SimulationTime;
+import com.company.server.vars.SimTicks;
+import com.company.server.enums.LastError;
+import com.company.server.vars.SimTime;
 import com.company.server.SimServer;
 import com.company.client.ui.UserClient;
 import com.company.client.ui.UserClient_v2;
@@ -59,20 +59,19 @@ public class ProgramGlobals {
 
     public static void setSimulationTimeMultiplier(double simulationTimeMultiplier) {
         ProgramGlobals.simulationTimeMultiplier = simulationTimeMultiplier;
-        SimulationTime.setSimulationTimeDelta(simulationTimeMultiplier);
+        SimTime.setSimulationTimeDelta(simulationTimeMultiplier);
     }
 
     //-------------------------------------------------------------------------
 
-
     //----------------------КОЛИЧЕСТВО ОПЕРАЦИЙ В СЕКУНДУ----------------------
 
     public static int getOperationsPerSecond() {
-        return SimTime.getTickrate();
+        return SimTicks.getTickrate();
     }
 
     public static void setOperationsPerSecond(int operationsPerSecond) {
-        SimTime.setTickrate(operationsPerSecond);
+        SimTicks.setTickrate(operationsPerSecond);
     }
 
     //-------------------------------------------------------------------------

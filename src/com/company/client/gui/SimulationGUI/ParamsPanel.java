@@ -3,7 +3,7 @@ package com.company.client.gui.SimulationGUI;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.ProgramGlobals;
-import com.company.server.simulation.simulation_variables.SimulationTime;
+import com.company.server.vars.SimTime;
 import com.company.server.SimServer;
 import com.company.server.enums.SimState;
 
@@ -109,7 +109,7 @@ public class ParamsPanel extends JPanel {
         JPanel slider_panel = new JPanel();
         JLabel FPS_label = new JLabel("Кадры в секунду ("+FPS_slider.getValue()+")", SwingConstants.CENTER);
         JLabel OPS_label = new JLabel("Операции в секунду ("+OPS_slider.getValue()+")", SwingConstants.CENTER);
-        JLabel timeDelta_label = new JLabel("Дельта времени, " + SimulationTime.getSimulationTimePow().getName()
+        JLabel timeDelta_label = new JLabel("Дельта времени, " + SimTime.getSimulationTimePow().getName()
                 + " ("+(double)timeDelta_slider.getValue()/1000+")", SwingConstants.CENTER);
 
         simulationTime = new JLabel("Текущее время симуляции: 0 c.", SwingConstants.CENTER);

@@ -3,11 +3,11 @@ package com.company.client.gui.SimulationGUI;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.ProgramGlobals;
-import com.company.server.simulation.inter_process_functions.border_handlers.Border;
-import com.company.server.simulation.simulation_types.enums.LastError;
-import com.company.server.simulation.simulation_variables.SimulationGlobals;
-import com.company.server.simulation.simulation_variables.SimulationTime;
-import com.company.server.simulation.simulation_types.layer_description.LayerDescription;
+import com.company.server.functions.border_handlers.Border;
+import com.company.server.enums.LastError;
+import com.company.server.vars.SimGlobals;
+import com.company.server.vars.SimTime;
+import com.company.server.types.LayerDescription;
 import com.company.server.SimServer;
 import com.company.server.enums.SimState;
 import org.jfree.chart.ChartPanel;
@@ -123,7 +123,7 @@ public class SimulationForm extends JFrame {
                 graphsPanel.series2.clear();
 
                 // список фронтов из решателя
-                List<LayerDescription> layerDescriptions = SimulationGlobals.getCurrentWavePicture();
+                List<LayerDescription> layerDescriptions = SimGlobals.getCurrentWavePicture();
                 graphsPanel.series1.add(0, Border.getCurrentBorderDisplacement());
 
                 graphsPanel.resetMarkers(graphsPanel.chart1, graphsPanel.series1);
@@ -162,7 +162,7 @@ public class SimulationForm extends JFrame {
                 // вывод времени симуляции
                 String time = Double.toString(
                         BigDecimal.valueOf(
-                                        SimulationTime.getSimulationTime())
+                                        SimTime.getSimulationTime())
                                 .setScale(6, RoundingMode.HALF_DOWN)
                                 .doubleValue()
                 );
