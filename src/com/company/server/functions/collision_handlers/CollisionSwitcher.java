@@ -2,7 +2,6 @@ package com.company.server.functions.collision_handlers;
 
 import com.company.ProgramGlobals;
 import com.company.server.functions.collision_handlers.collision_handlers_realization.*;
-import com.company.server.simulation.functions.collision_handlers.collision_handlers_realization.*;
 import com.company.server.types.CollidedPairDescription;
 
 import java.util.ArrayList;

@@ -2,7 +2,6 @@ package com.company.server.functions.border_handlers;
 
 import com.company.ProgramGlobals;
 import com.company.server.functions.border_handlers.border_handler_realisations.*;
-import com.company.server.simulation.functions.border_handlers.border_handler_realisations.*;
 import com.company.server.vars.SimGlobals;
 import com.company.server.types.LayerDescription;
 
