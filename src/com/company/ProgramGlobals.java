@@ -1,10 +1,11 @@
 package com.company;
 
-import com.company.simulation.simulation_types.enums.LastError;
-import com.company.simulation.simulation_variables.SimulationTime;
-import com.company.thread_organization.SimulationSynchronizerThread;
-import com.company.user_clients.UserClient;
-import com.company.user_clients.UserClient_v2;
+import com.company.server.SimTime;
+import com.company.server.simulation.simulation_types.enums.LastError;
+import com.company.server.simulation.simulation_variables.SimulationTime;
+import com.company.server.SimServer;
+import com.company.client.ui.UserClient;
+import com.company.client.ui.UserClient_v2;
 
 /**Файл с глобальными переменными сборки*/
 public class ProgramGlobals {
@@ -20,12 +21,12 @@ public class ProgramGlobals {
     enum ClientVersion {
         v2 { //Клиент визуального интерфейса клиента
 
-            public UserClient client(SimulationSynchronizerThread SynchroThread) {
+            public UserClient client(SimServer SynchroThread) {
                 return new UserClient_v2(SynchroThread);
             }
         };
 
-        public abstract UserClient client(SimulationSynchronizerThread SynchroThread);
+        public abstract UserClient client(SimServer SynchroThread);
     }
 
     //-------------------------------------------------------------------------
@@ -66,18 +67,12 @@ public class ProgramGlobals {
 
     //----------------------КОЛИЧЕСТВО ОПЕРАЦИЙ В СЕКУНДУ----------------------
 
-    static volatile int operationsPerSecond;
-
-    static {
-        operationsPerSecond = 25;
-    }
-
     public static int getOperationsPerSecond() {
-        return operationsPerSecond;
+        return SimTime.getTickrate();
     }
 
     public static void setOperationsPerSecond(int operationsPerSecond) {
-        ProgramGlobals.operationsPerSecond = operationsPerSecond;
+        SimTime.setTickrate(operationsPerSecond);
     }
 
     //-------------------------------------------------------------------------
@@ -104,7 +99,7 @@ public class ProgramGlobals {
      * 3: отображение только столкновений
      * 99: Все основные логи
      */
-    final static double logLevel = 2;
+    final static double logLevel = 0;
 
     public static double getLogLevel() {
         return logLevel;

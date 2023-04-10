@@ -1,16 +1,15 @@
 package com.company;
 
-import com.company.simulation.inter_process_functions.collision_handlers.CollisionSwitcher;
-import com.company.thread_organization.SimulationServerThread;
-import com.company.thread_organization.SimulationSynchronizerThread;
-import com.company.user_clients.UserClient;
+import com.company.server.simulation.inter_process_functions.collision_handlers.CollisionSwitcher;
+import com.company.server.SimServer;
+import com.company.client.ui.UserClient;
 
 public class Main {
 
     /**
      * Получение версии пользовательского интерфейса
      */
-    public static UserClient getClient(SimulationSynchronizerThread SynchroThread) {
+    public static UserClient getClient(SimServer SynchroThread) {
         return ProgramGlobals.clientVersion.client(SynchroThread);
     }
 
@@ -18,17 +17,13 @@ public class Main {
      * Инициализация потоков приложения
      */
     public static void main(String[] args) {
-        //Сервер крутится в отдельном потоке, чтобы не затормаживать работу пользовательского интерфейса
-        SimulationServerThread ServerThread = new SimulationServerThread();
-
         //Инициализация потока синхронизации вычислений сервера со временем
-        SimulationSynchronizerThread SynchroThread = new SimulationSynchronizerThread(ServerThread);
+        SimServer SynchroThread = new SimServer();
 
         //Выбор пользовательского интерфейса
         UserClient ClientThread = getClient(SynchroThread);
 
         //Старт рабочих потоков
-        ServerThread.start();
         SynchroThread.start();
         ClientThread.start();
 
