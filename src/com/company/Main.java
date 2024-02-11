@@ -1,7 +1,7 @@
 package com.company;
 
-import com.company.server.functions.collision_handlers.CollisionSwitcher;
-import com.company.server.SimServer;
+import com.company.server.simulation.collision.CollisionSwitcher;
+import com.company.server.runtime.SimServer;
 import com.company.client.ui.UserClient;
 
 public class Main {

@@ -3,9 +3,9 @@ package com.company.client.gui.SimulationGUI;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.ProgramGlobals;
-import com.company.server.vars.SimTime;
-import com.company.server.SimServer;
-import com.company.server.enums.SimState;
+import com.company.server.runtime.vars.SimTime;
+import com.company.server.runtime.SimServer;
+import com.company.server.runtime.enums.SimState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

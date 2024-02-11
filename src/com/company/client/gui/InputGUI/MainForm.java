@@ -5,11 +5,11 @@ import com.company.client.gui.GUIGlobals;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
-import com.company.server.functions.border_handlers.Border;
-import com.company.server.vars.SimGlobals;
-import com.company.server.enums.SimulationTimePow;
-import com.company.server.enums.DenoteFactor;
-import com.company.server.SimServer;
+import com.company.server.simulation.border.Border;
+import com.company.server.runtime.vars.SimGlobals;
+import com.company.server.runtime.enums.SimulationTimePow;
+import com.company.server.runtime.enums.DenoteFactor;
+import com.company.server.runtime.SimServer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

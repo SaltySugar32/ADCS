@@ -4,7 +4,7 @@ import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.Database.Material;
 import com.company.client.gui.DataHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.server.SimServer;
+import com.company.server.runtime.SimServer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

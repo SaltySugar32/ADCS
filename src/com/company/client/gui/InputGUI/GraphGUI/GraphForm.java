@@ -3,7 +3,7 @@ package com.company.client.gui.InputGUI.GraphGUI;
 import com.company.client.gui.DataHandler;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.server.SimServer;
+import com.company.server.runtime.SimServer;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 import org.jfree.chart.*;

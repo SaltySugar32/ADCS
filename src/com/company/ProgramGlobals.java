@@ -1,9 +1,9 @@
 package com.company;
 
-import com.company.server.vars.SimTicks;
-import com.company.server.enums.LastError;
-import com.company.server.vars.SimTime;
-import com.company.server.SimServer;
+import com.company.server.runtime.vars.SimTicks;
+import com.company.server.runtime.enums.LastError;
+import com.company.server.runtime.vars.SimTime;
+import com.company.server.runtime.SimServer;
 import com.company.client.ui.UserClient;
 import com.company.client.ui.UserClient_v2;
 
