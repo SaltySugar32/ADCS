@@ -30,8 +30,8 @@ public class DBHandler {
 
         try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
 
-            firstLayers = (ArrayList<String>) List.of(br.readLine().split(","));
-            secondLayers = (ArrayList<String>) List.of(br.readLine().split(","));
+            firstLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
+            secondLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
 
             String line;
             while ((line = br.readLine()) != null) {
@@ -51,6 +51,14 @@ public class DBHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static String getCollisionResult(String firstLayer, String secondLayer){
+        for(CollisionDesc col:collissionDescs){
+            if((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer)))
+                return String.join(" ",col.resultLayers);
+        }
+        return "-";
     }
 
     // заполнение списка материалов

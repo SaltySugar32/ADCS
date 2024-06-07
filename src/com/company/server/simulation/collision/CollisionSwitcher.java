@@ -20,7 +20,9 @@ public class CollisionSwitcher {
         DBHandler.getAllCollisions();
         for (CollisionDesc col:DBHandler.collissionDescs) {
             collisionHandlers.add(new CollisionHandler(col));
+            System.out.println(col.shortDescription);
         }
+
     }
     public static void initCollisionHandlers_old() {
         collisionHandlers_old.clear();
@@ -39,7 +41,7 @@ public class CollisionSwitcher {
     public static CollisionHandler switchWaveDisplacementHandler(CollidedPairDescription collidedPair) {
 
         for (var collisionHandler: collisionHandlers) {
-            if (CollisionHandler.isCorrectCase(collidedPair)) {
+            if (collisionHandler.isCorrectCase(collidedPair)) {
                 if (ProgramGlobals.getLogLevel() == 2 || ProgramGlobals.getLogLevel() == 3 || ProgramGlobals.getLogLevel() == 99) {
                     System.out.println(collisionHandler.collision.shortDescription);
                 }

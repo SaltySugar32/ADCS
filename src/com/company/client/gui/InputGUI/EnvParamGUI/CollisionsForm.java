@@ -1,5 +1,6 @@
 package com.company.client.gui.InputGUI.EnvParamGUI;
 
+import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 
@@ -17,55 +18,22 @@ public class CollisionsForm extends JFrame{
         this.setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
 
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("X"); // Добавляем столбец для имен строк
+        tableModel.addColumn("X");
+        for (String col : DBHandler.firstLayers) {
+            tableModel.addColumn(col);
+        }
 
-        try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
-            // Пропускаем первые две строки и сохраняем их для таблицы
-            String columnsLine = br.readLine();
-            String rowsLine = br.readLine();
+        for (String row : DBHandler.secondLayers) {
+            Object[] rowData = new Object[DBHandler.firstLayers.size() + 1];
+            rowData[0] = row; // Имя строки
 
-            String[] columns = columnsLine.split(",");
-            String[] rows = rowsLine.split(",");
 
-            for (String col : columns) {
-                tableModel.addColumn(col);
+            for (int colIndex = 0; colIndex < DBHandler.firstLayers.size(); colIndex++) {
+                String cellValue = DBHandler.getCollisionResult(row, DBHandler.firstLayers.get(colIndex));
+                rowData[colIndex + 1] = cellValue;
             }
 
-/*
-            // Заполняем строки и ячейки таблицы
-            for (String row : rows) {
-                Object[] rowData = new Object[columns.length + 1];
-                rowData[0] = row; // Имя строки
-
-                for (int colIndex = 0; colIndex < columns.length; colIndex++) {
-                    String cellValue = getCollisionResult(row, columns[colIndex]);
-                    rowData[colIndex + 1] = cellValue;
-                }
-
-                tableModel.addRow(rowData);
-            }
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 3) {
-                    CollisionHandlerImpl collision = new CollisionHandlerImpl();
-
-                    collision.firstLayer = parts[0];
-                    collision.secondLayer = parts[1];
-                    // Все оставшиеся части в resultLayer
-                    collision.resultLayers = new ArrayList<>();
-                    collision.resultLayers.addAll(Arrays.asList(parts).subList(2, parts.length));
-                    collision.shortDescription = collision.firstLayer + ", " + collision.secondLayer + " > " + collision.resultLayers;
-                    collisionHandlers.add(collision);
-                }
-            }
-*/
-            // Создаем и отображаем таблицу
-            createAndShowTable(columns, rows);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            tableModel.addRow(rowData);
         }
 
         JTable table = new JTable(tableModel);

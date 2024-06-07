@@ -1,4 +1,4 @@
-x,O,xiA,sigma*,xiB,gammaB
+O,xiA,sigma*,xiB,gammaB
 xiA,sigma*,xiA-
 xiA,sigma*,xiA-,sigma**
 sigma*,xiB,xiA-,sigma**,
