@@ -61,6 +61,19 @@ public class DBHandler {
         return "-";
     }
 
+    public static String formatCollisionLabel(String label){
+        String newLabel;
+        newLabel = label
+                .replace("xi", "ξ")
+                .replace("sigma", "Σ")
+                .replace("gamma", "γ")
+                .replace("A", "ᵃ")
+                .replace("A-", "⁻ᵃ")
+                .replace("B", "ᵇ")
+                .replace("B-", "⁻ᵇ");
+        return newLabel;
+    }
+
     // заполнение списка материалов
     public static void getAllMaterials() {
         materials = new ArrayList<Material>();

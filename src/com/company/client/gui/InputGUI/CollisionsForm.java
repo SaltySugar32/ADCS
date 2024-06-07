@@ -1,44 +1,56 @@
-package com.company.client.gui.InputGUI.EnvParamGUI;
+package com.company.client.gui.InputGUI;
 
-import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Style;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+
+import static java.awt.Font.*;
 
 public class CollisionsForm extends JFrame{
 
+    private JTable table1;
+    private JPanel mainPanel;
+    private JPanel tablePanel;
+    private JButton saveButton;
+
     public CollisionsForm() {
         this.setTitle(GUIGlobals.program_title + " - Ввод параметров среды");
-        this.setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
+        this.setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height/2);
+
+        this.add(mainPanel);
 
         DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("X");
         for (String col : DBHandler.firstLayers) {
-            tableModel.addColumn(col);
+            tableModel.addColumn(DBHandler.formatCollisionLabel(col));
         }
 
         for (String row : DBHandler.secondLayers) {
             Object[] rowData = new Object[DBHandler.firstLayers.size() + 1];
-            rowData[0] = row; // Имя строки
+            rowData[0] = DBHandler.formatCollisionLabel(row); // Имя строки
 
 
             for (int colIndex = 0; colIndex < DBHandler.firstLayers.size(); colIndex++) {
                 String cellValue = DBHandler.getCollisionResult(row, DBHandler.firstLayers.get(colIndex));
-                rowData[colIndex + 1] = cellValue;
+                rowData[colIndex + 1] = DBHandler.formatCollisionLabel(cellValue);
             }
 
             tableModel.addRow(rowData);
         }
 
-        JTable table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane, BorderLayout.CENTER);
+        table1 = new JTable(tableModel);
+        table1.setFont(new Font("Serif", PLAIN, 20));
+        JScrollPane scrollPane = new JScrollPane(table1);
+
+        // Добавление JScrollPane в mainPanel
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        saveButton.setPreferredSize(new Dimension(50,50));
+        tablePanel.add(saveButton, BorderLayout.SOUTH);
+        mainPanel.add(tablePanel);
         this.pack();
 
         this.setVisible(true);

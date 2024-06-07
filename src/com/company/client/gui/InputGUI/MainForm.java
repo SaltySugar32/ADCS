@@ -2,11 +2,8 @@ package com.company.client.gui.InputGUI;
 
 import com.company.client.gui.DataHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.client.gui.InputGUI.EnvParamGUI.CollisionsForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
-import com.company.client.gui.InputGUI.GraphGUI.GraphAxisSettingsDialog;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
-import com.company.client.gui.InputGUI.GraphGUI.GraphViewSettingsDialog;
 import com.company.client.gui.SimulationGUI.SimulationForm;
 import com.company.server.simulation.border.Border;
 import com.company.server.runtime.vars.SimGlobals;
