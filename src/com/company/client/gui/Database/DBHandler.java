@@ -1,4 +1,5 @@
 package com.company.client.gui.Database;
+import com.company.server.simulation.collision.cases.CollisionHandler;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
@@ -10,11 +11,47 @@ public class DBHandler {
 
     public static String materialPath = "data/materialDB/";
     public static String graphPath = "data/graphDB/";
+
+    public static String collisionsPath = "data/collisions.txt";
     public static String inputImgsPath = "data/inputImages/";
     public static String outputImgsPath = "data/outputImages/";
     public static String resourcesPath = "resources/images/";
 
     public static List<Material> materials;
+
+    public static ArrayList<CollisionDesc> collissionDescs;
+
+    public static ArrayList<String> firstLayers;
+
+    public static ArrayList<String> secondLayers;
+
+    public static void getAllCollisions(){
+        collissionDescs = new ArrayList<CollisionDesc>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
+
+            firstLayers = (ArrayList<String>) List.of(br.readLine().split(","));
+            secondLayers = (ArrayList<String>) List.of(br.readLine().split(","));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    CollisionDesc collision = new CollisionDesc();
+
+                    collision.firstLayer = parts[0];
+                    collision.secondLayer = parts[1];
+                    // все оставшиеся части в resultLayer
+                    collision.resultLayers = new ArrayList<>();
+                    collision.resultLayers.addAll(Arrays.asList(parts).subList(2, parts.length));
+                    collision.shortDescription = collision.firstLayer + ", " + collision.secondLayer + " > " + collision.resultLayers;
+                    collissionDescs.add(collision);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // заполнение списка материалов
     public static void getAllMaterials() {
