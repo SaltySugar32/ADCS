@@ -1,7 +1,7 @@
 O,xiA,sigma*,xiB,gammaB
 xiA,sigma*,xiA-
-xiA,sigma*,xiA-,sigma**
-sigma*,xiB,xiA-,sigma**,
-sigma*,gammaB,xiA-,gammaA
+xiA,sigma*,xiA- sigma**
+sigma*,xiB,xiA- sigma**,
+sigma*,gammaB,xiA- gammaA
 xiA-,O,xiA
-xiA-,xiA,xiA-,xiA
+xiA-,xiA,xiA- xiA

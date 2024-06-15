@@ -30,8 +30,8 @@ public class DBHandler {
 
         try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
 
-            firstLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
             secondLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
+            firstLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
 
             String line;
             while ((line = br.readLine()) != null) {
@@ -59,6 +59,17 @@ public class DBHandler {
                 return String.join(" ",col.resultLayers);
         }
         return "-";
+    }
+
+    public static CollisionDesc getCollision(int column, int row) {
+        String firstLayer = firstLayers.get(row);
+        String secondLayer = secondLayers.get(column);
+        for (CollisionDesc col : collissionDescs) {
+            if ((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer))) {
+                return col;
+            }
+        }
+        return null;
     }
 
     public static String formatCollisionLabel(String label){

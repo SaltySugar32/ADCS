@@ -27,7 +27,6 @@ public class CollisionTableForm extends JFrame {
         getCollisions();
         setJMenuBar(createFileMenu());
 
-
         this.add(createScrollPane(), BorderLayout.CENTER);
 
         this.setVisible(true);
@@ -69,16 +68,16 @@ public class CollisionTableForm extends JFrame {
         DefaultTableModel tableModel = new ReadOnlyTableModel();
         tableModel.addColumn("X");
 
-        for (String col : firstLayers) {
+        for (String col : secondLayers) {
             tableModel.addColumn(DBHandler.formatCollisionLabel(col));
         }
 
-        for (String row : secondLayers) {
-            Object[] rowData = new Object[firstLayers.size() + 1];
+        for (String row : firstLayers) {
+            Object[] rowData = new Object[secondLayers.size() + 1];
             rowData[0] = DBHandler.formatCollisionLabel(row);
 
-            for (int colIndex = 0; colIndex < firstLayers.size(); colIndex++) {
-                String cellValue = DBHandler.getCollisionResult(row, firstLayers.get(colIndex));
+            for (int colIndex = 0; colIndex < secondLayers.size(); colIndex++) {
+                String cellValue = DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
                 rowData[colIndex + 1] = DBHandler.formatCollisionLabel(cellValue);
             }
 
@@ -108,7 +107,7 @@ public class CollisionTableForm extends JFrame {
                     String cellValue = (String) table.getValueAt(row, col);
                     if (cellValue != null && !cellValue.isEmpty()) {
                         // Открываем диалоговое окно
-                        SetCollisionDialog dialog = new SetCollisionDialog();
+                        SetCollisionDialog dialog = new SetCollisionDialog(col, row);
                     }
                 }
             }
