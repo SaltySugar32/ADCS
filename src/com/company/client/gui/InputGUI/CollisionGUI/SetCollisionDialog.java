@@ -23,8 +23,43 @@ public class SetCollisionDialog extends JDialog {
 
         getCollision(colIndex-1, rowIndex);
 
-        if (collisionDesc != null)
-            //this.add(createScrollPane(), BorderLayout.CENTER);
+        if (collisionDesc != null) {
+            this.add(createScrollPane(), BorderLayout.CENTER);
+            // Создаем кнопку "Задать"
+            JButton setButton = new JButton("Задать");
+
+            // Создаем панель для размещения кнопки
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Выравниваем кнопку по центру
+
+            // Добавляем кнопку на панель
+            buttonPanel.add(setButton);
+
+            // Добавляем панель с кнопкой под таблицей
+            this.add(buttonPanel, BorderLayout.SOUTH);
+
+            // Устанавливаем обработчик действия для кнопки "Задать"
+            setButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Действие при нажатии кнопки "Задать"
+                    int selectedRow = table.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Получаем значение выбранной ячейки
+                        String collision = (String) table.getValueAt(selectedRow, 0);
+                        // Допустим, здесь будет ваш код для задания чего-то с выбранной коллизией
+                        JOptionPane.showMessageDialog(SetCollisionDialog.this,
+                                "Задание коллизии '" + collision + "'", "Задание коллизии",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(SetCollisionDialog.this,
+                                "Выберите коллизию для задания", "Предупреждение",
+                                JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            });
+        }
+
 
         setJMenuBar(createFileMenu());
         setVisible(true);
@@ -76,7 +111,31 @@ public class SetCollisionDialog extends JDialog {
         menuBar.add(fileMenu);
         return menuBar;
     }
+    private JScrollPane createScrollPane(){
+        // Создаем таблицу с двумя столбцами
+        String[] columnNames = {"Collision", "Status"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Ячейки только для чтения
+            }
+        };
+        table = new JTable(tableModel);
 
+        // Получаем данные для таблицы из collisionDesc.resultLayers
+        ArrayList<String> resultLayers = collisionDesc.resultLayers;
+        for (int i = 0; i < resultLayers.size(); i++) {
+            String collision = resultLayers.get(i);
+            String status = (i == 0) ? "задан" : ""; // Устанавливаем статус "задан" только для первой строки
+            Object[] rowData = {collision, status};
+            tableModel.addRow(rowData);
+        }
+
+        // Создаем JScrollPane и добавляем в него таблицу
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        return scrollPane;
+    }
     /*
     private JScrollPane createScrollPane(){
             String[] columnNames = {"Collision", "Action"};

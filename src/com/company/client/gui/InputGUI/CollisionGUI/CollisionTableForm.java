@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class CollisionTableForm extends JFrame {
@@ -45,14 +47,56 @@ public class CollisionTableForm extends JFrame {
 
         JMenu trailingFrontMenu = new JMenu("Догоняющий фронт");
         JMenuItem addTrailingFront = new JMenuItem("Добавить фронт");
+        addTrailingFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Действие при выборе "Добавить коллизию"
+                // Например, открытие диалога для добавления коллизии
+                JOptionPane.showMessageDialog(CollisionTableForm.this,
+                        "Функционал добавления фронта еще не реализован", "Предупреждение",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
         JMenuItem removeTrailingFront = new JMenuItem("Удалить фронт");
+        removeTrailingFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Действие при выборе "Добавить коллизию"
+                // Например, открытие диалога для добавления коллизии
+                JOptionPane.showMessageDialog(CollisionTableForm.this,
+                        "Функционал удаления фронта еще не реализован", "Предупреждение",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
 
         trailingFrontMenu.add(addTrailingFront);
         trailingFrontMenu.add(removeTrailingFront);
 
         JMenu leadingFrontMenu = new JMenu("Убегающий фронт");
         JMenuItem addLeadingFront = new JMenuItem("Добавить фронт");
+        addLeadingFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Действие при выборе "Добавить коллизию"
+                // Например, открытие диалога для добавления коллизии
+                JOptionPane.showMessageDialog(CollisionTableForm.this,
+                        "Функционал добавления фронта еще не реализован", "Предупреждение",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
         JMenuItem removeLeadingFront = new JMenuItem("Удалить фронт");
+        removeLeadingFront.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Действие при выборе "Добавить коллизию"
+                // Например, открытие диалога для добавления коллизии
+                JOptionPane.showMessageDialog(CollisionTableForm.this,
+                        "Функционал удаления фронта еще не реализован", "Предупреждение",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        });
 
         leadingFrontMenu.add(addLeadingFront);
         leadingFrontMenu.add(removeLeadingFront);
