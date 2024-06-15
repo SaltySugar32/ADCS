@@ -51,6 +51,7 @@ public class SetCollisionDialog extends JDialog {
                         JOptionPane.showMessageDialog(SetCollisionDialog.this,
                                 "Задание коллизии '" + collision + "'", "Задание коллизии",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        DBHandler.writeCollisionsToFile();
                     } else {
                         JOptionPane.showMessageDialog(SetCollisionDialog.this,
                                 "Выберите коллизию для задания", "Предупреждение",

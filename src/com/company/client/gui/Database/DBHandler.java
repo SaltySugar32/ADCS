@@ -53,6 +53,39 @@ public class DBHandler {
         }
     }
 
+    public static void writeCollisionsToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(collisionsPath))) {
+            // Write secondLayers to the first line, comma-separated
+            String secondLayersLine = String.join(",", secondLayers);
+            writer.write(secondLayersLine);
+            writer.newLine();
+
+            // Write firstLayers to the second line, comma-separated
+            String firstLayersLine = String.join(",", firstLayers);
+            writer.write(firstLayersLine);
+            writer.newLine();
+
+            // Write each collision description
+            for (CollisionDesc collisionDesc : collissionDescs) {
+                StringBuilder lineBuilder = new StringBuilder();
+                lineBuilder.append(collisionDesc.firstLayer).append(",")
+                        .append(collisionDesc.secondLayer).append(",");
+
+                // Append resultLayers, comma-separated
+                if (!collisionDesc.resultLayers.isEmpty()) {
+                    lineBuilder.append(String.join(",", collisionDesc.resultLayers));
+                }
+
+                writer.write(lineBuilder.toString());
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exception (e.g., log it or throw a custom exception)
+        }
+    }
+
     public static String getCollisionResult(String firstLayer, String secondLayer){
         for(CollisionDesc col:collissionDescs){
             if((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer)))
