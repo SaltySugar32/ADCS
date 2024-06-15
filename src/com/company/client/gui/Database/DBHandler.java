@@ -66,11 +66,11 @@ public class DBHandler {
         newLabel = label
                 .replace("xi", "ξ")
                 .replace("sigma", "Σ")
-                .replace("gamma", "γ")
-                .replace("A", "ᵃ")
+                .replace("gamma", "γ");
+               /* .replace("A", "ᵃ")
                 .replace("A-", "⁻ᵃ")
                 .replace("B", "ᵇ")
-                .replace("B-", "⁻ᵇ");
+                .replace("B-", "⁻ᵇ");*/
         return newLabel;
     }
 

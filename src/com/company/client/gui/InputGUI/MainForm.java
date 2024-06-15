@@ -2,6 +2,7 @@ package com.company.client.gui.InputGUI;
 
 import com.company.client.gui.DataHandler;
 import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.InputGUI.CollisionGUI.CollisionTableForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
@@ -110,7 +111,7 @@ public class MainForm extends JFrame {
         openCollisionsForm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CollisionsForm dialog = new CollisionsForm();
+                CollisionTableForm dialog = new CollisionTableForm();
             }
         });
 
