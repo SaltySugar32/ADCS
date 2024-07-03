@@ -1,7 +1,13 @@
-xiA,sigma*,xiA-
-O,xiA,sigma*,xiB,gammaB
-xiA,sigma*,xiA- sigma**,test1,test2
-sigma*,xiB,xiA- sigma**,test3
-sigma*,gammaB,xiA- gammaA
-xiA-,O,xiA
-xiA-,xiA,xiA- xiA
+xi(a),sigma(*),gamma(0a),gamma(b0),O,xi(-a)
+O,xi(a),sigma(*),xi(b),gamma(b),xi(-a),gamma(-0a),sigma(-),gamma(-0b),xi(-b)
+xi(a),sigma(*),xi(-a)sigma(**)
+sigma(*),xi(b),xi(-a)sigma(**)
+gamma(0a),sigma(*),gamma(-0a)sigma(**)
+sigma(*),gamma(b),xi(-a)gamma(a)
+gamma(0a),xi(-a),gamma(-0a)xi(a),gamma(-0b)gamma(b0)gamma(0a)
+gamma(b0),gamma(-0a),sigma(-)xi(a),xi(-b)gamma(b0)gamma(0a)
+gamma(b0),sigma(-),xi(-b)gamma(b0)gamma(0a)
+gamma(b0),gamma(-0b),xi(-b)xi(b)
+O,xi(-b),Oxi(b)
+xi(-a),O,xi(a)
+xi(-a),xi(a),xi(-a)xi(a)

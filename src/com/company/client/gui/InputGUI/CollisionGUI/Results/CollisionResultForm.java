@@ -99,7 +99,7 @@ public class CollisionResultForm extends JFrame{
             for (int i = 0; i < resultLayers.size(); i++) {
                 String collision = resultLayers.get(i);
                 String status = (i == 0) ? "задан" : ""; // Устанавливаем статус "задан" только для первой строки
-                Object[] rowData = {collision, status};
+                Object[] rowData = {DBHandler.formatCollisionLabel(collision), status};
                 tableModel.addRow(rowData);
             }
         }

@@ -27,7 +27,7 @@ public class CollisionTableForm extends JFrame {
 
     public CollisionTableForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
-        setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
+        setSize(GUIGlobals.env_param_frame_width*2, GUIGlobals.env_param_frame_height);
         display();
 
         this.setVisible(true);
@@ -130,7 +130,12 @@ public class CollisionTableForm extends JFrame {
 
             for (int colIndex = 0; colIndex < secondLayers.size(); colIndex++) {
                 ArrayList<String> results = DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
-                String cellValue = (results!=null)? String.join(" ",results):"-";
+                String cellValue;
+                if (results == null)
+                    cellValue = "-";
+                else if (results.size()>1)
+                    cellValue = "<html>" + results.get(0) + "<br><center>...</center></html>";
+                else cellValue = results.get(0);
                 rowData[colIndex + 1] = DBHandler.formatCollisionLabel(cellValue);
             }
 
@@ -225,17 +230,26 @@ public class CollisionTableForm extends JFrame {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+
             if (value != null && !value.toString().isEmpty()) {
                 // DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
                 CollisionDesc desc = DBHandler.getCollision(col-1, row);
-                if (desc!=null && desc.resultLayers.size() > 1)
-                    cell.setBackground(Color.YELLOW); // Цвет для ячеек с несколькими элементами
+                if (desc==null)
+                    cell.setBackground(Color.decode("#dfe7eb"));
+                else if(desc.resultLayers.size() > 1)
+                    cell.setBackground(Color.decode("#f5fcff")); // Цвет для ячеек с несколькими элементами
                 else
                     cell.setBackground(Color.WHITE);
 
-            } else {
-                cell.setBackground(Color.WHITE);
             }
+            else
+                cell.setBackground(Color.WHITE);
+
+            // Установка горизонтального выравнивания текста по центру
+            if (cell instanceof JLabel) {
+                ((JLabel) cell).setHorizontalAlignment(SwingConstants.CENTER);
+            }
+
             return cell;
         }
     }
