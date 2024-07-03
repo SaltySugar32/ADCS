@@ -14,12 +14,16 @@ public class AddFrontDialog extends JDialog {
         private JTextField textField1;
         private JButton SubmitButton;
 
-        public AddFrontDialog(int type) {
+        public AddFrontDialog(CollisionTableForm parent, int type) {
             add(contentPane);
             setVisible(true);
             setLocationRelativeTo(null);
             setAlwaysOnTop(true);
-            setTitle("Добавление фронта");
+            if(type==0)
+                setTitle("Добавление догоняющего фронта");
+            else
+                setTitle("Добавление убегающего фронта");
+
             setSize(400, 200);
 
             SubmitButton.addActionListener(new ActionListener() {
@@ -27,13 +31,14 @@ public class AddFrontDialog extends JDialog {
                 public void actionPerformed(ActionEvent e) {
                     String name = textField1.getText();
                     if (!name.isEmpty()) {
-                        /*// add front
+                        // add front
                         if (type==0)
                             DBHandler.addFirstLayer(name);
                         else
                             DBHandler.addSecondLayer(name);
-*/
+
                         // repaint
+                        parent.updateTable();
 
                         dispose();
                     }

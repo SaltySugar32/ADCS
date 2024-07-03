@@ -30,8 +30,8 @@ public class DBHandler {
 
         try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
 
-            secondLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
             firstLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
+            secondLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
 
             String line;
             while ((line = br.readLine()) != null) {
@@ -55,14 +55,14 @@ public class DBHandler {
 
     public static void writeCollisionsToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(collisionsPath))) {
-            // Write secondLayers to the first line, comma-separated
-            String secondLayersLine = String.join(",", secondLayers);
-            writer.write(secondLayersLine);
-            writer.newLine();
-
             // Write firstLayers to the second line, comma-separated
             String firstLayersLine = String.join(",", firstLayers);
             writer.write(firstLayersLine);
+            writer.newLine();
+
+            // Write secondLayers to the first line, comma-separated
+            String secondLayersLine = String.join(",", secondLayers);
+            writer.write(secondLayersLine);
             writer.newLine();
 
             // Write each collision description
@@ -126,6 +126,26 @@ public class DBHandler {
             }
         }
         return null;
+    }
+
+    // добавить догоняющий фронт
+    public static boolean addFirstLayer(String name){
+        if(firstLayers.contains(name))
+            return false;
+        firstLayers.add(name);
+
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // добавить догоняющий фронт
+    public static boolean addSecondLayer(String name){
+        if(secondLayers.contains(name))
+            return false;
+        secondLayers.add(name);
+
+        writeCollisionsToFile();
+        return true;
     }
 
     public static String formatCollisionLabel(String label){

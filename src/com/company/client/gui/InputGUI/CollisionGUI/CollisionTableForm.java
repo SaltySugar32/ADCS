@@ -34,12 +34,13 @@ public class CollisionTableForm extends JFrame {
 
     public void display(){
         getCollisions();
-        setJMenuBar(createFileMenu());
+        setJMenuBar(createFileMenu(this));
 
         this.add(createScrollPane(this), BorderLayout.CENTER);
     }
 
     public void updateTable() {
+        getCollisions();
         // Удаление текущего JScrollPane с таблицей
         this.getContentPane().removeAll();
         // Повторное создание и добавление JScrollPane с новой таблицей
@@ -56,7 +57,7 @@ public class CollisionTableForm extends JFrame {
         this.collisionDescs = DBHandler.collissionDescs;
     }
 
-    private JMenuBar createFileMenu(){
+    private JMenuBar createFileMenu(CollisionTableForm form){
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Файл");
 
@@ -65,14 +66,8 @@ public class CollisionTableForm extends JFrame {
         addTrailingFront.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Действие при выборе "Добавить коллизию"
-
-                JDialog jDialog = new AddFrontDialog(0);
-
-                // Например, открытие диалога для добавления коллизии
-                JOptionPane.showMessageDialog(CollisionTableForm.this,
-                        "Функционал добавления фронта еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                // Действие при выборе "Добавить фронт"
+                JDialog jDialog = new AddFrontDialog(form,0);
             }
         });
 
@@ -80,7 +75,7 @@ public class CollisionTableForm extends JFrame {
         removeTrailingFront.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Действие при выборе "Добавить коллизию"
+                // Действие при выборе "Удалить фронт"
                 // Например, открытие диалога для добавления коллизии
                 JOptionPane.showMessageDialog(CollisionTableForm.this,
                         "Функционал удаления фронта еще не реализован", "Предупреждение",
@@ -96,11 +91,9 @@ public class CollisionTableForm extends JFrame {
         addLeadingFront.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Действие при выборе "Добавить коллизию"
+                // Действие при выборе "Добавить фронт"
                 // Например, открытие диалога для добавления коллизии
-                JOptionPane.showMessageDialog(CollisionTableForm.this,
-                        "Функционал добавления фронта еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                JDialog jDialog = new AddFrontDialog(form,1);
             }
         });
 
