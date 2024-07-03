@@ -1,7 +1,7 @@
-xiA,sigma*,xiA-,123
-O,xiA,sigma*,xiB,gammaB,123
-xiA,sigma*,xiA- sigma**,test2,test1
-sigma*,xiB,test3,xiA- sigma**
+xiA,sigma*,xiA-
+O,xiA,sigma*,xiB,gammaB
+xiA,sigma*,xiA- sigma**,test1,test2
+sigma*,xiB,xiA- sigma**,test3
 sigma*,gammaB,xiA- gammaA
 xiA-,O,xiA
 xiA-,xiA,xiA- xiA

@@ -79,10 +79,7 @@ public class CollisionTableForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Действие при выборе "Удалить фронт"
-                // Например, открытие диалога для добавления коллизии
-                JOptionPane.showMessageDialog(CollisionTableForm.this,
-                        "Функционал удаления фронта еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                JDialog jDialog = new DeleteFrontDialog(form,0);
             }
         });
 
@@ -104,11 +101,8 @@ public class CollisionTableForm extends JFrame {
         removeLeadingFront.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Действие при выборе "Добавить коллизию"
-                // Например, открытие диалога для добавления коллизии
-                JOptionPane.showMessageDialog(CollisionTableForm.this,
-                        "Функционал удаления фронта еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                // Действие при выборе "Удалить фронт"
+                JDialog jDialog = new DeleteFrontDialog(form,1);
             }
         });
 

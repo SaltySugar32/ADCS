@@ -39,7 +39,6 @@ public class AddFrontDialog extends JDialog {
                             JOptionPane.showMessageDialog(frame, "Фронт добавлен");
                             // repaint
                             parent.updateTable();
-                            dispose();
                         }
                         else JOptionPane.showMessageDialog(frame, "Ошибка ввода");
                     }

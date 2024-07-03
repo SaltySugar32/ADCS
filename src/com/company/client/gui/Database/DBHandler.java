@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class DBHandler {
 
@@ -24,6 +25,8 @@ public class DBHandler {
     public static ArrayList<String> firstLayers;
 
     public static ArrayList<String> secondLayers;
+
+    private static final Pattern FRONT_VALID_PATTERN = Pattern.compile("^[ab()0+\\-\\*\\s]*(O|xi|gamma|sigma)*[ab()0+\\-\\*\\s]*$");
 
     public static void getAllCollisions(){
         collissionDescs = new ArrayList<CollisionDesc>();
@@ -130,6 +133,8 @@ public class DBHandler {
 
     // добавить догоняющий фронт
     public static boolean addFirstLayer(String name){
+        if (!FRONT_VALID_PATTERN.matcher(name).matches())
+            return false;
         if(firstLayers.contains(name))
             return false;
         firstLayers.add(name);
@@ -138,12 +143,48 @@ public class DBHandler {
         return true;
     }
 
-    // добавить догоняющий фронт
+    // удалить догоняющий фронт
+    public static boolean deleteFirstLayer(String name){
+        if(!firstLayers.contains(name) || name==null)
+            return false;
+
+        firstLayers.remove(name);
+        // удаление результатов с удаленным фронтом
+        for (Iterator<CollisionDesc> iterator = collissionDescs.iterator(); iterator.hasNext();) {
+            CollisionDesc desc = iterator.next();
+            if (desc.firstLayer.equals(name)) {
+                iterator.remove();
+            }
+        }
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // добавить убегающий фронт
     public static boolean addSecondLayer(String name){
+        if (!FRONT_VALID_PATTERN.matcher(name).matches())
+            return false;
         if(secondLayers.contains(name))
             return false;
         secondLayers.add(name);
 
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // удалить догоняющий фронт
+    public static boolean deleteSecondLayer(String name){
+        if(!secondLayers.contains(name))
+            return false;
+
+        secondLayers.remove(name);
+        // удаление результатов с удаленным фронтом
+        for (Iterator<CollisionDesc> iterator = collissionDescs.iterator(); iterator.hasNext();) {
+            CollisionDesc desc = iterator.next();
+            if (desc.secondLayer.equals(name)) {
+                iterator.remove();
+            }
+        }
         writeCollisionsToFile();
         return true;
     }
