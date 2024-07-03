@@ -51,8 +51,9 @@ public class DeleteFrontDialog extends JDialog {
     public void loadComboBox(int type){
         comboBox1.removeAllItems();
         ArrayList<String> fronts = (type==0)? DBHandler.firstLayers:DBHandler.secondLayers;
-        for(String front:fronts)
-            comboBox1.addItem(front);
+        if(fronts!=null)
+            for(String front:fronts)
+                comboBox1.addItem(front);
     }
 
     public boolean deleteFront(int type, int index){

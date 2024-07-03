@@ -150,6 +150,20 @@ public class DBHandler {
         return true;
     }
 
+    public static boolean deleteCollisionResult(int column, int row, int index){
+        CollisionDesc desc = getCollision(column, row);
+
+        if(desc == null)
+            return false;
+
+        if(desc.resultLayers.get(index)==null)
+            return false;
+
+        desc.resultLayers.remove(index);
+        writeCollisionsToFile();
+        return true;
+    }
+
     public static CollisionDesc getCollision(int column, int row) {
         String firstLayer = firstLayers.get(row);
         String secondLayer = secondLayers.get(column);

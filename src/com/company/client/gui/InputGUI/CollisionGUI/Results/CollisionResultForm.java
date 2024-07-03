@@ -138,10 +138,7 @@ public class CollisionResultForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Действие при выборе "Удалить"
-                // Например, удаление выбранной коллизии
-                JOptionPane.showMessageDialog(CollisionResultForm.this,
-                        "Функционал удаления коллизии еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                DeleteResultDialog dialog = new DeleteResultDialog(form,colIndex,rowIndex,resultLabel.getText());
             }
         });
         // Добавление пунктов в меню "Файл"
