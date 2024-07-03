@@ -17,7 +17,7 @@ import java.util.Set;
 public class SetCollisionDialog extends JDialog {
     private CollisionDesc collisionDesc;
     private JTable table;
-    public SetCollisionDialog(int colIndex, int rowIndex){
+    public SetCollisionDialog(CollisionTableForm parent,int colIndex, int rowIndex){
         setTitle("Возможные взаимодействия");
         setSize(400, 400);
 
@@ -51,7 +51,9 @@ public class SetCollisionDialog extends JDialog {
                         JOptionPane.showMessageDialog(SetCollisionDialog.this,
                                 "Задание коллизии '" + collision + "'", "Задание коллизии",
                                 JOptionPane.INFORMATION_MESSAGE);
+                        DBHandler.collisionSwapElements(collisionDesc,selectedRow);
                         DBHandler.writeCollisionsToFile();
+                        parent.updateTable();
                     } else {
                         JOptionPane.showMessageDialog(SetCollisionDialog.this,
                                 "Выберите коллизию для задания", "Предупреждение",

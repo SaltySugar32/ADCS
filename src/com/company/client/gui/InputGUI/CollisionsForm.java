@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Style;
 import java.awt.*;
+import java.util.ArrayList;
 
 import static java.awt.Font.*;
 
@@ -35,7 +36,8 @@ public class CollisionsForm extends JFrame{
 
 
             for (int colIndex = 0; colIndex < DBHandler.firstLayers.size(); colIndex++) {
-                String cellValue = DBHandler.getCollisionResult(row, DBHandler.firstLayers.get(colIndex));
+                ArrayList<String> results = DBHandler.getCollisionResult(row, DBHandler.firstLayers.get(colIndex));
+                String cellValue = (results!=null)? String.join(" ",results):"-";
                 rowData[colIndex + 1] = DBHandler.formatCollisionLabel(cellValue);
             }
 

@@ -3,6 +3,7 @@ package com.company.client.gui.InputGUI.CollisionGUI;
 import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.InputGUI.EnvParamGUI.AddMaterialDialog;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -26,12 +27,26 @@ public class CollisionTableForm extends JFrame {
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
         setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
 
+        display();
+
+        this.setVisible(true);
+    }
+
+    public void display(){
         getCollisions();
         setJMenuBar(createFileMenu());
 
-        this.add(createScrollPane(), BorderLayout.CENTER);
+        this.add(createScrollPane(this), BorderLayout.CENTER);
+    }
 
-        this.setVisible(true);
+    public void updateTable() {
+        // Удаление текущего JScrollPane с таблицей
+        this.getContentPane().removeAll();
+        // Повторное создание и добавление JScrollPane с новой таблицей
+        this.add(createScrollPane(this), BorderLayout.CENTER);
+        // Обновление окна
+        this.revalidate();
+        this.repaint();
     }
 
     private void getCollisions(){
@@ -51,6 +66,9 @@ public class CollisionTableForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Действие при выборе "Добавить коллизию"
+
+                JDialog jDialog = new AddFrontDialog(0);
+
                 // Например, открытие диалога для добавления коллизии
                 JOptionPane.showMessageDialog(CollisionTableForm.this,
                         "Функционал добавления фронта еще не реализован", "Предупреждение",
@@ -121,7 +139,8 @@ public class CollisionTableForm extends JFrame {
             rowData[0] = DBHandler.formatCollisionLabel(row);
 
             for (int colIndex = 0; colIndex < secondLayers.size(); colIndex++) {
-                String cellValue = DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
+                ArrayList<String> results = DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
+                String cellValue = (results!=null)? String.join(" ",results):"-";
                 rowData[colIndex + 1] = DBHandler.formatCollisionLabel(cellValue);
             }
 
@@ -138,7 +157,7 @@ public class CollisionTableForm extends JFrame {
         }
     }
 
-    private JScrollPane createScrollPane(){
+    private JScrollPane createScrollPane(CollisionTableForm form){
         table = new JTable(createTableModel());
         table.setDefaultRenderer(Object.class, new CustomTableCellRenderer(collisionDescs));
         // Обработчик двойного клика по ячейке
@@ -151,7 +170,7 @@ public class CollisionTableForm extends JFrame {
                     String cellValue = (String) table.getValueAt(row, col);
                     if (cellValue != null && !cellValue.isEmpty()) {
                         // Открываем диалоговое окно
-                        SetCollisionDialog dialog = new SetCollisionDialog(col, row);
+                        SetCollisionDialog dialog = new SetCollisionDialog(form,col, row);
                     }
                 }
             }
@@ -216,14 +235,13 @@ public class CollisionTableForm extends JFrame {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
             if (value != null && !value.toString().isEmpty()) {
-                String cellValue = value.toString();
-                for (CollisionDesc desc : collisionDescs) {
-                    if (desc.shortDescription.equals(cellValue) && desc.resultLayers.size() > 1) {
-                        cell.setBackground(Color.YELLOW); // Цвет для ячеек с несколькими элементами
-                    } else {
-                        cell.setBackground(Color.WHITE);
-                    }
-                }
+                // DBHandler.getCollisionResult(row, secondLayers.get(colIndex));
+                CollisionDesc desc = DBHandler.getCollision(col-1, row);
+                if (desc!=null && desc.resultLayers.size() > 1)
+                    cell.setBackground(Color.YELLOW); // Цвет для ячеек с несколькими элементами
+                else
+                    cell.setBackground(Color.WHITE);
+
             } else {
                 cell.setBackground(Color.WHITE);
             }

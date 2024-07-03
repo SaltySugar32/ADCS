@@ -86,12 +86,35 @@ public class DBHandler {
         }
     }
 
-    public static String getCollisionResult(String firstLayer, String secondLayer){
+    public static void collisionSwapElements(CollisionDesc collisionDesc, int index) {
+
+        for (int i = 0; i < collissionDescs.size(); i++) {
+            CollisionDesc curr = collissionDescs.get(i);
+            // Сравнение текущего элемента с заданным desc
+            if (curr.equals(collisionDesc)) {
+                // Проверка наличия нужных индексов
+                if (index < 0 || index >= curr.resultLayers.size()) {
+                    throw new IndexOutOfBoundsException("index is out of bounds.");
+                }
+
+                // Получить элемент на позиции 0
+                String temp = curr.resultLayers.get(0);
+
+                // Заменить элемент на позиции 0 элементом на позиции selectedRow
+                curr.resultLayers.set(0, curr.resultLayers.get(index));
+
+                // Заменить элемент на позиции selectedRow сохраненным элементом temp
+                curr.resultLayers.set(index, temp);
+            }
+        }
+    }
+
+    public static ArrayList<String> getCollisionResult(String firstLayer, String secondLayer){
         for(CollisionDesc col:collissionDescs){
             if((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer)))
-                return String.join(" ",col.resultLayers);
+                return col.resultLayers;
         }
-        return "-";
+        return null;
     }
 
     public static CollisionDesc getCollision(int column, int row) {

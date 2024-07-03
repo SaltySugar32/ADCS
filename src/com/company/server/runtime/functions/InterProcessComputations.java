@@ -8,43 +8,43 @@ import com.company.server.simulation.types.LayerDescription;
 
 import java.util.ArrayList;
 
-public class InterProcessComputations {
+    public class InterProcessComputations {
 
-    /**
-     * Основная функция для выполнения операций, происходящих внутри симуляции
-     * <li>Изменение текущего времени</li>
-     * <li>Добавление нового волнового фронта на границе</li>
-     * <li>Смещение координат</li>
-     * <li>Обработка столкновений пар волновых фронтов</li>
-     * <li>Обработка столкновений с границей полупространства</li>
-     * <li>Сортировка волновых фронтов по координатам</li>
-     */
-    public static ArrayList<LayerDescription> getResult(ArrayList<LayerDescription> prevWavePicture) {
+        /**
+         * Основная функция для выполнения операций, происходящих внутри симуляции
+         * <li>Изменение текущего времени</li>
+         * <li>Добавление нового волнового фронта на границе</li>
+         * <li>Смещение координат</li>
+         * <li>Обработка столкновений пар волновых фронтов</li>
+         * <li>Обработка столкновений с границей полупространства</li>
+         * <li>Сортировка волновых фронтов по координатам</li>
+         */
+        public static ArrayList<LayerDescription> getResult(ArrayList<LayerDescription> prevWavePicture) {
 
-        var wavePicture = new ArrayList<>(prevWavePicture);
+            var wavePicture = new ArrayList<>(prevWavePicture);
 
-        //Сдвиг времени
-        SimTime.nextSimulationTime();
+            //Сдвиг времени
+            SimTime.nextSimulationTime();
 
-        //Создание множества новых волновых фронтов на границе полупространства
-        wavePicture = Border.createBorderWaveFronts(wavePicture);
+            //Создание множества новых волновых фронтов на границе полупространства
+            wavePicture = Border.createBorderWaveFronts(wavePicture);
 
-        //Вообще говоря, сортировка мне тут не нужна
-        //WavePictureComputations.sortCurrentWavePicture(wavePicture);
+            //Вообще говоря, сортировка мне тут не нужна
+            //WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
-        //Двигаем волновые фронты
-        WavePictureComputations.moveWaveFronts(wavePicture);
+            //Двигаем волновые фронты
+            WavePictureComputations.moveWaveFronts(wavePicture);
 
-        //Вычисляем столкновения в волновой картине
-        wavePicture = Collision.calculateCollisions(wavePicture);
+            //Вычисляем столкновения в волновой картине
+            wavePicture = Collision.calculateCollisions(wavePicture);
 
-        //Сортируем волновые фронты по их координатам
-        //Вообще говоря, тоже должно быть бесполезно
-        //WavePictureComputations.sortCurrentWavePicture(wavePicture);
+            //Сортируем волновые фронты по их координатам
+            //Вообще говоря, тоже должно быть бесполезно
+            //WavePictureComputations.sortCurrentWavePicture(wavePicture);
 
-        //Проверяем столкновения волновых фронтов с границей полупространства
-        wavePicture = BorderCollision.checkBorderCollision(wavePicture);
+            //Проверяем столкновения волновых фронтов с границей полупространства
+            wavePicture = BorderCollision.checkBorderCollision(wavePicture);
 
-        return wavePicture;
+            return wavePicture;
+        }
     }
-}
