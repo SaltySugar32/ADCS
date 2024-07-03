@@ -20,15 +20,21 @@ public class CollisionResultForm extends JFrame{
     private JTable table1;
     private JLabel resultLabel;
     private CollisionDesc collisionDesc;
+    int colIndex, rowIndex;
+    CollisionTableForm parent;
 
-    public CollisionResultForm(CollisionTableForm parent, int colIndex, int rowIndex){
+    public CollisionResultForm(CollisionTableForm form, int col, int row){
         setTitle("Задание результата взаимодействия");
         setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
         add(contentPane);
 
-        setJMenuBar(createFileMenu());
+        colIndex = col-1;
+        rowIndex = row;
+        parent = form;
 
-        getCollision(colIndex-1, rowIndex);
+        setJMenuBar(createFileMenu(this));
+
+        getCollision(colIndex, rowIndex);
         updateTable();
         setFontSize(table1, 1.5f);
 
@@ -51,8 +57,7 @@ public class CollisionResultForm extends JFrame{
                     DBHandler.collisionSwapElements(collisionDesc,selectedRow);
                     DBHandler.writeCollisionsToFile();
                     // обновление полей
-                    parent.updateTable();
-                    getCollision(colIndex-1, rowIndex);
+
                     updateTable();
 
                 } else {
@@ -73,7 +78,10 @@ public class CollisionResultForm extends JFrame{
         this.collisionDesc = DBHandler.getCollision(col, row);
     }
 
-    private void updateTable(){
+    public void updateTable(){
+
+        parent.updateTable();
+        getCollision(colIndex, rowIndex);
 
         // Создаем таблицу с двумя столбцами
         String[] columnNames = {"Результат", "Статус"};
@@ -108,7 +116,7 @@ public class CollisionResultForm extends JFrame{
         table.setRowHeight(100);
     }
 
-    private JMenuBar createFileMenu() {
+    private JMenuBar createFileMenu(CollisionResultForm form) {
         // Создание меню "Файл"
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Файл");
@@ -122,10 +130,7 @@ public class CollisionResultForm extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Действие при выборе "Добавить коллизию"
-                // Например, открытие диалога для добавления коллизии
-                JOptionPane.showMessageDialog(CollisionResultForm.this,
-                        "Функционал добавления коллизии еще не реализован", "Предупреждение",
-                        JOptionPane.WARNING_MESSAGE);
+                AddResultDialog dialog = new AddResultDialog(form,colIndex, rowIndex,resultLabel.getText());
             }
         });
 

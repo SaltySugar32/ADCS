@@ -120,6 +120,36 @@ public class DBHandler {
         return null;
     }
 
+    // Добавить результат столкновения
+    public static boolean addCollisionResult(int col, int row, String result) {
+        if (!FRONT_VALID_PATTERN.matcher(result).matches())
+            return false;
+        CollisionDesc desc = getCollision(col, row);
+
+        // Существует взаимодействие
+        if (desc != null) {
+            if (desc.resultLayers.contains(result))
+                return false;
+
+            desc.resultLayers.add(result);
+
+            writeCollisionsToFile();
+            return true;
+        }
+
+        // Создаем новое взаимодействие
+        CollisionDesc newDesc = new CollisionDesc();
+        newDesc.firstLayer = firstLayers.get(row);
+        newDesc.secondLayer = secondLayers.get(col);
+        newDesc.resultLayers = new ArrayList<String>();
+        newDesc.resultLayers.add(result);
+        newDesc.shortDescription = newDesc.firstLayer + ", " + newDesc.secondLayer + " > " + newDesc.resultLayers;
+        collissionDescs.add(newDesc);
+
+        writeCollisionsToFile();
+        return true;
+    }
+
     public static CollisionDesc getCollision(int column, int row) {
         String firstLayer = firstLayers.get(row);
         String secondLayer = secondLayers.get(column);
