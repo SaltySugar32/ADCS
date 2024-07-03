@@ -4,7 +4,6 @@ import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.client.gui.InputGUI.CollisionGUI.Results.CollisionResultForm;
-import com.company.client.gui.InputGUI.CollisionGUI.SetCollisionDialog;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
