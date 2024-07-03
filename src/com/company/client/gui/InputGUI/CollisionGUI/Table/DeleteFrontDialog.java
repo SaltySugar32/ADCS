@@ -1,4 +1,4 @@
-package com.company.client.gui.InputGUI.CollisionGUI;
+package com.company.client.gui.InputGUI.CollisionGUI.Table;
 
 import com.company.client.gui.Database.DBHandler;
 

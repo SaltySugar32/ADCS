@@ -2,7 +2,7 @@ package com.company.client.gui.InputGUI;
 
 import com.company.client.gui.DataHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.client.gui.InputGUI.CollisionGUI.CollisionTableForm;
+import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;

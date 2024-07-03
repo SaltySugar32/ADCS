@@ -1,9 +1,6 @@
-package com.company.client.gui.InputGUI.CollisionGUI;
+package com.company.client.gui.InputGUI.CollisionGUI.Table;
 
-import com.company.client.gui.DataHandler;
 import com.company.client.gui.Database.DBHandler;
-import com.company.client.gui.Database.Material;
-import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 
 import javax.swing.*;
 import java.awt.event.*;

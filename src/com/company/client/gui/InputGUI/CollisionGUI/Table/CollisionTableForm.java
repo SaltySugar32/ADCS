@@ -1,9 +1,10 @@
-package com.company.client.gui.InputGUI.CollisionGUI;
+package com.company.client.gui.InputGUI.CollisionGUI.Table;
 
 import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.client.gui.InputGUI.EnvParamGUI.AddMaterialDialog;
+import com.company.client.gui.InputGUI.CollisionGUI.Results.CollisionResultForm;
+import com.company.client.gui.InputGUI.CollisionGUI.SetCollisionDialog;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -160,7 +161,8 @@ public class CollisionTableForm extends JFrame {
                     String cellValue = (String) table.getValueAt(row, col);
                     if (cellValue != null && !cellValue.isEmpty()) {
                         // Открываем диалоговое окно
-                        SetCollisionDialog dialog = new SetCollisionDialog(form,col, row);
+                        // SetCollisionDialog dialog = new SetCollisionDialog(form,col, row);
+                        CollisionResultForm dialog = new CollisionResultForm(form,col,row);
                     }
                 }
             }

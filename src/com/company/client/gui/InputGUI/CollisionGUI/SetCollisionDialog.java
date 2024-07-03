@@ -2,22 +2,19 @@ package com.company.client.gui.InputGUI.CollisionGUI;
 
 import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
-import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class SetCollisionDialog extends JDialog {
     private CollisionDesc collisionDesc;
     private JTable table;
-    public SetCollisionDialog(CollisionTableForm parent,int colIndex, int rowIndex){
+    public SetCollisionDialog(CollisionTableForm parent, int colIndex, int rowIndex){
         setTitle("Возможные взаимодействия");
         setSize(400, 400);
 
