@@ -1,5 +1,5 @@
-xiA,sigma*,xiA-
-O,xiA,sigma*,xiB,gammaB
+xiA,sigma*,xiA-,123
+O,xiA,sigma*,xiB,gammaB,123
 xiA,sigma*,xiA- sigma**,test2,test1
 sigma*,xiB,test3,xiA- sigma**
 sigma*,gammaB,xiA- gammaA

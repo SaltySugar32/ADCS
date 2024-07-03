@@ -30,19 +30,29 @@ public class AddFrontDialog extends JDialog {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String name = textField1.getText();
-                    if (!name.isEmpty()) {
+                    JFrame frame = new JFrame();
+                    frame.setAlwaysOnTop(true);
+
+                    if (!name.isEmpty()){
                         // add front
-                        if (type==0)
-                            DBHandler.addFirstLayer(name);
-                        else
-                            DBHandler.addSecondLayer(name);
-
-                        // repaint
-                        parent.updateTable();
-
-                        dispose();
+                        if (addFront(type, name)) {
+                            JOptionPane.showMessageDialog(frame, "Фронт добавлен");
+                            // repaint
+                            parent.updateTable();
+                            dispose();
+                        }
+                        else JOptionPane.showMessageDialog(frame, "Ошибка ввода");
                     }
+                    else JOptionPane.showMessageDialog(frame, "Введите название фронта");
                 }
             });
+        }
+
+        private boolean addFront(int type, String name){
+            // validation
+            if (type == 0)
+                return DBHandler.addFirstLayer(name);
+            else
+                return DBHandler.addSecondLayer(name);
         }
     }

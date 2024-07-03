@@ -22,11 +22,12 @@ public class CollisionTableForm extends JFrame {
     private ArrayList<String> secondLayers;
 
     private ArrayList<CollisionDesc> collisionDescs;
+    private JPanel panel1;
+    private JScrollPane scrollPane;
 
     public CollisionTableForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
         setSize(GUIGlobals.env_param_frame_width, GUIGlobals.env_param_frame_height);
-
         display();
 
         this.setVisible(true);
@@ -36,7 +37,8 @@ public class CollisionTableForm extends JFrame {
         getCollisions();
         setJMenuBar(createFileMenu(this));
 
-        this.add(createScrollPane(this), BorderLayout.CENTER);
+        scrollPane = createScrollPane(this);
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 
     public void updateTable() {
@@ -44,7 +46,8 @@ public class CollisionTableForm extends JFrame {
         // Удаление текущего JScrollPane с таблицей
         this.getContentPane().removeAll();
         // Повторное создание и добавление JScrollPane с новой таблицей
-        this.add(createScrollPane(this), BorderLayout.CENTER);
+        scrollPane = createScrollPane(this);
+        this.add(scrollPane, BorderLayout.CENTER);
         // Обновление окна
         this.revalidate();
         this.repaint();
