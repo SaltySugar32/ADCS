@@ -1,40 +1,112 @@
 package com.company.client.gui.SimulationGUI.TreeGUI;
 
-import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
-import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
+
+import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class LocalTreeForm extends JFrame {
+    private mxGraph graph;
     private JPanel contentPane;
-    private JPanel treePanel;
+    private JPanel formPanel;
     private JTable table1;
+    private JPanel treePanel;
+    private LocalResTree localResTree;
+    private Object parent;
 
     public LocalTreeForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
         setSize(GUIGlobals.env_param_frame_width*2, GUIGlobals.env_param_frame_height);
         this.add(contentPane);
 
-        drawTable();
+        //test
+        localResTree = testTree();
+
+        treePanel.add(drawTree(localResTree));
+        System.out.println(drawTree(localResTree));
+
+        drawTable(localResTree);
+
         setJMenuBar(createFileMenu());
 
         this.setVisible(true);
     }
 
-    private void drawTable(){
+    private mxGraphComponent drawTree(LocalResTree root){
+
+        //create graph
+        graph = new mxGraph();
+
+        parent = graph.getDefaultParent();
+        graph.getModel().beginUpdate();
+        try{
+            createGraphNodes(root,null);
+        } finally{
+            graph.getModel().endUpdate();
+        }
+
+        // layout graph
+        mxCompactTreeLayout layout = new mxCompactTreeLayout(graph,false);
+        layout.execute(parent);
+
+        //create graph component
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        // Disables creating new connections (arrows)
+        graphComponent.setConnectable(false);
+        // Disables editing of all cells
+        graph.setCellsEditable(false);
+
+        // двойной клик
+        graphComponent.getGraphControl().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Object cell = graphComponent.getCellAt(e.getX(),e.getY());
+                if (cell !=null){
+                    System.out.println("cell=" + graph.getLabel(cell));
+                }
+            }
+        });
+
+        // Set margin with a border
+        graphComponent.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+        graph.setCellsEditable(false); // Отключение редактирования ячеек
+        graph.setCellsMovable(false);  // Отключение перетаскивания ячеек
+        graph.setCellsResizable(false); // Отключение изменения размеров ячеек
+        graph.setEdgeLabelsMovable(false); // Отключение перетаскивания меток ребер
+        graph.setAllowDanglingEdges(false); // Отключение создания висячих ребер
+
+        return graphComponent;
+    }
+
+    private void createGraphNodes(LocalResTree node, Object parentCell) {
+        Object cell = graph.insertVertex(parent, null, "Узел " + node.marker + ": " + node.result, 0, 0, 80, 30);
+        if (parentCell != null) {
+            graph.insertEdge(parent, null, "", parentCell, cell);
+        }
+        if (node.children==null) return;
+        for (LocalResTree child : node.children) {
+            createGraphNodes(child, cell);
+        }
+    }
+
+    private void drawTable(LocalResTree root){
         // Create the table
         String[] columnNames = {"Узел", "Локальное решение", "Потомки"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
-        createTableDataWidth(testTree(),tableModel);
+        createTableDataWidth(root,tableModel);
         table1.setModel(tableModel);
         setFontSize(table1, 1.5f, 20);
     }
