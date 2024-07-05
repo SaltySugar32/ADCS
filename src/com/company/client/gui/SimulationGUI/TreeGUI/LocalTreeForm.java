@@ -6,13 +6,14 @@ import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -25,6 +26,7 @@ public class LocalTreeForm extends JFrame {
     private JPanel treePanel;
     private LocalResTree localResTree;
     private Object parent;
+    private boolean showFullTable = true;
 
     public LocalTreeForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
@@ -39,7 +41,7 @@ public class LocalTreeForm extends JFrame {
 
         drawTable(localResTree);
 
-        setJMenuBar(createFileMenu());
+        setJMenuBar(createMenu());
 
         this.setVisible(true);
     }
@@ -78,6 +80,20 @@ public class LocalTreeForm extends JFrame {
                 if (cell !=null){
                     toggleNode(cell);
                     System.out.println("cell=" + graph.getLabel(cell));
+                }
+            }
+        });
+
+        // Enable panning and zooming
+        graphComponent.setPanning(true);
+        //graphComponent.setZoomEnabled(true);
+        graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                if (e.getWheelRotation() < 0) {
+                    graphComponent.zoomIn();
+                } else {
+                    graphComponent.zoomOut();
                 }
             }
         });
@@ -127,6 +143,10 @@ public class LocalTreeForm extends JFrame {
             treePanel.add(drawTree(localResTree));
             treePanel.revalidate();
             treePanel.repaint();
+
+            if (!showFullTable) {
+                drawTable(localResTree);
+            }
         }
     }
 
@@ -151,24 +171,11 @@ public class LocalTreeForm extends JFrame {
         // Create the table
         String[] columnNames = {"Узел", "Локальное решение", "Потомки"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
-        createTableDataWidth(root,tableModel);
+
+        createTableDataWidth(root, tableModel);
+
         table1.setModel(tableModel);
         setFontSize(table1, 1.5f, 20);
-    }
-
-    private void createTableData(LocalResTree node, DefaultTableModel tableModel) {
-        if (node == null) return;
-        String childrenMarkers = "";
-        if (node.children != null)
-            childrenMarkers =  node.children.stream().map(n -> String.valueOf(n.marker)).reduce((a, b) -> a + ", " + b).orElse("");
-        tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
-
-        if(node.children==null)
-            return;
-
-        for(LocalResTree child : node.children) {
-            createTableData(child, tableModel);
-        }
     }
 
     //Обход дерева в ширину
@@ -182,26 +189,30 @@ public class LocalTreeForm extends JFrame {
         while (!queue.isEmpty()) {
             LocalResTree node = queue.poll();
 
-            String childrenMarkers = "";
-            if (node.children != null) {
-                childrenMarkers = node.children.stream()
-                        .map(n -> String.valueOf(n.marker))
-                        .reduce((a, b) -> a + ", " + b)
-                        .orElse("");
-            }
+            if (showFullTable || (!node.isCollapsed)) {
+                String childrenMarkers = "";
+                if (node.children != null) {
+                    childrenMarkers = node.children.stream()
+                            .map(n -> String.valueOf(n.marker))
+                            .reduce((a, b) -> a + ", " + b)
+                            .orElse("");
+                }
 
-            tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
+                tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
 
-            if (node.children != null) {
-                queue.addAll(node.children);
+                if (node.children != null) {
+                    queue.addAll(node.children);
+                }
             }
         }
     }
 
     // Установка размера строк и фонта
     private void setFontSize(JTable table, float scaleFactor, int rowHeight){
-        Font defaultFont = table.getFont();
+        JTable temp = new JTable();
+        Font defaultFont =temp.getFont();
         float newSize = defaultFont.getSize() * scaleFactor;
+
         Font newFont = defaultFont.deriveFont(newSize);
         table.setFont(newFont);
 
@@ -212,38 +223,113 @@ public class LocalTreeForm extends JFrame {
     }
 
     // Меню Файл
-    public JMenuBar createFileMenu(){
+    public JMenuBar createMenu(){
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Файл");
+        JMenu viewMenu = new JMenu("Вид");
 
-        JMenuItem quickSave = new JMenuItem("Сохранить изображения");
-        JMenuItem saveAs = new JMenuItem("Сохранить изображения как...");
+        JMenuItem saveTreeAsPNG = new JMenuItem("Сохранить дерево как изображение PNG");
+        JMenuItem saveTableAsPNG = new JMenuItem("Сохранить таблицу как изображение PNG");
+        fileMenu.add(saveTreeAsPNG);
+        fileMenu.add(saveTableAsPNG);
 
-        fileMenu.add(saveAs);
-        fileMenu.add(quickSave);
+        JMenuItem toggleTableView = new JMenuItem("Отобразить таблицу для видимых узлов");
+        viewMenu.add(toggleTableView);
 
-        // Shortcut квиксейва CTRL + S
-        KeyStroke key = KeyStroke.getKeyStroke("control S");
-        quickSave.setAccelerator(key);
-
-        quickSave.addActionListener(new ActionListener() {
+        // Добавляем действие на переключение вида таблицы
+        toggleTableView.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
-
+                showFullTable = !showFullTable;
+                toggleTableView.setText(showFullTable ? "Отобразить таблицу для видимых узлов" : "Отобразить таблицу полностью");
+                drawTable(localResTree);
             }
         });
 
-        saveAs.addActionListener(new ActionListener() {
+        saveTreeAsPNG.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //
+                saveComponentAsPNG(treePanel, "Сохранить дерево локальных решений как PNG");
+            }
+        });
+
+        saveTableAsPNG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveTableAsPNG(table1);
             }
         });
 
         menuBar.add(fileMenu);
+        menuBar.add(viewMenu);
         return menuBar;
     }
+
+    private void saveTableAsPNG(JTable table1) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Сохранить таблицу как PNG");
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".png")) {
+                filePath += ".png";
+            }
+
+            // Создаем изображение с учетом заголовков
+            int width = table1.getWidth();
+            int height = table1.getHeight() + table1.getTableHeader().getHeight();
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = image.createGraphics();
+
+            // Рисуем заголовок таблицы
+            table1.getTableHeader().paint(g2d);
+            // Рисуем таблицу ниже заголовка
+            g2d.translate(0, table1.getTableHeader().getHeight());
+            table1.paint(g2d);
+            g2d.dispose();
+
+            try {
+                ImageIO.write(image, "png", new File(filePath));
+                JOptionPane.showMessageDialog(this, "Сохранено: " + filePath);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Ошибка при сохранении файла.", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void saveComponentAsPNG(JComponent component, String dialogTitle) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle(dialogTitle);
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".png")) {
+                filePath += ".png";
+            }
+
+            BufferedImage image = new BufferedImage(component.getWidth(), component.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = image.createGraphics();
+            component.paint(g2d);
+            g2d.dispose();
+
+            try {
+                ImageIO.write(image, "png", new File(filePath));
+                JOptionPane.showMessageDialog(this, "Сохранено: " + filePath);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Ошибка при сохранении файла.", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
 
     private LocalResTree testTree(){
         LocalResTree tree = new LocalResTree(1, "ξΣξ b γ b", Arrays.asList(
