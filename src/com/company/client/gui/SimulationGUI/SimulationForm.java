@@ -3,6 +3,8 @@ package com.company.client.gui.SimulationGUI;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.ProgramGlobals;
+import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
+import com.company.client.gui.SimulationGUI.TreeGUI.LocalTreeForm;
 import com.company.server.simulation.border.Border;
 import com.company.server.runtime.enums.LastError;
 import com.company.server.runtime.vars.SimGlobals;
@@ -176,11 +178,21 @@ public class SimulationForm extends JFrame {
      */
     public JMenu createFileMenu(){
         JMenu fileMenu = new JMenu("Файл");
+
+        JMenuItem openCollisionsForm = new JMenuItem("Таблица взаимодействий");
         JMenuItem quickSave = new JMenuItem("Сохранить изображения");
         JMenuItem saveAs = new JMenuItem("Сохранить изображения как...");
 
+        fileMenu.add(openCollisionsForm);
         fileMenu.add(saveAs);
         fileMenu.add(quickSave);
+
+        openCollisionsForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CollisionTableForm dialog = new CollisionTableForm();
+            }
+        });
 
         // Shortcut квиксейва CTRL + S
         KeyStroke key = KeyStroke.getKeyStroke("control S");
@@ -212,11 +224,20 @@ public class SimulationForm extends JFrame {
      */
     public JMenu createViewMenu(){
         JMenu viewMenu = new JMenu("Вид");
+        JMenuItem showTree = new JMenuItem("Дерево локальных решений");
         JMenuItem showPoints = new JMenuItem("Показать/скрыть точки");
         JMenuItem showCrosshair = new JMenuItem("Показать/скрыть оверлей");
 
+        viewMenu.add(showTree);
         viewMenu.add(showPoints);
         viewMenu.add(showCrosshair);
+
+        showTree.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LocalTreeForm dialog = new LocalTreeForm();
+            }
+        });
 
         showPoints.addActionListener(new ActionListener() {
             @Override
