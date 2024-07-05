@@ -57,8 +57,10 @@ public class LocalTreeForm extends JFrame {
             graph.getModel().endUpdate();
         }
 
-        // layout graph
+        // Расположение графа
         mxCompactTreeLayout layout = new mxCompactTreeLayout(graph,false);
+        // Прямые линии
+        layout.setEdgeRouting(false);
         layout.execute(parent);
 
         //create graph component
@@ -74,6 +76,7 @@ public class LocalTreeForm extends JFrame {
             public void mouseReleased(MouseEvent e) {
                 Object cell = graphComponent.getCellAt(e.getX(),e.getY());
                 if (cell !=null){
+                    toggleNode(cell);
                     System.out.println("cell=" + graph.getLabel(cell));
                 }
             }
@@ -81,25 +84,67 @@ public class LocalTreeForm extends JFrame {
 
         // Set margin with a border
         graphComponent.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
+/*
         graph.setCellsEditable(false); // Отключение редактирования ячеек
         graph.setCellsMovable(false);  // Отключение перетаскивания ячеек
         graph.setCellsResizable(false); // Отключение изменения размеров ячеек
         graph.setEdgeLabelsMovable(false); // Отключение перетаскивания меток ребер
         graph.setAllowDanglingEdges(false); // Отключение создания висячих ребер
+*/
+        graphComponent.setConnectable(false);
+        graph.setCellsEditable(false);
+        graph.setAllowDanglingEdges(false);
+        graph.setCellsDisconnectable(false);
+        graph.setCellsDeletable(false);
+        graph.setCellsMovable(false);
+        graph.setEdgeLabelsMovable(false);
+        graph.setVertexLabelsMovable(false);
+        graph.setDropEnabled(false);
+        graph.setSplitEnabled(false);
 
         return graphComponent;
     }
 
     private void createGraphNodes(LocalResTree node, Object parentCell) {
-        Object cell = graph.insertVertex(parent, null, "Узел " + node.marker + ": " + node.result, 0, 0, 80, 30);
+        String label = node.isCollapsed ? "..." : String.valueOf(node.marker);
+        Object cell = graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12");
         if (parentCell != null) {
-            graph.insertEdge(parent, null, "", parentCell, cell);
+            graph.insertEdge(parent, null, "", parentCell, cell, "endArrow=none;edgeStyle=none;");
         }
-        if (node.children==null) return;
+        if (node.children == null || node.isCollapsed) return;
         for (LocalResTree child : node.children) {
             createGraphNodes(child, cell);
         }
+    }
+
+    private void toggleNode(Object cell) {
+        String label = graph.getLabel(cell);
+        LocalResTree node = findNodeByLabel(localResTree, label);
+        if (node != null) {
+            node.isCollapsed = !node.isCollapsed;
+            // Переотрисовка дерева
+            treePanel.removeAll();
+            treePanel.add(drawTree(localResTree));
+            treePanel.revalidate();
+            treePanel.repaint();
+        }
+    }
+
+    private LocalResTree findNodeByLabel(LocalResTree node, String label) {
+        if (node.isCollapsed && "...".equals(label)) {
+            return node;
+        } else if (String.valueOf(node.marker).equals(label)) {
+            return node;
+        }
+        if (node.children != null) {
+            for (LocalResTree child : node.children) {
+                LocalResTree found = findNodeByLabel(child, label);
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return null;
     }
 
     private void drawTable(LocalResTree root){
