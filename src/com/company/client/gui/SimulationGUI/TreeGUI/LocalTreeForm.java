@@ -1,9 +1,14 @@
 package com.company.client.gui.SimulationGUI.TreeGUI;
 
+import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -20,16 +25,18 @@ public class LocalTreeForm extends JFrame {
         this.add(contentPane);
 
         drawTable();
+        setJMenuBar(createFileMenu());
 
         this.setVisible(true);
     }
 
     private void drawTable(){
         // Create the table
-        String[] columnNames = {"Узел", "Лок. реш.", "Потом"};
+        String[] columnNames = {"Узел", "Локальное решение", "Потомки"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
         createTableDataWidth(testTree(),tableModel);
         table1.setModel(tableModel);
+        setFontSize(table1, 1.5f, 20);
     }
 
     private void createTableData(LocalResTree node, DefaultTableModel tableModel) {
@@ -72,6 +79,53 @@ public class LocalTreeForm extends JFrame {
                 queue.addAll(node.children);
             }
         }
+    }
+
+    // Установка размера строк и фонта
+    private void setFontSize(JTable table, float scaleFactor, int rowHeight){
+        Font defaultFont = table.getFont();
+        float newSize = defaultFont.getSize() * scaleFactor;
+        Font newFont = defaultFont.deriveFont(newSize);
+        table.setFont(newFont);
+
+        // Adjust row height to fit the window height
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        if(rowHeight>0)
+            table.setRowHeight(rowHeight);
+    }
+
+    // Меню Файл
+    public JMenuBar createFileMenu(){
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("Файл");
+
+        JMenuItem quickSave = new JMenuItem("Сохранить изображения");
+        JMenuItem saveAs = new JMenuItem("Сохранить изображения как...");
+
+        fileMenu.add(saveAs);
+        fileMenu.add(quickSave);
+
+        // Shortcut квиксейва CTRL + S
+        KeyStroke key = KeyStroke.getKeyStroke("control S");
+        quickSave.setAccelerator(key);
+
+        quickSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+
+            }
+        });
+
+        saveAs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //
+            }
+        });
+
+        menuBar.add(fileMenu);
+        return menuBar;
     }
 
     private LocalResTree testTree(){
