@@ -36,12 +36,19 @@
                 <border type="none"/>
                 <children/>
               </grid>
-              <component id="3adbe" class="javax.swing.JTable" binding="table1" default-binding="true">
+              <scrollpane id="93258">
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
                 <properties/>
-              </component>
+                <border type="none"/>
+                <children>
+                  <component id="3adbe" class="javax.swing.JTable" binding="table1" default-binding="true">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </splitpane>
         </children>

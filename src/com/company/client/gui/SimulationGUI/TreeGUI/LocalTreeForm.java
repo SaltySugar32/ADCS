@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class LocalTreeForm extends JFrame {
     private JPanel contentPane;
@@ -26,7 +28,7 @@ public class LocalTreeForm extends JFrame {
         // Create the table
         String[] columnNames = {"Узел", "Лок. реш.", "Потом"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames,0);
-        createTableData(testTree(),tableModel);
+        createTableDataWidth(testTree(),tableModel);
         table1.setModel(tableModel);
     }
 
@@ -42,6 +44,33 @@ public class LocalTreeForm extends JFrame {
 
         for(LocalResTree child : node.children) {
             createTableData(child, tableModel);
+        }
+    }
+
+    //Обход дерева в ширину
+    private void createTableDataWidth(LocalResTree root, DefaultTableModel tableModel) {
+        if (root == null) return;
+
+        // Очередь для обхода в ширину
+        Queue<LocalResTree> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            LocalResTree node = queue.poll();
+
+            String childrenMarkers = "";
+            if (node.children != null) {
+                childrenMarkers = node.children.stream()
+                        .map(n -> String.valueOf(n.marker))
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("");
+            }
+
+            tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
+
+            if (node.children != null) {
+                queue.addAll(node.children);
+            }
         }
     }
 
