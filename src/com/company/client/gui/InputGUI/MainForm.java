@@ -6,6 +6,8 @@ import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
+import com.company.client.gui.SimulationGUI.TreeGUI.LocalResTree;
+import com.company.client.gui.SimulationGUI.TreeGUI.LocalTreeForm;
 import com.company.server.simulation.border.Border;
 import com.company.server.runtime.vars.SimGlobals;
 import com.company.server.runtime.enums.SimulationTimePow;
@@ -29,6 +31,9 @@ public class MainForm extends JFrame {
     private JTextArea projectDescriptionArea;
 
     public MainForm(SimServer ServerThread) {
+        // test
+        LocalTreeForm dialog = new LocalTreeForm();
+
         this.setTitle(GUIGlobals.program_title);
         this.setSize(GUIGlobals.main_frame_width, GUIGlobals.main_frame_height);
         this.setVisible(true);
