@@ -8,12 +8,14 @@ public class LocalResTree {
     public String result;
     public List<LocalResTree> children;
     boolean isCollapsed;
+    public String collision;
 
-    public LocalResTree(int marker, String result, List<LocalResTree> children){
+    public LocalResTree(int marker, String result,String collision, List<LocalResTree> children){
         this.marker = marker;
         this.result = result;
         this.children = children;
         this.isCollapsed = false;
+        this.collision = collision;
     }
 
     @Override

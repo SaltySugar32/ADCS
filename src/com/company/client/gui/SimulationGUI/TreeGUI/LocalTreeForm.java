@@ -29,6 +29,7 @@ public class LocalTreeForm extends JFrame {
     private LocalResTree localResTree;
     private Object parent;
     private boolean showFullTable = true;
+    private boolean showCollision = false;
 
     public LocalTreeForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
@@ -202,10 +203,18 @@ public class LocalTreeForm extends JFrame {
             if (showFullTable || (!node.isCollapsed)) {
                 String childrenMarkers = "";
                 if (node.children != null) {
-                    childrenMarkers = node.children.stream()
-                            .map(n -> String.valueOf(n.marker))
-                            .reduce((a, b) -> a + ", " + b)
-                            .orElse("");
+                    for (int i = 0; i < node.children.size(); i++) {
+                        LocalResTree child = node.children.get(i);
+                        if (showCollision) {
+                            childrenMarkers += child.marker;
+                            if (child.result != null) childrenMarkers += "(" + child.collision + ")";
+                        }
+                        else
+                            childrenMarkers += (child.marker);
+
+                        if (i < node.children.size() - 1)
+                            childrenMarkers += ", ";
+                    }
                 }
 
                 tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
@@ -244,7 +253,9 @@ public class LocalTreeForm extends JFrame {
         fileMenu.add(saveTableAsPNG);
 
         JMenuItem toggleTableView = new JMenuItem("Отобразить таблицу для видимых узлов");
+        JMenuItem toggleCollisionView = new JMenuItem("Отобразить взаимодействия в таблице");
         viewMenu.add(toggleTableView);
+        viewMenu.add(toggleCollisionView);
 
         // Добавляем действие на переключение вида таблицы
         toggleTableView.addActionListener(new ActionListener() {
@@ -252,6 +263,15 @@ public class LocalTreeForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 showFullTable = !showFullTable;
                 toggleTableView.setText(showFullTable ? "Отобразить таблицу для видимых узлов" : "Отобразить таблицу полностью");
+                drawTable(localResTree);
+            }
+        });
+
+        toggleCollisionView.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showCollision = !showCollision;
+                toggleCollisionView.setText(showCollision ? "Скрыть взаимодействия в таблице" : "Отобразить взаимодействия в таблице");
                 drawTable(localResTree);
             }
         });
@@ -342,14 +362,14 @@ public class LocalTreeForm extends JFrame {
 
 
     private LocalResTree testTree(){
-        LocalResTree tree = new LocalResTree(1, "ξΣξ b γ b", Arrays.asList(
-                new LocalResTree(2, "ξ -αΣ*γ b γ", Arrays.asList(
-                        new LocalResTree(4, "ξ αΣ*γ b γ", null),
-                        new LocalResTree(5, "ξ -αΣ*γ b γ", null)
+        LocalResTree tree = new LocalResTree(1, "ξΣξ b γ b", null, Arrays.asList(
+                new LocalResTree(2, "ξ -αΣ*γ b γ", "col1", Arrays.asList(
+                        new LocalResTree(4, "ξ αΣ*γ b γ", "col2",null),
+                        new LocalResTree(5, "ξ -αΣ*γ b γ", "col3",null)
                 )),
-                new LocalResTree(3, "ξ αΣ*γ b γ", Arrays.asList(
-                        new LocalResTree(6, "ξ -αΣ*γ b γ", null),
-                        new LocalResTree(7, "ξ αΣ*γ b γ", null)
+                new LocalResTree(3, "ξ αΣ*γ b γ", "", Arrays.asList(
+                        new LocalResTree(6, "ξ -αΣ*γ b γ", "col4",null),
+                        new LocalResTree(7, "ξ αΣ*γ b γ", "col5" ,null)
                 ))
         ));
         return tree;
