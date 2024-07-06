@@ -3,6 +3,8 @@ package com.company.client.gui.SimulationGUI.TreeGUI;
 import com.company.client.gui.GUIGlobals;
 
 import com.mxgraph.layout.mxCompactTreeLayout;
+import com.mxgraph.model.mxCell;
+import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
@@ -122,8 +124,13 @@ public class LocalTreeForm extends JFrame {
     }
 
     private void createGraphNodes(LocalResTree node, Object parentCell) {
+        // bug
         String label = node.isCollapsed ? "..." : String.valueOf(node.marker);
         Object cell = graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12");
+
+        /// Сохраняем маркер как атрибут узла
+        ((mxCell) cell).setValue(new CellValue(node.marker, label));
+
         if (parentCell != null) {
             graph.insertEdge(parent, null, "", parentCell, cell, "endArrow=none;edgeStyle=none;");
         }
@@ -134,31 +141,34 @@ public class LocalTreeForm extends JFrame {
     }
 
     private void toggleNode(Object cell) {
-        String label = graph.getLabel(cell);
-        LocalResTree node = findNodeByLabel(localResTree, label);
-        if (node != null) {
-            node.isCollapsed = !node.isCollapsed;
-            // Переотрисовка дерева
-            treePanel.removeAll();
-            treePanel.add(drawTree(localResTree));
-            treePanel.revalidate();
-            treePanel.repaint();
+        // Получаем пользовательский объект из узла
+        Object value = ((mxCell) cell).getValue();
+        if (value instanceof CellValue) {
+            int marker = ((CellValue) value).marker;
+            LocalResTree node = findNodeByMarker(localResTree, marker);
+            if (node != null) {
+                node.isCollapsed = !node.isCollapsed;
 
-            if (!showFullTable) {
-                drawTable(localResTree);
+                // Переотрисовка дерева
+                treePanel.removeAll();
+                treePanel.add(drawTree(localResTree));
+                treePanel.revalidate();
+                treePanel.repaint();
+
+                if (!showFullTable) {
+                    drawTable(localResTree);
+                }
             }
         }
     }
 
-    private LocalResTree findNodeByLabel(LocalResTree node, String label) {
-        if (node.isCollapsed && "...".equals(label)) {
-            return node;
-        } else if (String.valueOf(node.marker).equals(label)) {
+    private LocalResTree findNodeByMarker(LocalResTree node, int marker) {
+        if (node.marker == marker) {
             return node;
         }
         if (node.children != null) {
             for (LocalResTree child : node.children) {
-                LocalResTree found = findNodeByLabel(child, label);
+                LocalResTree found = findNodeByMarker(child, marker);
                 if (found != null) {
                     return found;
                 }

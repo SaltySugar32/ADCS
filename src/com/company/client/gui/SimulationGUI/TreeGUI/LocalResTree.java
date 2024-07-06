@@ -18,6 +18,6 @@ public class LocalResTree {
 
     @Override
     public String toString() {
-        return "Node " + marker;
+        return String.valueOf(marker);
     }
 }
