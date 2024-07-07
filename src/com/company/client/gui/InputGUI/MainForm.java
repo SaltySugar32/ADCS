@@ -32,7 +32,7 @@ public class MainForm extends JFrame {
 
     public MainForm(SimServer ServerThread) {
         // test
-        LocalTreeForm dialog = new LocalTreeForm();
+        //LocalTreeForm dialog = new LocalTreeForm();
 
         this.setTitle(GUIGlobals.program_title);
         this.setSize(GUIGlobals.main_frame_width, GUIGlobals.main_frame_height);
