@@ -2,6 +2,7 @@ package com.company.client.gui.SimulationGUI.TreeGUI;
 
 import com.company.client.gui.GUIGlobals;
 
+import com.company.server.simulation.general.GeneralSolution;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.model.mxGeometry;
@@ -45,6 +46,8 @@ public class LocalTreeForm extends JFrame {
         drawTable(localResTree);
 
         setJMenuBar(createMenu());
+
+        GeneralSolution gs = new GeneralSolution();
 
         this.setVisible(true);
     }

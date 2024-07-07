@@ -16,15 +16,22 @@ public class GeneralSolution {
     private ArrayList<BorderDescription> borderDisplacementFunctions;
     private ArrayList<LayerDescription> layerDescriptions;
 
-    GeneralSolution(){
-        SimulationTimePow simulationTimePow;
-        switch (DataHandler.unitOfTime){
-            case "мкс" -> simulationTimePow = SimulationTimePow.MICROSECONDS;
-            case "нс" -> simulationTimePow = SimulationTimePow.NANOSECONDS;
-            default -> simulationTimePow = SimulationTimePow.MILLISECONDS;
-        }
+    public GeneralSolution(){
+        SimulationTimePow simulationTimePow = SimulationTimePow.MILLISECONDS;
 
-        this.borderDisplacementFunctions = initBorderDisplacementFunctions(DataHandler.lin_appr_array, DenoteFactor.MILLI, simulationTimePow);
+        this.borderDisplacementFunctions = initBorderDisplacementFunctions(testCoordinates, DenoteFactor.MILLI, simulationTimePow);
+
+        for(BorderDescription bd: borderDisplacementFunctions)
+            System.out.println(bd);
+
+        // look createBorderWaveFronts in Border
+
+        /*
+        System.out.println("Wave Fronts: ");
+        for (LayerDescription ld : layerDescriptions) {
+            System.out.println(ld);
+        }
+         */
     }
 
     private ArrayList<BorderDescription> initBorderDisplacementFunctions(double[][] coordinates, DenoteFactor denoteFactorU, SimulationTimePow simulationTimePow) {
@@ -50,4 +57,9 @@ public class GeneralSolution {
 
         return borderDisplacementFunctions;
     }
+
+    private double[][] testCoordinates = {
+            {0.0, 94.32387312186978, 267.1118530884808, 399.8330550918197, 563.4390651085141},
+            {0.0, -1.6730401529636714, -3.068833652007648, -1.5200764818355639, 1.137667304015296}
+    };
 }

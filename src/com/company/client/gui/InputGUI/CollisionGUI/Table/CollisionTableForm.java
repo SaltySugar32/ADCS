@@ -22,12 +22,15 @@ public class CollisionTableForm extends JFrame {
     private ArrayList<String> secondLayers;
 
     private ArrayList<CollisionDesc> collisionDescs;
-    private JPanel panel1;
+    private JPanel mainPanel;
+    private JPanel tablePanel;
     private JScrollPane scrollPane;
 
     public CollisionTableForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
         setSize(GUIGlobals.env_param_frame_width*2, GUIGlobals.env_param_frame_height);
+        this.add(mainPanel);
+
         display();
 
         this.setVisible(true);
@@ -207,7 +210,8 @@ public class CollisionTableForm extends JFrame {
     }
 
     private void setTableFontSize(float scaleFactor, JTable table) {
-        Font defaultFont = table.getFont();
+        JTable temp = new JTable();
+        Font defaultFont = temp.getFont();
         float newSize = defaultFont.getSize() * scaleFactor;
         Font newFont = defaultFont.deriveFont(newSize);
         table.setFont(newFont);
