@@ -15,6 +15,7 @@ import com.company.server.simulation.enums.WaveType;
 import com.company.server.simulation.types.LayerDescription;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 // Общее решение задачи
@@ -24,28 +25,47 @@ public class GeneralSolution {
 
     public GeneralSolution(){
 
-        testEnv();
+        this.borderDisplacementFunctions = SimGlobals.getBorderDisplacementFunctions();
 
-        for(BorderDescription bd: borderDisplacementFunctions)
-            System.out.println(bd);
+        testEnv();
 
         // look createBorderWaveFronts in Border
 
         ArrayList<LayerDescription> wavePicture = new ArrayList<>();
         layerDescriptions = createBorderWaveFronts(wavePicture);
 
-        System.out.println("Wave Fronts: ");
-        for (var waveFront : layerDescriptions) {
-            System.out.println("A0 = " + waveFront.getA0());
-            System.out.println("A1 = " + waveFront.getA1());
-            System.out.println("A2 = " + waveFront.getA2());
-            System.out.println("V = " + waveFront.getSpeed());
-            System.out.println("X = " + waveFront.getCurrentX());
-            System.out.println("T = " + waveFront.getLayerStartTime());
-            System.out.println("TW = " + waveFront.getWaveFrontStartTime());
-            System.out.println("Type = " + waveFront.getWaveType());
-            System.out.println("---");
+
+
+        System.out.println(getWafeFrontStrings(layerDescriptions));
+
+    }
+
+    // перевод фронтов в строки
+    private ArrayList<String> getWafeFrontStrings(ArrayList<LayerDescription> layerDescriptions){
+        ArrayList<String> waveFrontStrings = new ArrayList<>();
+        for (var waveFront : layerDescriptions){
+            switch(waveFront.getWaveType()) {
+                case HALF_SIGNOTON:
+                    if (Math.abs(Math.abs(waveFront.getSpeed()) - Math.abs(SimGlobals.getCharacteristicsSpeedCompression())) < ProgramGlobals.getEpsilon())
+                        waveFrontStrings.add("gamma(a)");
+                    else
+                        waveFrontStrings.add("gamma(b)");
+                    break;
+                case SHOCK_WAVE:
+                    waveFrontStrings.add("sigma");
+                    break;
+                case SIMPLE_FRACTURE:
+                    if (Math.abs(Math.abs(waveFront.getSpeed()) - Math.abs(SimGlobals.getCharacteristicsSpeedCompression())) < ProgramGlobals.getEpsilon())
+                        waveFrontStrings.add("xi(a)");
+                    else
+                        waveFrontStrings.add("xi(b)");
+                    break;
+                default:
+                    break;
+            }
         }
+        Collections.reverse(waveFrontStrings);
+        return waveFrontStrings;
     }
 
     public ArrayList<LayerDescription> createBorderWaveFronts(ArrayList<LayerDescription> currentWavePicture) {

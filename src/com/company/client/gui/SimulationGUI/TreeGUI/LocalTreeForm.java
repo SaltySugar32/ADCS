@@ -47,7 +47,7 @@ public class LocalTreeForm extends JFrame {
 
         setJMenuBar(createMenu());
 
-        GeneralSolution gs = new GeneralSolution();
+        //GeneralSolution gs = new GeneralSolution();
 
         this.setVisible(true);
     }
