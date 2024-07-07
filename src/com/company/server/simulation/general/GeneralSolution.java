@@ -1,15 +1,12 @@
 package com.company.server.simulation.general;
 
 import com.company.ProgramGlobals;
-import com.company.client.gui.DataHandler;
-import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.SimulationGUI.TreeGUI.LocalResTree;
 import com.company.server.runtime.enums.DenoteFactor;
 import com.company.server.runtime.enums.SimulationTimePow;
 import com.company.server.runtime.vars.SimGlobals;
 import com.company.server.runtime.vars.SimTime;
-import com.company.server.simulation.border.Border;
 import com.company.server.simulation.border.BorderDescription;
-import com.company.server.simulation.border.BorderSwitcher;
 import com.company.server.simulation.border.cases.*;
 import com.company.server.simulation.enums.WaveType;
 import com.company.server.simulation.types.LayerDescription;
@@ -36,12 +33,47 @@ public class GeneralSolution {
 
 
 
-        System.out.println(getWafeFrontStrings(layerDescriptions));
+        System.out.println(getWaveFrontStrings(layerDescriptions));
 
     }
 
+    public LocalResTree createTree() {
+        ArrayList<String> waveFrontStrings = getWaveFrontStrings(layerDescriptions);
+
+        if (waveFrontStrings == null || waveFrontStrings.isEmpty()) {
+            return null; // или выбросить исключение, если это допустимо
+        }
+
+        // Создаем корень дерева
+        ArrayList<String> rootResult = new ArrayList<>();
+        rootResult.add(waveFrontStrings.get(0));
+        LocalResTree root = new LocalResTree(1, rootResult, "");
+        LocalResTree currentNode = root;
+
+        int markerCounter = 2; // Начинаем с 2, так как корень уже имеет маркер 1
+
+        for (int i = 1; i < waveFrontStrings.size(); i++) {
+            String currentWaveFront = waveFrontStrings.get(i);
+
+            // Создаем новый result для текущего узла
+            ArrayList<String> newResult = new ArrayList<>(currentNode.result);
+            newResult.add(currentWaveFront);
+
+            // Создаем нового потомка
+            LocalResTree childNode = new LocalResTree(markerCounter++, newResult, "");
+
+            // Добавляем потомка к текущему узлу
+            currentNode.children.add(childNode);
+
+            // Текущий узел становится новым потомком
+            currentNode = childNode;
+        }
+
+        return root;
+    }
+
     // перевод фронтов в строки
-    private ArrayList<String> getWafeFrontStrings(ArrayList<LayerDescription> layerDescriptions){
+    private ArrayList<String> getWaveFrontStrings(ArrayList<LayerDescription> layerDescriptions){
         ArrayList<String> waveFrontStrings = new ArrayList<>();
         for (var waveFront : layerDescriptions){
             switch(waveFront.getWaveType()) {

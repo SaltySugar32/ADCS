@@ -38,7 +38,9 @@ public class LocalTreeForm extends JFrame {
         this.add(contentPane);
 
         //test
-        localResTree = testTree();
+        //localResTree = testTree();
+        GeneralSolution gs = new GeneralSolution();
+        localResTree = gs.createTree();
 
         treePanel.add(drawTree(localResTree));
         System.out.println(drawTree(localResTree));
@@ -220,7 +222,7 @@ public class LocalTreeForm extends JFrame {
                     }
                 }
 
-                tableModel.addRow(new Object[]{node.marker, node.result, childrenMarkers});
+                tableModel.addRow(new Object[]{node.marker, String.join(" ", node.result), childrenMarkers});
 
                 if (node.children != null) {
                     queue.addAll(node.children);
