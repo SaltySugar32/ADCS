@@ -158,8 +158,6 @@ public class TreeBuilder {
         for (LocalResTree child : node.children) {
             if (uniqueResults.add(child.result)) {
                 uniqueChildren.add(child);
-            } else {
-                System.out.println("Removed duplicate: " + child.result);
             }
         }
 

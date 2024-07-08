@@ -26,20 +26,16 @@ public class GeneralSolution {
 
         this.borderDisplacementFunctions = SimGlobals.getBorderDisplacementFunctions();
 
-        testEnv();
-
-        // look createBorderWaveFronts in Border
-
         ArrayList<LayerDescription> wavePicture = new ArrayList<>();
         layerDescriptions = createBorderWaveFronts(wavePicture);
-
-
 
         System.out.println(getWaveFrontStrings(layerDescriptions));
 
     }
 
     public LocalResTree createTree() {
+        LocalResTree.resetMarkerCounter();
+
         LocalResTree tree = TreeBuilder.createTree(
                 getWaveFrontStrings(layerDescriptions),
                 DBHandler.collissionDescs

@@ -34,9 +34,6 @@ public class MainForm extends JFrame {
 
         DBHandler.getAllCollisions();
 
-        // test
-        LocalTreeForm dialog = new LocalTreeForm();
-
         this.setTitle(GUIGlobals.program_title);
         this.setSize(GUIGlobals.main_frame_width, GUIGlobals.main_frame_height);
         this.setVisible(true);

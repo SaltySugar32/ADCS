@@ -30,17 +30,16 @@ public class LocalTreeForm extends JFrame {
     private JPanel treePanel;
     private LocalResTree localResTree;
     private Object parent;
-    private boolean showFullTable = true;
+    private boolean showFullTable = false;
     private boolean showCollision = false;
+    private boolean showLocResults = false;
     private GeneralSolution generalSolution;
 
     public LocalTreeForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
-        setSize(GUIGlobals.env_param_frame_width*2, GUIGlobals.env_param_frame_height);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.add(contentPane);
 
-        //test
-        //localResTree = testTree();
         generalSolution = new GeneralSolution();
         localResTree = generalSolution.createTree();
 
@@ -50,8 +49,6 @@ public class LocalTreeForm extends JFrame {
         drawTable(localResTree);
 
         setJMenuBar(createMenu());
-
-        //GeneralSolution gs = new GeneralSolution();
 
         this.setVisible(true);
     }
@@ -89,13 +86,13 @@ public class LocalTreeForm extends JFrame {
                 Object cell = graphComponent.getCellAt(e.getX(),e.getY());
                 if (cell !=null){
                     toggleNode(cell);
-                    System.out.println("cell=" + graph.getLabel(cell));
                 }
             }
         });
 
         // Enable panning and zooming
         graphComponent.setPanning(true);
+        graphComponent.setDragEnabled(false);
         //graphComponent.setZoomEnabled(true);
         graphComponent.getGraphControl().addMouseWheelListener(new MouseWheelListener() {
             @Override
@@ -132,8 +129,12 @@ public class LocalTreeForm extends JFrame {
     }
 
     private void createGraphNodes(LocalResTree node, Object parentCell) {
-        // bug
-        String label =String.valueOf(node.marker);
+        String label;
+
+        if (showLocResults)
+            label = "(" + String.valueOf(node.marker) + ") " + DBHandler.formatCollisionLabel(String.join(" ", node.result));
+        else label =String.valueOf(node.marker);
+
         Object cell = node.isCollapsed?
                 graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12;fontColor=red;fontStyle=1"):
                 graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12;fontStyle=1");
@@ -159,22 +160,27 @@ public class LocalTreeForm extends JFrame {
             if (node != null) {
                 node.isCollapsed = !node.isCollapsed;
 
-                // Переотрисовка дерева
-                treePanel.removeAll();
 
                 // Добавление нового узла
                 if (!node.isCollapsed)
                     node = generalSolution.createNode(node);
 
-                treePanel.add(drawTree(localResTree));
-                treePanel.revalidate();
-                treePanel.repaint();
+                updateTree();
 
                 if (!showFullTable) {
                     drawTable(localResTree);
                 }
             }
         }
+    }
+
+    private void updateTree(){
+        // Переотрисовка дерева
+        treePanel.removeAll();
+
+        treePanel.add(drawTree(localResTree));
+        treePanel.revalidate();
+        treePanel.repaint();
     }
 
     private LocalResTree findNodeByMarker(LocalResTree node, int marker) {
@@ -221,7 +227,7 @@ public class LocalTreeForm extends JFrame {
                         LocalResTree child = node.children.get(i);
                         if (showCollision) {
                             childrenMarkers += child.marker;
-                            if (child.result != null) childrenMarkers += "(" + child.collision + ")";
+                            if ((child.result != null) && (child.collision != "")) childrenMarkers += " [" + DBHandler.formatCollisionLabel(child.collision) + "]";
                         }
                         else
                             childrenMarkers += (child.marker);
@@ -231,7 +237,7 @@ public class LocalTreeForm extends JFrame {
                     }
                 }
 
-                tableModel.addRow(new Object[]{node.marker, DBHandler.formatCollisionLabel(String.join(" ", node.result)), childrenMarkers});
+                tableModel.addRow(new Object[]{node.marker, DBHandler.formatCollisionLabel(String.join(", ", node.result)), childrenMarkers});
 
                 if (node.children != null) {
                     queue.addAll(node.children);
@@ -267,9 +273,20 @@ public class LocalTreeForm extends JFrame {
         fileMenu.add(saveTableAsPNG);
 
         JMenuItem toggleTableView = new JMenuItem("Отобразить таблицу для видимых узлов");
+        JMenuItem toggleTreeResultView = new JMenuItem("Отобразить локальные решения в дереве");
         JMenuItem toggleCollisionView = new JMenuItem("Отобразить взаимодействия в таблице");
-        viewMenu.add(toggleTableView);
+        //viewMenu.add(toggleTableView);
+        viewMenu.add(toggleTreeResultView);
         viewMenu.add(toggleCollisionView);
+
+        toggleTreeResultView.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showLocResults = !showLocResults;
+                toggleTreeResultView.setText(showLocResults? "Скрыть локальные решения в дереве": "Отобразить локальные решения в дереве");
+                updateTree();
+            }
+        });
 
         // Добавляем действие на переключение вида таблицы
         toggleTableView.addActionListener(new ActionListener() {
