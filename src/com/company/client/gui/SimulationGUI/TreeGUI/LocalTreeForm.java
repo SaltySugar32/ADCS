@@ -28,6 +28,7 @@ public class LocalTreeForm extends JFrame {
     private JPanel formPanel;
     private JTable table1;
     private JPanel treePanel;
+    private JSplitPane splitPane;
     private LocalResTree localResTree;
     private Object parent;
     private boolean showFullTable = false;
@@ -49,6 +50,8 @@ public class LocalTreeForm extends JFrame {
         drawTable(localResTree);
 
         setJMenuBar(createMenu());
+
+        splitPane.setResizeWeight(.5d);
 
         this.setVisible(true);
     }
@@ -389,20 +392,4 @@ public class LocalTreeForm extends JFrame {
             }
         }
     }
-
-    /*
-    private LocalResTree testTree(){
-        LocalResTree tree = new LocalResTree(1, "ξΣξ b γ b", null, Arrays.asList(
-                new LocalResTree(2, "ξ -αΣ*γ b γ", "col1", Arrays.asList(
-                        new LocalResTree(4, "ξ αΣ*γ b γ", "col2",null),
-                        new LocalResTree(5, "ξ -αΣ*γ b γ", "col3",null)
-                )),
-                new LocalResTree(3, "ξ αΣ*γ b γ", "", Arrays.asList(
-                        new LocalResTree(6, "ξ -αΣ*γ b γ", "col4",null),
-                        new LocalResTree(7, "ξ αΣ*γ b γ", "col5" ,null)
-                ))
-        ));
-        return tree;
-    }
-     */
 }
