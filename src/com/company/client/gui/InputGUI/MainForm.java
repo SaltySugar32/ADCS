@@ -1,12 +1,12 @@
 package com.company.client.gui.InputGUI;
 
 import com.company.client.gui.DataHandler;
+import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
-import com.company.client.gui.SimulationGUI.TreeGUI.LocalResTree;
 import com.company.client.gui.SimulationGUI.TreeGUI.LocalTreeForm;
 import com.company.server.simulation.border.Border;
 import com.company.server.runtime.vars.SimGlobals;
@@ -31,6 +31,9 @@ public class MainForm extends JFrame {
     private JTextArea projectDescriptionArea;
 
     public MainForm(SimServer ServerThread) {
+
+        DBHandler.getAllCollisions();
+
         // test
         LocalTreeForm dialog = new LocalTreeForm();
 

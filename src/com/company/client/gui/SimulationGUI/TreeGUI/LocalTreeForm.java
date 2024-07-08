@@ -1,11 +1,12 @@
 package com.company.client.gui.SimulationGUI.TreeGUI;
 
+import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 
 import com.company.server.simulation.general.GeneralSolution;
+import com.company.server.simulation.general.LocalResTree;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.model.mxCell;
-import com.mxgraph.model.mxGeometry;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
@@ -31,6 +32,7 @@ public class LocalTreeForm extends JFrame {
     private Object parent;
     private boolean showFullTable = true;
     private boolean showCollision = false;
+    private GeneralSolution generalSolution;
 
     public LocalTreeForm(){
         setTitle(GUIGlobals.program_title + " - Таблица возможных взаимодействий");
@@ -39,8 +41,8 @@ public class LocalTreeForm extends JFrame {
 
         //test
         //localResTree = testTree();
-        GeneralSolution gs = new GeneralSolution();
-        localResTree = gs.createTree();
+        generalSolution = new GeneralSolution();
+        localResTree = generalSolution.createTree();
 
         treePanel.add(drawTree(localResTree));
         System.out.println(drawTree(localResTree));
@@ -131,8 +133,10 @@ public class LocalTreeForm extends JFrame {
 
     private void createGraphNodes(LocalResTree node, Object parentCell) {
         // bug
-        String label = node.isCollapsed ? "..." : String.valueOf(node.marker);
-        Object cell = graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12");
+        String label =String.valueOf(node.marker);
+        Object cell = node.isCollapsed?
+                graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12;fontColor=red;fontStyle=1"):
+                graph.insertVertex(parent, null, label, 0, 0, 40, 30, "shape=none;labelPosition=center;verticalLabelPosition=middle;fontSize=12;fontStyle=1");
 
         /// Сохраняем маркер как атрибут узла
         ((mxCell) cell).setValue(new CellValue(node.marker, label));
@@ -157,6 +161,11 @@ public class LocalTreeForm extends JFrame {
 
                 // Переотрисовка дерева
                 treePanel.removeAll();
+
+                // Добавление нового узла
+                if (!node.isCollapsed)
+                    node = generalSolution.createNode(node);
+
                 treePanel.add(drawTree(localResTree));
                 treePanel.revalidate();
                 treePanel.repaint();
@@ -222,7 +231,7 @@ public class LocalTreeForm extends JFrame {
                     }
                 }
 
-                tableModel.addRow(new Object[]{node.marker, String.join(" ", node.result), childrenMarkers});
+                tableModel.addRow(new Object[]{node.marker, DBHandler.formatCollisionLabel(String.join(" ", node.result)), childrenMarkers});
 
                 if (node.children != null) {
                     queue.addAll(node.children);
@@ -364,8 +373,7 @@ public class LocalTreeForm extends JFrame {
         }
     }
 
-
-
+    /*
     private LocalResTree testTree(){
         LocalResTree tree = new LocalResTree(1, "ξΣξ b γ b", null, Arrays.asList(
                 new LocalResTree(2, "ξ -αΣ*γ b γ", "col1", Arrays.asList(
@@ -379,4 +387,5 @@ public class LocalTreeForm extends JFrame {
         ));
         return tree;
     }
+     */
 }
