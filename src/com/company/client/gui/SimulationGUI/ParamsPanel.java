@@ -6,6 +6,7 @@ import com.company.ProgramGlobals;
 import com.company.server.runtime.vars.SimTime;
 import com.company.server.runtime.SimServer;
 import com.company.server.runtime.enums.SimState;
+import com.company.server.simulation.collision.CollisionSwitcher;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -77,6 +78,9 @@ public class ParamsPanel extends JPanel {
         pauseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                DBHandler.getAllCollisions();
+                CollisionSwitcher.initCollisionHandlers_new();
+
                 if(ServerThread.getSimState() == SimState.READY) {
                     ServerThread.pendingPAUSE();
                     pauseButton.setText("START");

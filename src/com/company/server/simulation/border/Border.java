@@ -187,6 +187,7 @@ public class Border {
                 System.out.println("X = " + waveFront.getCurrentX());
                 System.out.println("T = " + waveFront.getLayerStartTime());
                 System.out.println("TW = " + waveFront.getWaveFrontStartTime());
+                System.out.println("Type = " + waveFront.getWaveType());
                 System.out.println("---");
             }
             System.out.println("---------------------------------");

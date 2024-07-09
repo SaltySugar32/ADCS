@@ -4,17 +4,301 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class DBHandler {
 
     public static String materialPath = "data/materialDB/";
     public static String graphPath = "data/graphDB/";
+
+    public static String collisionsPath = "data/collisions.txt";
     public static String inputImgsPath = "data/inputImages/";
     public static String outputImgsPath = "data/outputImages/";
     public static String resourcesPath = "resources/images/";
 
     public static List<Material> materials;
+
+    public static ArrayList<CollisionDesc> collissionDescs;
+
+    public static ArrayList<String> firstLayers;
+
+    public static ArrayList<String> secondLayers;
+
+    private static final Pattern FRONT_VALID_PATTERN = Pattern.compile("^(O|(xi|sigma|gamma)\\([ab\\-0\\*]*\\))$");
+    private static final Pattern RESULT_VALID_PATTERN = Pattern.compile("^((xi|sigma|gamma)\\([ab\\-0\\*]*\\))*$");
+
+    public static void checkDirectories() {
+        checkAndCreateDirectory(materialPath);
+        checkAndCreateDirectory(graphPath);
+        checkAndCreateDirectory(inputImgsPath);
+        checkAndCreateDirectory(outputImgsPath);
+        checkAndCreateCollisionFile(collisionsPath);
+    }
+    public static void checkAndCreateDirectory(String directoryPath) {
+        Path path = Paths.get(directoryPath);
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory created: " + directoryPath);
+            } catch (IOException e) {
+                System.err.println("Failed to create directory: " + directoryPath);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Directory already exists: " + directoryPath);
+        }
+    }
+    public static void checkAndCreateCollisionFile(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                // Создать файл
+                file.getParentFile().mkdirs(); // Создать директории, если их нет
+                file.createNewFile();
+
+                // Написать содержимое в файл
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write("xi(a),sigma(*),xi(-a)\n");
+                    writer.write("O,xi(a),sigma(*),xi(b),gamma(b)\n");
+                    writer.write("xi(a),sigma(*),xi(-a)sigma(**)\n");
+                    writer.write("sigma(*),xi(b),xi(-a)sigma(**)\n");
+                    writer.write("sigma(*),gamma(b),xi(-a)gamma(a)\n");
+                    writer.write("xi(-a),O,xi(a)\n");
+                    writer.write("xi(-a),xi(a),xi(-a)xi(a)\n");
+                }
+
+                System.out.println("File created and content written: " + filePath);
+            } catch (IOException e) {
+                System.err.println("Failed to create file: " + filePath);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File already exists: " + filePath);
+        }
+    }
+
+    public static void getAllCollisions(){
+        collissionDescs = new ArrayList<CollisionDesc>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(DBHandler.collisionsPath))) {
+
+            firstLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
+            secondLayers = new ArrayList<>(Arrays.asList(br.readLine().split(",")));
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    CollisionDesc collision = new CollisionDesc();
+
+                    collision.firstLayer = parts[0];
+                    collision.secondLayer = parts[1];
+                    // все оставшиеся части в resultLayer
+                    collision.resultLayers = new ArrayList<>();
+                    collision.resultLayers.addAll(Arrays.asList(parts).subList(2, parts.length));
+                    collision.shortDescription = collision.firstLayer + ", " + collision.secondLayer + " > " + collision.resultLayers;
+                    collissionDescs.add(collision);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeCollisionsToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(collisionsPath))) {
+            // Write firstLayers to the second line, comma-separated
+            String firstLayersLine = String.join(",", firstLayers);
+            writer.write(firstLayersLine);
+            writer.newLine();
+
+            // Write secondLayers to the first line, comma-separated
+            String secondLayersLine = String.join(",", secondLayers);
+            writer.write(secondLayersLine);
+            writer.newLine();
+
+            // Write each collision description
+            for (CollisionDesc collisionDesc : collissionDescs) {
+                StringBuilder lineBuilder = new StringBuilder();
+                lineBuilder.append(collisionDesc.firstLayer).append(",")
+                        .append(collisionDesc.secondLayer).append(",");
+
+                // Append resultLayers, comma-separated
+                if (!collisionDesc.resultLayers.isEmpty()) {
+                    lineBuilder.append(String.join(",", collisionDesc.resultLayers));
+                }
+
+                writer.write(lineBuilder.toString());
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle exception (e.g., log it or throw a custom exception)
+        }
+    }
+
+    public static void collisionSwapElements(CollisionDesc collisionDesc, int index) {
+
+        for (int i = 0; i < collissionDescs.size(); i++) {
+            CollisionDesc curr = collissionDescs.get(i);
+            // Сравнение текущего элемента с заданным desc
+            if (curr.equals(collisionDesc)) {
+                // Проверка наличия нужных индексов
+                if (index < 0 || index >= curr.resultLayers.size()) {
+                    throw new IndexOutOfBoundsException("index is out of bounds.");
+                }
+
+                // Получить элемент на позиции 0
+                String temp = curr.resultLayers.get(0);
+
+                // Заменить элемент на позиции 0 элементом на позиции selectedRow
+                curr.resultLayers.set(0, curr.resultLayers.get(index));
+
+                // Заменить элемент на позиции selectedRow сохраненным элементом temp
+                curr.resultLayers.set(index, temp);
+            }
+        }
+    }
+
+    public static ArrayList<String> getCollisionResult(String firstLayer, String secondLayer){
+        for(CollisionDesc col:collissionDescs){
+            if((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer)))
+                return col.resultLayers;
+        }
+        return null;
+    }
+
+    // Добавить результат столкновения
+    public static boolean addCollisionResult(int col, int row, String result) {
+        if (!RESULT_VALID_PATTERN.matcher(result).matches())
+            return false;
+
+        CollisionDesc desc = getCollision(col, row);
+
+        // Существует взаимодействие
+        if (desc != null) {
+            if (desc.resultLayers.contains(result))
+                return false;
+
+            desc.resultLayers.add(result);
+
+            writeCollisionsToFile();
+            return true;
+        }
+
+        // Создаем новое взаимодействие
+        CollisionDesc newDesc = new CollisionDesc();
+        newDesc.firstLayer = firstLayers.get(row);
+        newDesc.secondLayer = secondLayers.get(col);
+        newDesc.resultLayers = new ArrayList<String>();
+        newDesc.resultLayers.add(result);
+        newDesc.shortDescription = newDesc.firstLayer + ", " + newDesc.secondLayer + " > " + newDesc.resultLayers;
+        collissionDescs.add(newDesc);
+
+        writeCollisionsToFile();
+        return true;
+    }
+
+    public static boolean deleteCollisionResult(int column, int row, int index){
+        CollisionDesc desc = getCollision(column, row);
+
+        if(desc == null)
+            return false;
+
+        if(desc.resultLayers.get(index)==null)
+            return false;
+
+        desc.resultLayers.remove(index);
+        writeCollisionsToFile();
+        return true;
+    }
+
+    public static CollisionDesc getCollision(int column, int row) {
+        String firstLayer = firstLayers.get(row);
+        String secondLayer = secondLayers.get(column);
+        for (CollisionDesc col : collissionDescs) {
+            if ((col.firstLayer.equals(firstLayer)) && (col.secondLayer.equals(secondLayer))) {
+                return col;
+            }
+        }
+        return null;
+    }
+
+    // добавить догоняющий фронт
+    public static boolean addFirstLayer(String name){
+        if (!FRONT_VALID_PATTERN.matcher(name).matches())
+            return false;
+        if(firstLayers.contains(name))
+            return false;
+        firstLayers.add(name);
+
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // удалить догоняющий фронт
+    public static boolean deleteFirstLayer(String name){
+        if(!firstLayers.contains(name) || name==null)
+            return false;
+
+        firstLayers.remove(name);
+        // удаление результатов с удаленным фронтом
+        for (Iterator<CollisionDesc> iterator = collissionDescs.iterator(); iterator.hasNext();) {
+            CollisionDesc desc = iterator.next();
+            if (desc.firstLayer.equals(name)) {
+                iterator.remove();
+            }
+        }
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // добавить убегающий фронт
+    public static boolean addSecondLayer(String name){
+        if (!FRONT_VALID_PATTERN.matcher(name).matches())
+            return false;
+        if(secondLayers.contains(name))
+            return false;
+        secondLayers.add(name);
+
+        writeCollisionsToFile();
+        return true;
+    }
+
+    // удалить догоняющий фронт
+    public static boolean deleteSecondLayer(String name){
+        if(!secondLayers.contains(name))
+            return false;
+
+        secondLayers.remove(name);
+        // удаление результатов с удаленным фронтом
+        for (Iterator<CollisionDesc> iterator = collissionDescs.iterator(); iterator.hasNext();) {
+            CollisionDesc desc = iterator.next();
+            if (desc.secondLayer.equals(name)) {
+                iterator.remove();
+            }
+        }
+        writeCollisionsToFile();
+        return true;
+    }
+
+    public static String formatCollisionLabel(String label){
+        String newLabel;
+        newLabel = label
+                .replace("xi", "ξ")
+                .replace("sigma", "Σ")
+                .replace("gamma", "γ");
+               /* .replace("A", "ᵃ")
+                .replace("A-", "⁻ᵃ")
+                .replace("B", "ᵇ")
+                .replace("B-", "⁻ᵇ");*/
+        return newLabel;
+    }
 
     // заполнение списка материалов
     public static void getAllMaterials() {

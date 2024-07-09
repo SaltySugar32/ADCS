@@ -1,10 +1,13 @@
 package com.company.client.gui.InputGUI;
 
 import com.company.client.gui.DataHandler;
+import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
+import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
 import com.company.client.gui.InputGUI.EnvParamGUI.EnvParamForm;
 import com.company.client.gui.InputGUI.GraphGUI.GraphForm;
 import com.company.client.gui.SimulationGUI.SimulationForm;
+import com.company.client.gui.SimulationGUI.TreeGUI.LocalTreeForm;
 import com.company.server.simulation.border.Border;
 import com.company.server.runtime.vars.SimGlobals;
 import com.company.server.runtime.enums.SimulationTimePow;
@@ -28,9 +31,17 @@ public class MainForm extends JFrame {
     private JTextArea projectDescriptionArea;
 
     public MainForm(SimServer ServerThread) {
+
+        DBHandler.getAllCollisions();
+
         this.setTitle(GUIGlobals.program_title);
         this.setSize(GUIGlobals.main_frame_width, GUIGlobals.main_frame_height);
         this.setVisible(true);
+
+        JMenuBar menuBar = new JMenuBar();
+        JMenu settingsMenu = createSettingsMenu();
+        menuBar.add(settingsMenu);
+        setJMenuBar(menuBar);
 
         // позволяет появляться фрейму в центре экрана. (по дефолту - в верхнем левом углу)
         this.setLocationRelativeTo(null);
@@ -95,5 +106,20 @@ public class MainForm extends JFrame {
                 }
             }
         });
+    }
+    private JMenu createSettingsMenu(){
+        JMenu viewSettings = new JMenu("Настройки");
+        JMenuItem openCollisionsForm = new JMenuItem("Таблица взаимодействий");
+
+        viewSettings.add(openCollisionsForm);
+
+        openCollisionsForm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CollisionTableForm dialog = new CollisionTableForm();
+            }
+        });
+
+        return viewSettings;
     }
 }

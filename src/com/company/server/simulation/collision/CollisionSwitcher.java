@@ -1,15 +1,30 @@
 package com.company.server.simulation.collision;
 
 import com.company.ProgramGlobals;
+import com.company.client.gui.Database.CollisionDesc;
+import com.company.client.gui.Database.DBHandler;
 import com.company.server.simulation.collision.cases.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CollisionSwitcher {
 
     static ArrayList<ICollisionHandler> collisionHandlers = new ArrayList<>();
-
     //К.О.С.Т.Ы.Л.И. - Креативно Основанная Система Творческого вЫхлопа в виде Ленивой Инициализации
+    public static void initCollisionHandlers_new(){
+        collisionHandlers.clear();
+        DBHandler.getAllCollisions();
+        for (CollisionDesc col:DBHandler.collissionDescs) {
+            //collisionHandlers.add(new CollisionHandler(col));
+            System.out.println(col.shortDescription);
+            collisionHandlers.add(new DynamicCollisionHandler(col));
+        }
+
+    }
     public static void initCollisionHandlers() {
         collisionHandlers.clear();
         collisionHandlers.add(new CaseFirst());

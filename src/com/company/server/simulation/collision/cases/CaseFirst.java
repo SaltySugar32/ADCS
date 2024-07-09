@@ -1,5 +1,6 @@
 package com.company.server.simulation.collision.cases;
 
+import com.company.server.simulation.collision.functions.SimpleFracture;
 import com.company.server.simulation.enums.WaveType;
 import com.company.server.simulation.collision.functions.ShockWave;
 import com.company.server.runtime.vars.SimGlobals;
