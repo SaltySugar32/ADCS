@@ -1,8 +1,8 @@
 xi(a),sigma(*),xi(-a)
 O,xi(a),sigma(*),xi(b),gamma(b)
-xi(a),sigma(*),xi(-a)xi(a),xi(-a)sigma(**)
+xi(a),sigma(*),xi(-a)sigma(**)
 sigma(*),xi(b),xi(-a)sigma(**)
 sigma(*),gamma(b),xi(-a)gamma(a)
 xi(-a),O,xi(a)
 xi(-a),xi(a),xi(-a)xi(a)
-xi(a),xi(b),xi(-a)sigma(*)
+xi(a),xi(b),
