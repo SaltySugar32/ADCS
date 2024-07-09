@@ -28,7 +28,8 @@ public class Main {
         ClientThread.start();
 
         //Вообще говоря, костыль
-        CollisionSwitcher.initCollisionHandlers();
+        //CollisionSwitcher.initCollisionHandlers();
+        CollisionSwitcher.initCollisionHandlers_new();
     }
 }
 
