@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.client.gui.Database.DBHandler;
 import com.company.server.simulation.collision.CollisionSwitcher;
 import com.company.server.runtime.SimServer;
 import com.company.client.ui.UserClient;
@@ -17,6 +18,9 @@ public class Main {
      * Инициализация потоков приложения
      */
     public static void main(String[] args) {
+
+        DBHandler.checkDirectories();
+
         //Инициализация потока синхронизации вычислений сервера со временем
         SimServer SynchroThread = new SimServer();
 

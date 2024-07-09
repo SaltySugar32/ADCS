@@ -5,4 +5,3 @@ sigma(*),xi(b),xi(-a)sigma(**)
 sigma(*),gamma(b),xi(-a)gamma(a)
 xi(-a),O,xi(a)
 xi(-a),xi(a),xi(-a)xi(a)
-xi(a),xi(b),

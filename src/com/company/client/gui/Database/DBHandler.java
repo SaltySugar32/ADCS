@@ -36,6 +36,7 @@ public class DBHandler {
         checkAndCreateDirectory(graphPath);
         checkAndCreateDirectory(inputImgsPath);
         checkAndCreateDirectory(outputImgsPath);
+        checkAndCreateCollisionFile(collisionsPath);
     }
     public static void checkAndCreateDirectory(String directoryPath) {
         Path path = Paths.get(directoryPath);
@@ -49,6 +50,34 @@ public class DBHandler {
             }
         } else {
             System.out.println("Directory already exists: " + directoryPath);
+        }
+    }
+    public static void checkAndCreateCollisionFile(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            try {
+                // Создать файл
+                file.getParentFile().mkdirs(); // Создать директории, если их нет
+                file.createNewFile();
+
+                // Написать содержимое в файл
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    writer.write("xi(a),sigma(*),xi(-a)\n");
+                    writer.write("O,xi(a),sigma(*),xi(b),gamma(b)\n");
+                    writer.write("xi(a),sigma(*),xi(-a)sigma(**)\n");
+                    writer.write("sigma(*),xi(b),xi(-a)sigma(**)\n");
+                    writer.write("sigma(*),gamma(b),xi(-a)gamma(a)\n");
+                    writer.write("xi(-a),O,xi(a)\n");
+                    writer.write("xi(-a),xi(a),xi(-a)xi(a)\n");
+                }
+
+                System.out.println("File created and content written: " + filePath);
+            } catch (IOException e) {
+                System.err.println("Failed to create file: " + filePath);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File already exists: " + filePath);
         }
     }
 

@@ -32,7 +32,6 @@ public class MainForm extends JFrame {
 
     public MainForm(SimServer ServerThread) {
 
-        DBHandler.checkDirectories();
         DBHandler.getAllCollisions();
 
         this.setTitle(GUIGlobals.program_title);
