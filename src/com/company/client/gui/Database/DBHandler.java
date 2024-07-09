@@ -1,5 +1,4 @@
 package com.company.client.gui.Database;
-import com.company.server.simulation.collision.cases.CollisionHandler;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;

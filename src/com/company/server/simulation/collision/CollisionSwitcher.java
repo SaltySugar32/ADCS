@@ -16,10 +16,12 @@ public class CollisionSwitcher {
     static ArrayList<ICollisionHandler> collisionHandlers = new ArrayList<>();
     //К.О.С.Т.Ы.Л.И. - Креативно Основанная Система Творческого вЫхлопа в виде Ленивой Инициализации
     public static void initCollisionHandlers_new(){
+        collisionHandlers.clear();
         DBHandler.getAllCollisions();
         for (CollisionDesc col:DBHandler.collissionDescs) {
             //collisionHandlers.add(new CollisionHandler(col));
             System.out.println(col.shortDescription);
+            collisionHandlers.add(new DynamicCollisionHandler(col));
         }
 
     }
