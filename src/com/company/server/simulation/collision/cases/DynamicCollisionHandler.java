@@ -245,14 +245,51 @@ public class DynamicCollisionHandler implements ICollisionHandler{
                     //xi(-a)
                     newLayers.get(0).setSpeed(0.0 - SimGlobals.getCharacteristicsSpeedCompression());
                 }
+                else{
+                    //xi(a)
+                    newLayers.get(0).setSpeed(SimGlobals.getCharacteristicsSpeedCompression());
+                }
             }
-
+            else{
+                if(speedString.contains("-")){
+                    //xi(-b)
+                    newLayers.get(0).setSpeed(0.0 - SimGlobals.getCharacteristicsSpeedStretching());
+                }
+                else{
+                    //xi(b)
+                    newLayers.get(0).setSpeed(SimGlobals.getCharacteristicsSpeedStretching());
+                }
+            }
         }
         else if (front.contains("gamma")){
+            newLayers.get(0).setWaveType(WaveType.HALF_SIGNOTON);
 
+            if (speedString.contains("a")){
+                if(speedString.contains("-")){
+                    //gamma(-a)
+                    newLayers.get(0).setSpeed(0.0 - SimGlobals.getCharacteristicsSpeedCompression());
+                }
+                else{
+                    //gamma(a)
+                    newLayers.get(0).setSpeed(SimGlobals.getCharacteristicsSpeedCompression());
+                }
+            }
+            else{
+                if(speedString.contains("-")){
+                    //gamma(-b)
+                    newLayers.get(0).setSpeed(0.0 - SimGlobals.getCharacteristicsSpeedStretching());
+                }
+                else{
+                    //gamma(b)
+                    newLayers.get(0).setSpeed(SimGlobals.getCharacteristicsSpeedStretching());
+                }
+            }
         }
         else if (front.contains("sigma")){
-
+            newLayers.get(0).setWaveType(WaveType.SHOCK_WAVE);
+            newLayers.get(0).setSpeed(
+                    Math.abs(collidedPair.getFirstLayer().getSpeed()) + SimGlobals.getCharacteristicsSpeedStretching() / 2
+            );
         }
 
         newLayers.get(0).setWaveFrontStartTime(collidedPair.getCollisionTime());
@@ -278,6 +315,14 @@ public class DynamicCollisionHandler implements ICollisionHandler{
             if(speedString.contains("a")){
                 if(speedString.contains("-")){
                     //xi(-a)
+                    var rightLayer = SimpleFracture.generateFastNegative(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.SIMPLE_FRACTURE
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
                 else{
                     //xi(a)
@@ -288,16 +333,31 @@ public class DynamicCollisionHandler implements ICollisionHandler{
                             WaveType.SIMPLE_FRACTURE
                     );
                     rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
-
                     newLayers.add(rightLayer);
                 }
             }
             else{
                 if (speedString.contains("-")){
                     //xi(-b)
+                    var rightLayer = SimpleFracture.generateSlowNegative(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.SIMPLE_FRACTURE
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
                 else{
                     //xi(b)
+                    var rightLayer = SimpleFracture.generateSlowPositive(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.SIMPLE_FRACTURE
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
             }
 
@@ -306,7 +366,14 @@ public class DynamicCollisionHandler implements ICollisionHandler{
             if(speedString.contains("a")){
                 if (speedString.contains("-")){
                     //gamma(-a)
-
+                    var rightLayer = SimpleFracture.generateFastNegative(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.HALF_SIGNOTON
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
                 else{
                     //gamma(a)
@@ -317,16 +384,31 @@ public class DynamicCollisionHandler implements ICollisionHandler{
                             WaveType.HALF_SIGNOTON
                     );
                     rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
-
                     newLayers.add(rightLayer);
                 }
             }
             else{
                 if(speedString.contains("-")){
                     //gamma(-b)
+                    var rightLayer = SimpleFracture.generateSlowNegative(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.HALF_SIGNOTON
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
                 else{
                     //gamma(b)
+                    var rightLayer = SimpleFracture.generateSlowPositive(
+                            layerWrapper,
+                            collidedPair.getCollisionX(),
+                            collidedPair.getCollisionTime(),
+                            WaveType.HALF_SIGNOTON
+                    );
+                    rightLayer.setCurrentX(rightLayer.getCurrentX() + collidedPair.getDeltaTime() * rightLayer.getSpeed());
+                    newLayers.add(rightLayer);
                 }
             }
         }

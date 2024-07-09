@@ -25,7 +25,8 @@ public class DBHandler {
 
     public static ArrayList<String> secondLayers;
 
-    private static final Pattern FRONT_VALID_PATTERN = Pattern.compile("^[ab()0+\\-\\*\\s]*(O|xi|gamma|sigma)*[ab()0+\\-\\*\\s]*$");
+    private static final Pattern FRONT_VALID_PATTERN = Pattern.compile("^(O|(xi|sigma|gamma)\\([ab\\-0\\*]*\\))$");
+    private static final Pattern RESULT_VALID_PATTERN = Pattern.compile("^((xi|sigma|gamma)\\([ab\\-0\\*]*\\))*$");
 
     public static void getAllCollisions(){
         collissionDescs = new ArrayList<CollisionDesc>();
@@ -121,8 +122,9 @@ public class DBHandler {
 
     // Добавить результат столкновения
     public static boolean addCollisionResult(int col, int row, String result) {
-        if (!FRONT_VALID_PATTERN.matcher(result).matches())
+        if (!RESULT_VALID_PATTERN.matcher(result).matches())
             return false;
+
         CollisionDesc desc = getCollision(col, row);
 
         // Существует взаимодействие

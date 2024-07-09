@@ -4,6 +4,7 @@ import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.GUIGlobals;
 import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
+import com.company.server.simulation.collision.CollisionSwitcher;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -56,6 +57,9 @@ public class CollisionResultForm extends JFrame{
                             JOptionPane.INFORMATION_MESSAGE);
                     DBHandler.collisionSwapElements(collisionDesc,selectedRow);
                     DBHandler.writeCollisionsToFile();
+
+                    DBHandler.getAllCollisions();
+                    CollisionSwitcher.initCollisionHandlers_new();
                     // обновление полей
 
                     updateTable();
