@@ -94,13 +94,22 @@ public class DynamicCollisionHandler implements ICollisionHandler{
             else {
                 if(speedString.contains("-")){
                     //TODO xi(-b)
-                    return false;
+                    if (collidedPair.getFirstLayer().getSpeed() != SimGlobals.getCharacteristicsSpeedStretching())
+                        return false;
+
+                    //Если слева - деформируемый слой, то продолжаем
+                    if (collidedPair.getFirstLayer().getA1() + collidedPair.getFirstLayer().getA2() == 0.0)
+                        return false;
                 }
                 else{
                     //TODO xi(b)
-                    return false;
-                }
+                    if (collidedPair.getFirstLayer().getSpeed() != SimGlobals.getCharacteristicsSpeedStretching())
+                        return false;
 
+                    //Если слева - деформируемый слой, то продолжаем
+                    if (collidedPair.getFirstLayer().getA1() + collidedPair.getFirstLayer().getA2() == 0.0)
+                        return false;
+                }
             }
         }
 
@@ -172,17 +181,32 @@ public class DynamicCollisionHandler implements ICollisionHandler{
             if(speedString.contains("a")){
                 if(speedString.contains("-")){
                     //TODO gamma(-a)
-                    return false;
+                    if (collidedPair.getSecondLayer().getSpeed() != 0.0 - SimGlobals.getCharacteristicsSpeedCompression())
+                        return false;
+
+                    //Если справа - недеформируемый слой, то продолжаем
+                    if (collidedPair.getThirdLayer().getA1() + collidedPair.getThirdLayer().getA2() != 0.0)
+                        return false;
                 }
                 else{
                     //TODO gamma(a)
-                    return false;
+                    if (collidedPair.getSecondLayer().getSpeed() != SimGlobals.getCharacteristicsSpeedCompression())
+                        return false;
+
+                    //Если справа - недеформируемый слой, то продолжаем
+                    if (collidedPair.getThirdLayer().getA1() + collidedPair.getThirdLayer().getA2() != 0.0)
+                        return false;
                 }
             }
             else{
                 if(speedString.contains("-")){
                     // TODO gamma(-b)
-                    return false;
+                    if (collidedPair.getSecondLayer().getSpeed() != 0.0 - SimGlobals.getCharacteristicsSpeedStretching())
+                        return false;
+
+                    //Если справа - недеформируемый слой, то продолжаем
+                    if (collidedPair.getThirdLayer().getA1() + collidedPair.getThirdLayer().getA2() != 0.0)
+                        return false;
                 }
                 else{
                     //gamma(b)

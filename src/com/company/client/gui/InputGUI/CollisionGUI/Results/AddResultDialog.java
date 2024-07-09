@@ -2,6 +2,7 @@ package com.company.client.gui.InputGUI.CollisionGUI.Results;
 
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
+import com.company.server.simulation.collision.CollisionSwitcher;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -32,6 +33,9 @@ public class AddResultDialog extends JDialog {
                     // add front
                     if (DBHandler.addCollisionResult(colIndex, rowIndex, name)) {
                         JOptionPane.showMessageDialog(frame, "Результат взаимодействия добавлен");
+
+                        DBHandler.getAllCollisions();
+                        CollisionSwitcher.initCollisionHandlers_new();
                         // repaint
                         parent.updateTable();
                     }

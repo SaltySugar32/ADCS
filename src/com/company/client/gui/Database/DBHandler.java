@@ -4,6 +4,9 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -27,6 +30,27 @@ public class DBHandler {
 
     private static final Pattern FRONT_VALID_PATTERN = Pattern.compile("^(O|(xi|sigma|gamma)\\([ab\\-0\\*]*\\))$");
     private static final Pattern RESULT_VALID_PATTERN = Pattern.compile("^((xi|sigma|gamma)\\([ab\\-0\\*]*\\))*$");
+
+    public static void checkDirectories() {
+        checkAndCreateDirectory(materialPath);
+        checkAndCreateDirectory(graphPath);
+        checkAndCreateDirectory(inputImgsPath);
+        checkAndCreateDirectory(outputImgsPath);
+    }
+    public static void checkAndCreateDirectory(String directoryPath) {
+        Path path = Paths.get(directoryPath);
+        if (!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                System.out.println("Directory created: " + directoryPath);
+            } catch (IOException e) {
+                System.err.println("Failed to create directory: " + directoryPath);
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Directory already exists: " + directoryPath);
+        }
+    }
 
     public static void getAllCollisions(){
         collissionDescs = new ArrayList<CollisionDesc>();

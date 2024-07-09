@@ -3,6 +3,7 @@ package com.company.client.gui.InputGUI.CollisionGUI.Results;
 import com.company.client.gui.Database.CollisionDesc;
 import com.company.client.gui.Database.DBHandler;
 import com.company.client.gui.InputGUI.CollisionGUI.Table.CollisionTableForm;
+import com.company.server.simulation.collision.CollisionSwitcher;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -37,6 +38,9 @@ public class DeleteResultDialog extends JDialog {
                     // delete result
                     if (DBHandler.deleteCollisionResult(colIndex, rowIndex, index)) {
                         JOptionPane.showMessageDialog(frame, "Результат удален");
+
+                        DBHandler.getAllCollisions();
+                        CollisionSwitcher.initCollisionHandlers_new();
                         // repaint
                         parent.updateTable();
                         loadComboBox(colIndex, rowIndex);
